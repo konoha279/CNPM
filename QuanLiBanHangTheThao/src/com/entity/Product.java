@@ -21,9 +21,6 @@ public class Product {
 	@Column(name = "MaHangHoa")
 	@GeneratedValue
 	private String ID;
-	@ManyToOne
-	@JoinColumn(name = "MaSize")
-	private Size size;
 	@Column(name = "TenHangHoa")
 	private String name;
 	@Column(name = "DonGia")
@@ -34,10 +31,8 @@ public class Product {
 	private String image;
 	@Column(name = "GhiChu")
 	private String notes;
-	@Column(name = "TỉnhTrang")
+	@Column(name = "TinhTrang", columnDefinition = "BOOLEAN")
 	private Boolean status;
-	@Column(name = "SoLuong")
-	private int amount;
 	
 	@ManyToOne
 	@JoinColumn(name = "MaDanhMuc")
@@ -50,34 +45,30 @@ public class Product {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Product(String iD, Size size, String name, int price, int discount, String image, String notes,
-			Boolean status, int amount, ProductList productlist) {
+	public Product(String iD, String name, int price, int discount, String image, String notes,
+			Boolean status, ProductList productlist) {
 		ID = iD;
-		this.size = size;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
 		this.image = image;
 		this.notes = notes;
 		this.status = status;
-		this.amount = amount;
 		this.productlist = productlist;
 	}
 	
 	
 
-	public Product(String iD, Size size, String name, int price, int discount, String image, String notes,
-			Boolean status, int amount, ProductList productlist, Collection<CTHangHoa> cT_HangHoa) {
+	public Product(String iD, String name, int price, int discount, String image, String notes,
+			Boolean status, ProductList productlist, Collection<CTHangHoa> cT_HangHoa) {
 		super();
 		ID = iD;
-		this.size = size;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
 		this.image = image;
 		this.notes = notes;
 		this.status = status;
-		this.amount = amount;
 		this.productlist = productlist;
 		CT_HangHoa = cT_HangHoa;
 	}
@@ -88,14 +79,6 @@ public class Product {
 
 	public void setID(String iD) {
 		ID = iD;
-	}
-
-	public Size getSize() {
-		return size;
-	}
-
-	public void setSize(Size size) {
-		this.size = size;
 	}
 
 	public String getName() {
@@ -144,14 +127,6 @@ public class Product {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
-	}
-
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
 	}
 
 	public ProductList getProductlist() {
