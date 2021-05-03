@@ -1,0 +1,30 @@
+body {
+  background-color: pink;
+  
+}
+
+.main {
+  background-color: white;
+  margin-top: 50px;
+  border-radius: 20px;
+  padding: 10px;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: crimson;
+}
+
+a {
+  color: crimson;
+}
+
+a:hover {
+  color: pink;
+}
+.nav-link {
+  font-family: 'Lobster';
+}
+
+h1 {
+  font-family: 'Lobster';
+  color: pink;
+}

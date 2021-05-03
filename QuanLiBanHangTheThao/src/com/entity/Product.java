@@ -20,7 +20,7 @@ public class Product {
 	@Id
 	@Column(name = "MaHangHoa")
 	@GeneratedValue
-	private String ID;
+	private String id;
 	@Column(name = "TenHangHoa")
 	private String name;
 	@Column(name = "DonGia")
@@ -47,7 +47,7 @@ public class Product {
 
 	public Product(String iD, String name, int price, int discount, String image, String notes,
 			Boolean status, ProductList productlist) {
-		ID = iD;
+		id = iD;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
@@ -62,7 +62,7 @@ public class Product {
 	public Product(String iD, String name, int price, int discount, String image, String notes,
 			Boolean status, ProductList productlist, Collection<CTHangHoa> cT_HangHoa) {
 		super();
-		ID = iD;
+		id = iD;
 		this.name = name;
 		this.price = price;
 		this.discount = discount;
@@ -74,11 +74,11 @@ public class Product {
 	}
 
 	public String getID() {
-		return ID;
+		return id;
 	}
 
 	public void setID(String iD) {
-		ID = iD;
+		id = iD;
 	}
 
 	public String getName() {

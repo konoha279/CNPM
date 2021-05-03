@@ -22,17 +22,17 @@ public class Guest {
 	@Column(name = "MaKhachHang")
 	private String Id;
 	@Column(name = "Ho")
-	private String FirstName;
+	private String firstName;
 	@Column(name = "Ten")
-	private String Name;
+	private String name;
 	@Column(name = "GioiTinh")
-	private Boolean Sex;
+	private Boolean sex;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "NgaySinh")
 	private Date birthday;
 	@Column(name = "Sdt")
-	private String PhoneNumber;
+	private String phoneNumber;
 	@ManyToOne
 	@JoinColumn(name = "username")
 	private Account accountGuest;
@@ -40,36 +40,34 @@ public class Guest {
 	public Guest() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
-	public Guest(String firstName, String name, Boolean sex, String phoneNumber, Account accountGuest) {
-		FirstName = firstName;
-		Name = name;
-		Sex = sex;
-		PhoneNumber = phoneNumber;
-		this.accountGuest = accountGuest;
-	}
-
-
-
-	public Guest(String firstName, String name, Boolean sex, Date birthday, String phoneNumber,
+	public Guest(String id, String firstName, String name, Boolean sex, Date birthday, String phoneNumber,
 			Account accountGuest) {
-		FirstName = firstName;
-		Name = name;
-		Sex = sex;
-		this.birthday = birthday;
-		PhoneNumber = phoneNumber;
-		this.accountGuest = accountGuest;
-	}
-
-	public Guest(String id, String firstName, String name, Boolean sex, String phoneNumber, Account account) {
 		super();
 		Id = id;
-		FirstName = firstName;
-		Name = name;
-		Sex = sex;
-		PhoneNumber = phoneNumber;
-		this.accountGuest = account;
+		this.firstName = firstName;
+		this.name = name;
+		this.sex = sex;
+		this.birthday = birthday;
+		this.phoneNumber = phoneNumber;
+		this.accountGuest = accountGuest;
 	}
+
+	
+
+	public Guest(String firstName, String name, Boolean sex, Date birthday, String phoneNumber, Account accountGuest) {
+		super();
+		this.firstName = firstName;
+		this.name = name;
+		this.sex = sex;
+		this.birthday = birthday;
+		this.phoneNumber = phoneNumber;
+		this.accountGuest = accountGuest;
+	}
+
+
 
 	public String getId() {
 		return Id;
@@ -80,43 +78,27 @@ public class Guest {
 	}
 
 	public String getFirstName() {
-		return FirstName;
+		return firstName;
 	}
 
 	public void setFirstName(String firstName) {
-		FirstName = firstName;
+		this.firstName = firstName;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public Boolean getSex() {
-		return Sex;
+		return sex;
 	}
 
 	public void setSex(Boolean sex) {
-		Sex = sex;
-	}
-
-	public String getPhoneNumber() {
-		return PhoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		PhoneNumber = phoneNumber;
-	}
-
-	public Account getAccount() {
-		return accountGuest;
-	}
-
-	public void setAccount(Account account) {
-		this.accountGuest = account;
+		this.sex = sex;
 	}
 
 	public Date getBirthday() {
@@ -127,6 +109,14 @@ public class Guest {
 		this.birthday = birthday;
 	}
 
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 	public Account getAccountGuest() {
 		return accountGuest;
 	}
@@ -134,4 +124,7 @@ public class Guest {
 	public void setAccountGuest(Account accountGuest) {
 		this.accountGuest = accountGuest;
 	}
+
+	
+	
 }

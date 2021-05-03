@@ -23,7 +23,7 @@ public class Account {
 	@Column(name = "level")
 	private int level;
 	@Column(name = "Active")
-	private Boolean Active;
+	private Boolean active;
 	
 	
 	  @OneToMany(mappedBy = "accountGuest", fetch = FetchType.EAGER) 
@@ -45,7 +45,7 @@ public class Account {
 		this.password = password;
 		this.email = email;
 		this.level = level;
-		Active = active;
+		this.active = active;
 	}
 
 
@@ -80,11 +80,11 @@ public class Account {
 	}
 
 	public Boolean getActive() {
-		return Active;
+		return active;
 	}
 
 	public void setActive(Boolean active) {
-		Active = active;
+		this.active = active;
 	}
 
 	public String getEmail() {

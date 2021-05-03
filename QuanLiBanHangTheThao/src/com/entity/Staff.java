@@ -23,9 +23,9 @@ public class Staff {
 	@Column(name = "MaNV")
 	private String id;
 	@Column(name = "Ho")
-	private String FirstName;
+	private String firstName;
 	@Column(name = "Ten")
-	private String Name;
+	private String name;
 	@Column(name ="DiaChi")
 	private String address;
 	@Temporal(TemporalType.DATE)
@@ -59,8 +59,8 @@ public class Staff {
 			Boolean sex, Account account) {
 		super();
 		this.id = id;
-		FirstName = firstName;
-		Name = name;
+		this.firstName = firstName;
+		this.name = name;
 		this.address = address;
 		this.birthday = birthday;
 		this.branch = branch;
@@ -80,19 +80,19 @@ public class Staff {
 	}
 
 	public String getFirstName() {
-		return FirstName;
+		return firstName;
 	}
 
 	public void setFirstName(String firstName) {
-		FirstName = firstName;
+		this.firstName = firstName;
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public String getAddress() {
@@ -145,7 +145,7 @@ public class Staff {
 	
 	public String getFullName()
 	{
-		return FirstName + " " + Name;
+		return firstName + " " + name;
 	}
 	
 }

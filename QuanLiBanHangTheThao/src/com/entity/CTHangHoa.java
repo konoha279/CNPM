@@ -22,7 +22,7 @@ public class CTHangHoa implements Serializable {
 	@JoinColumn(name = "MaSize")
 	private Size size;
 	@Column(name = "SoLuong")
-	private int SoLuong;
+	private int soLuong;
 	
 	public CTHangHoa() {
 		// TODO Auto-generated constructor stub
@@ -33,7 +33,7 @@ public class CTHangHoa implements Serializable {
 	public CTHangHoa(Product maHangHoa, Size maSize, int soLuong) {
 		MaHangHoa = maHangHoa;
 		size = maSize;
-		SoLuong = soLuong;
+		this.soLuong = soLuong;
 	}
 
 
@@ -51,10 +51,10 @@ public class CTHangHoa implements Serializable {
 		size = maSize;
 	}
 	public int getSoLuong() {
-		return SoLuong;
+		return soLuong;
 	}
 	public void setSoLuong(int soLuong) {
-		SoLuong = soLuong;
+		this.soLuong = soLuong;
 	}
 	
 	
