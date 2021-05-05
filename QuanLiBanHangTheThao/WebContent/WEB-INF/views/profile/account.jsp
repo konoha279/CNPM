@@ -77,7 +77,7 @@
 			  	<h1>Hồ sơ của ${guest.firstName} ${guest.name}</h1>
 			  	<div>
 			  		<div>Username:</div>
-			  		<input value="${account.username}" disabled> 
+			  		<input name = "username" value="${account.username}" disabled> 
 			  		<div>
 			  			<div>Họ:</div> <input type="text" value="${guest.firstName}">
 			  			<div>Tên:</div> <input type="text" value="${guest.name}">

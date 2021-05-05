@@ -25,7 +25,6 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/profile/**"/>
-			<mvc:mapping path="/logout**"/>
 			<bean class= "com.interceptor.AuthorizeInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

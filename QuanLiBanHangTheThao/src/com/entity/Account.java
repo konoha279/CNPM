@@ -1,5 +1,8 @@
 package com.entity;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -114,5 +117,7 @@ public class Account {
 	public void setStaffs(Collection<Staff> staffs) {
 		this.staffs = staffs;
 	}
+	
+	
 	
 }

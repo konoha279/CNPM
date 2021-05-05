@@ -27,43 +27,43 @@
                 <div class="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Họ</label>
                     <div class="col-sm-9">
-                        <input type="text" id="firstName" name="firstName" class="form-control" autofocus>
+                        <input type="text" id="firstName" required="required" name="firstName" class="form-control" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="lastName" class="col-sm-3 control-label">Tên</label>
+                    <label for="lastName" class="col-sm-3 control-label">Tên*</label>
                     <div class="col-sm-9">
-                        <input type="text" id="lastName" name="lastname" class="form-control" autofocus>
+                        <input type="text" id="lastName" name="lastname" required="required" class="form-control" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="user" class="col-sm-3 control-label">Tên tài khoản* </label>
                     <div class="col-sm-9">
-                        <input type="text" name="username"  class="form-control">
+                        <input type="text" name="username" required="required" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email" class="col-sm-3 control-label">Email* </label>
                     <div class="col-sm-9">
-                        <input type="email" id="email" placeholder="example@gmail.com" class="form-control" name= "email">
+                        <input type="email" id="email" required="required" placeholder="example@gmail.com" class="form-control" name= "email">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">Mật khẩu*</label>
                     <div class="col-sm-9">
-                        <input type="password" id="password"class="form-control" name="password">
+                        <input type="password" id="password" required="required" class="form-control" name="password">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">Nhập lại mật khẩu*</label>
                     <div class="col-sm-9">
-                        <input type="password" id="password" class="form-control" name="confirmpassword">
+                        <input type="password" id="password" required="required" class="form-control" name="confirmpassword">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="birthDate" class="col-sm-3 control-label">Sinh nhật*</label>
                     <div class="col-sm-9">
-                        <input type="date" id="birthDate" class="form-control" name="birthday">
+                        <input type="date" id="birthDate" required="required" class="form-control" name="birthday">
                     </div>
                 </div>
                 <div class="form-group">
@@ -80,12 +80,12 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <label class="radio-inline">
-                                    <input type="radio" name="sex" id="femaleRadio" value="Female">Nữ
+                                    <input type="radio" name="sex" required="required" id="femaleRadio" value="Female">Nữ
                                 </label>
                             </div>
                             <div class="col-sm-4">
                                 <label class="radio-inline">
-                                    <input type="radio" name="sex" id="maleRadio" value="Male">Nam
+                                    <input type="radio" name="sex" required="required" id="maleRadio" value="Male">Nam
                                 </label>
                             </div>
                         </div>

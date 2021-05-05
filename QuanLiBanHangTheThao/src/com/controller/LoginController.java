@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.Cookie;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.entity.Account;
 import com.entity.Guest;
+
+import jdk.jfr.Unsigned;
 
 import java.math.BigInteger;
 import java.net.URI;
@@ -53,36 +57,37 @@ public class LoginController {
 			return "redirect:/index.htm";
 	}
 	
+	@RequestMapping("forgot")
+	public String forgot()
+	{
+		return "forgot";
+	}
+	
 	@RequestMapping(value = "login", method = RequestMethod.POST)
 	public String gotoLogin2(ModelMap model,@ModelAttribute("Account") Account acc, HttpServletResponse response)
-	{
-		String user = acc.getUsername();
-		String pass = acc.getPassword();
-		
+	{		
 		Session session = factory.getCurrentSession();
-		String hql = "From Account where username = '"+user+"'";
-		Query query = session.createQuery(hql);
-		List<Account> list = query.list();
+		String hql = "From Account where username = '"+acc.getUsername()+"'";
+		Query query = session.createQuery(hql);		
 		
-		
-		if (list.isEmpty())
+		if (query.list().isEmpty())
 		{
 			model.addAttribute("Msg", "Tài khoản này không tồn tại!");
 		}
 		else
 		{
 			Account temp = null;
-			temp = list.get(0);
+			temp = (Account) query.list().get(0);
 			if (!temp.getActive())
 			{
 				model.addAttribute("Msg", "Tài khoản này đã bị khóa!");
 			}
-			else if (temp.getPassword().equals(encrypt(pass)))
+			else if (temp.getPassword().equals(encrypt(acc.getPassword())))
 			{
-				Cookie cookieUser = new Cookie("username", user);
+				Cookie cookieUser = new Cookie("username", acc.getUsername());
 				cookieUser.setMaxAge(3600);
 				response.addCookie(cookieUser);
-				Cookie cookiePass = new Cookie("passwd", pass);
+				Cookie cookiePass = new Cookie("passwd", encrypt(acc.getPassword()));
 				cookiePass.setMaxAge(3600);
 				response.addCookie(cookiePass);
 				return "redirect:/index.htm";
@@ -153,9 +158,8 @@ public class LoginController {
 		Session session = factory.getCurrentSession();
 		String hql = "From Account where username = '"+User+"'";
 		Query query = session.createQuery(hql);
-		List<Account> list = query.list();
 		
-		if (!list.isEmpty())
+		if (!query.list().isEmpty())
 		{
 			model.addAttribute("Msg", "Tài khoản này đã tồn tại!");
 			return "registry";
@@ -163,9 +167,8 @@ public class LoginController {
 		
 		hql = "From Account where email = '"+Email+"'";
 		query = session.createQuery(hql);
-		list = query.list();
 		
-		if (!list.isEmpty())
+		if (!query.list().isEmpty())
 		{
 			model.addAttribute("Msg", "Email này đã tồn tại!");
 			return "registry";
@@ -176,9 +179,10 @@ public class LoginController {
 			model.addAttribute("Msg", "Mật khẩu không khớp!");
 			return "registry";
 		}
-		Passwd = encrypt(Passwd);
-
+		
 		Account accountGuest = new Account(User, Passwd, Email, 0, true);
+		accountGuest.setPassword(encrypt(accountGuest.getPassword()));
+		
 		Guest guest= new Guest(Firstname, Lastname, sex, birthday, PhoneNumber, accountGuest);
 		
 		session = factory.openSession();
@@ -222,6 +226,68 @@ public class LoginController {
 		return account;
 	}
 	
+	
+	@RequestMapping(value = "forgot" , method = RequestMethod.POST)
+	public String forgot2(ModelMap model, HttpServletRequest request)
+	{		
+		String email = request.getParameter("email-forgot");
+		Session session = factory.getCurrentSession();
+		String hql = "From Account where email = '"+email+"'";
+		Query query = session.createQuery(hql);
+		
+		if (query.list().isEmpty())
+		{
+			model.addAttribute("Msg", "Mail này không tồn tại hoặc chưa đăng ký.");
+			return "forgot";
+		}
+		Account account = (Account) query.list().get(0);
+		String newPasswd = getRandomPassword();
+		String content = "<h1 style =\"font-size: 48px;\">Đừng quên nữa nhé</h1>"
+				+ "<p style =\"font-size: 24px; font-family: \'Courier New\'\">Tài khoản của bạn là: <b style = \"color: red\">"+account.getUsername()+"</b>" + "<br>"
+				+ "Mật khẩu của bạn là: <b style = \"color: red\">" +newPasswd+ "</b></p>";
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		try {
+			Account account2 = new Account(account.getUsername(), account.getPassword(), email, account.getLevel(), account.getActive());
+			account2.setPassword(encrypt(newPasswd));
+			session.update(account2);
+			transaction.commit();
+			mailer.send("n18dcat092@student.ptithcm.edu.vn", email, "Reset password", content);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+			transaction.rollback();
+			model.addAttribute("Msg", "Có lỗi xảy ra ở server!");
+			return "forgot";
+		}
+		finally
+		{
+			session.close();
+		}
+		
+		return "redirect:/login.htm";
+	}
+  
+	String getRandomPassword()
+	{
+		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		String passwd = new String();
+		Random rand = new Random();
+		int n = rand.nextInt();
+		if (n < 0)
+			n *= -1;
+		n %= 30;
+		if (n <= 15)
+			n += 15;
+		while(n >= 0)
+		{
+			passwd += alphabet.charAt(rand.nextInt(alphabet.length()));
+			n--;
+		}
+		return passwd;
+	}
+	
 	public String encrypt(String input)
     {
         try {
@@ -252,5 +318,4 @@ public class LoginController {
             throw new RuntimeException(e);
         }
     }
-  
 }
