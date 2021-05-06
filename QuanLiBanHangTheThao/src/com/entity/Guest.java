@@ -1,5 +1,6 @@
 package com.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -41,8 +42,6 @@ public class Guest {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
-
 	public Guest(String id, String firstName, String name, Boolean sex, Date birthday, String phoneNumber,
 			Account accountGuest) {
 		super();
@@ -55,8 +54,6 @@ public class Guest {
 		this.accountGuest = accountGuest;
 	}
 
-	
-
 	public Guest(String firstName, String name, Boolean sex, Date birthday, String phoneNumber, Account accountGuest) {
 		super();
 		this.firstName = firstName;
@@ -66,11 +63,20 @@ public class Guest {
 		this.phoneNumber = phoneNumber;
 		this.accountGuest = accountGuest;
 	}
-
+	
+	public Guest(String firstName, String name, Boolean sex, String birthday, String phoneNumber, Account accountGuest) {
+		super();
+		this.firstName = firstName;
+		this.name = name;
+		this.sex = sex;
+		this.setBirthday(birthday);
+		this.phoneNumber = phoneNumber;
+		this.accountGuest = accountGuest;
+	}
 
 
 	public String getId() {
-		return Id;
+		return Id.trim();
 	}
 
 	public void setId(String id) {
@@ -78,7 +84,7 @@ public class Guest {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return firstName.trim();
 	}
 
 	public void setFirstName(String firstName) {
@@ -86,7 +92,7 @@ public class Guest {
 	}
 
 	public String getName() {
-		return name;
+		return name.trim();
 	}
 
 	public void setName(String name) {
@@ -104,13 +110,27 @@ public class Guest {
 	public Date getBirthday() {
 		return birthday;
 	}
+	
+	public String getBirthday_str() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(this.birthday) ;
+	}
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+	
+	public void setBirthday(String birthday) {
+		try {
+			this.birthday = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			this.birthday = null;
+		}
+	}
 
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return phoneNumber.trim();
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
@@ -125,6 +145,9 @@ public class Guest {
 		this.accountGuest = accountGuest;
 	}
 
-	
+	public String getFullname()
+	{
+		return this.getFirstName().trim() + " " + this.getName().trim();
+	}
 	
 }

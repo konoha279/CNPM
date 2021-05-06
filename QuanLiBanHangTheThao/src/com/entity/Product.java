@@ -74,7 +74,7 @@ public class Product {
 	}
 
 	public String getID() {
-		return id;
+		return id.trim();
 	}
 
 	public void setID(String iD) {
@@ -82,7 +82,7 @@ public class Product {
 	}
 
 	public String getName() {
-		return name;
+		return name.trim();
 	}
 
 	public void setName(String name) {
@@ -106,7 +106,7 @@ public class Product {
 	}
 
 	public String getImage() {
-		return image;
+		return image.trim();
 	}
 
 	public void setImage(String image) {
@@ -114,7 +114,7 @@ public class Product {
 	}
 
 	public String getNotes() {
-		return notes;
+		return notes.trim();
 	}
 
 	public void setNotes(String notes) {

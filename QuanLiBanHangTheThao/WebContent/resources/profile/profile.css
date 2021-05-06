@@ -1,30 +1,52 @@
-body {
-  background-color: pink;
-  
-}
 
 .main {
-  background-color: white;
-  margin-top: 50px;
-  border-radius: 20px;
-  padding: 10px;
+	background-color: white;
+	margin-top: 50px;
+	border-radius: 20px;	
+	padding: 10px;
 }
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  background-color: crimson;
+	background-color: crimson;
 }
 
 a {
-  color: crimson;
+	color: crimson;
 }
 
 a:hover {
-  color: pink;
+	color: pink;
 }
 .nav-link {
-  font-family: 'Lobster';
+	font-family: 'Courier New';
 }
 
 h1 {
-  font-family: 'Lobster';
-  color: pink;
+	font-family: 'Courier New';
+	color: rgb(173, 105, 16);
+}
+
+div#content-profile
+{
+	border: 2px solid black;
+	padding-left: 20%;
+	padding-right: 20%;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+button#editButton
+{
+	margin-top: 30px;
+}
+
+div.tab-content
+{
+	padding-top: 20px;
+}
+
+div#error-msg
+{
+	font-size: large;
+	font-family: 'Times New Roman', Times, serif;
+	color: red;
 }

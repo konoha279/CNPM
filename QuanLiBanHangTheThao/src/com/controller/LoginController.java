@@ -2,11 +2,8 @@ package com.controller;
 
 
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
-import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.entity.Account;
 import com.entity.Guest;
 
-import jdk.jfr.Unsigned;
 
 import java.math.BigInteger;
-import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -183,7 +175,7 @@ public class LoginController {
 		Account accountGuest = new Account(User, Passwd, Email, 0, true);
 		accountGuest.setPassword(encrypt(accountGuest.getPassword()));
 		
-		Guest guest= new Guest(Firstname, Lastname, sex, birthday, PhoneNumber, accountGuest);
+		Guest guest= new Guest(Firstname, Lastname, sex, date, PhoneNumber, accountGuest);
 		
 		session = factory.openSession();
 		Transaction t = session.beginTransaction();
@@ -207,23 +199,29 @@ public class LoginController {
 	
 	public Account checkCookie(HttpServletRequest request)
 	{
-		Cookie[] cookies = request.getCookies();
-		Account account = null;
-		String username = "", passwd = "";
-		for (Cookie cookie: cookies)
-		{
-			if (cookie.getName().equalsIgnoreCase("username"))
+		try {
+			Cookie[] cookies = request.getCookies();
+			Account account = null;
+			String username = "", passwd = "";
+			for (Cookie cookie: cookies)
 			{
-				username = cookie.getValue();
+				if (cookie.getName().equalsIgnoreCase("username"))
+				{
+					username = cookie.getValue();
+				}
+				if (cookie.getName().equalsIgnoreCase("passwd"))
+				{
+					passwd = cookie.getValue();
+				}
 			}
-			if (cookie.getName().equalsIgnoreCase("passwd"))
-			{
-				passwd = cookie.getValue();
-			}
+			if (!username.isEmpty() && !passwd.isEmpty())
+				account = new Account(username, passwd);
+			return account;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
 		}
-		if (!username.isEmpty() && !passwd.isEmpty())
-			account = new Account(username, passwd);
-		return account;
+		
 	}
 	
 	
@@ -269,7 +267,7 @@ public class LoginController {
 		return "redirect:/login.htm";
 	}
   
-	String getRandomPassword()
+	public String getRandomPassword()
 	{
 		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		String passwd = new String();

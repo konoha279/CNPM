@@ -1,7 +1,5 @@
 package com.interceptor;
 
-import java.util.List;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +9,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.entity.Account;
@@ -28,6 +25,7 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception
 	{
+		
 		Account account = checkCookie(request);
 		if (account == null)
 		{
@@ -39,10 +37,9 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 			Session session = factory.getCurrentSession();
 			String hql = "From Guest guest where guest.accountGuest.username = '" + account.getUsername() + "'";
 			Query query = session.createQuery(hql);
-			List<Guest> list = query.list();
-			if (!list.isEmpty())
+			if (!query.list().isEmpty())
 			{
-				guest = list.get(0);
+				guest = (Guest) query.list().get(0);
 				request.setAttribute("guest", guest);
 			}
 			request.setAttribute("account", account);
@@ -52,24 +49,31 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 					
 	}
 	
-	public Account checkCookie(HttpServletRequest request)
+	Account checkCookie(HttpServletRequest request)
 	{
-		Cookie[] cookies = request.getCookies();
-		Account account = null;
-		String username = "", passwd = "";
-		for (Cookie cookie: cookies)
-		{
-			if (cookie.getName().equalsIgnoreCase("username"))
+		try {
+			Cookie[] cookies = request.getCookies();
+			Account account = null;
+			String username = "", passwd = "";
+			for (Cookie cookie: cookies)
 			{
-				username = cookie.getValue();
+				
+				if (cookie.getName().equalsIgnoreCase("username"))
+				{
+					username = cookie.getValue();
+				}
+				if (cookie.getName().equalsIgnoreCase("passwd"))
+				{
+					passwd = cookie.getValue();
+				}
 			}
-			if (cookie.getName().equalsIgnoreCase("passwd"))
-			{
-				passwd = cookie.getValue();
-			}
+			if (!username.isEmpty() && !passwd.isEmpty())
+				account = new Account(username, passwd);
+			return account;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
 		}
-		if (!username.isEmpty() && !passwd.isEmpty())
-			account = new Account(username, passwd);
-		return account;
+		
 	}
 }

@@ -39,7 +39,7 @@
 					</div>
 					
 						<span class="login100-form-title p-t-20 p-b-45">
-							<div id = "content">Quên mật khẩu à? Nhập email lúc đăng ký để reset lại mật khẩu nào!</div>	
+							<div id = "content">Quên mật khẩu à?<br> Nhập email lúc đăng ký để lấy lại tài khoản và reset lại mật khẩu nào!</div>	
 						</span>
 						
 						<div id = "rmv" class="wrap-input100 validate-input m-b-10" data-validate = "Không được bỏ trống">
