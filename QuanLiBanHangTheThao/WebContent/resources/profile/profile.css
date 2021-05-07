@@ -23,20 +23,30 @@ a:hover {
 h1 {
 	font-family: 'Courier New';
 	color: rgb(173, 105, 16);
+	text-align: center;
 }
 
-div#content-profile
+div#content
 {
 	border: 2px solid black;
 	padding-left: 20%;
 	padding-right: 20%;
 	padding-top: 30px;
 	padding-bottom: 30px;
+	width: auto;
+	height: auto;
 }
 
-button#editButton
+button#button1
 {
 	margin-top: 30px;
+	width: 35%;
+}
+
+button#button2
+{
+	margin-top: 30px;
+	width: 35%;
 }
 
 div.tab-content
@@ -49,4 +59,26 @@ div#error-msg
 	font-size: large;
 	font-family: 'Times New Roman', Times, serif;
 	color: red;
+}
+
+div#change-msg p
+{
+	margin-top: 20px;
+	margin-left: -75px;
+	margin-right: -75px;
+}
+
+p.error
+{
+	color: red;
+}
+
+p.msg
+{
+	color: black;
+}
+
+p.congrat
+{
+	color: green;
 }

@@ -13,14 +13,6 @@
 			http://www.springframework.org/schema/tx/spring-tx.xsd
 			http://www.springframework.org/schema/mvc 
 			http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/home/**"/>
-			<mvc:exclude-mapping path="/home/contact.htm"/>
-			<bean class="com.interceptor.LoggerInterceptor"/>
-		</mvc:interceptor>
-	</mvc:interceptors>
 	
 	<mvc:interceptors>
 		<mvc:interceptor>

@@ -17,12 +17,35 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+
 <!------ Include the above in your HEAD tag ---------->
+<style type="text/css">
+	a:link, a:visited {
+  background-color:  #33bbff;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: #006699;
+}
+.form-horizontal{
+	margin-top: 50px;
+}
+</style>
 </head>
 <body background="resources/login/bg.jpg">
-<div class="container register">
+	<div class="container register">
                 <div class="container">
             <form class="form-horizontal" role="form" action="registry.htm" method="post">
+	             <div class="text-left w-full">
+					<a class="txt1" href="login.htm" >
+						← Đăng nhập.				
+					</a>
+				</div>
                 <h2>Đăng ký</h2>
                 <div class="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Họ</label>
@@ -99,5 +122,7 @@
                 <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
             </form> <!-- /form -->
         </div> <!-- ./container -->
+       
+     </div>
 </body>
 </html>

@@ -2,6 +2,11 @@ package com.controller;
 
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.entity.Account;
 import com.entity.Guest;
 
 
@@ -54,7 +60,7 @@ public class ProfileController {
 			temp = "<input type=\"radio\" name=\"sex\" id =\"sex1_input\" value=\"Nữ\"> Nữ\r\n"
 					+ "			  			<input type=\"radio\" name=\"sex\" id =\"sex2_input\" value=\"Nam\" checked> Nam\r\n";
 
-		String result = "<form id=\"form\" action=\"#\" style=\"padding-left: 50px;\">\r\n"
+		String result = "<form id=\"form-profile\" action=\"#\" style=\"padding-left: 50px;\">\r\n"
 				+ "			  		<div>\r\n"
 				+ "				  		<div>Username:</div>\r\n"
 				+ "				  		<input id = \"username\" name = \"username\" value=\""+username+"\" disabled> \r\n"
@@ -79,7 +85,7 @@ public class ProfileController {
 				+ "			  			<div>Số điện thoại:</div> <input type=\"text\" id =\"phone_input\" value=\""+phone+"\" >\r\n"
 				+ "			  		</div>\r\n"
 				+ "				<div class=\"d-flex justify-content-center\">\r\n"
-				+ "			  		<button onclick=\"post()\" class=\"btn btn-outline-success\" type=\"button\" id = \"editButton\">Cập nhật</button>\r\n"
+				+ "			  		<button onclick=\"post()\" class=\"btn btn-outline-success\" type=\"button\" id = \"button1\">Cập nhật</button>\r\n"
 				+ "				</div>\r\n"
 				+ "			  	</form>\r\n"
 				+ "				<div id=\"error-msg\"></div>	";
@@ -89,10 +95,10 @@ public class ProfileController {
 	@RequestMapping(value = "/profile", method = RequestMethod.POST)
 	public @ResponseBody byte[] doPost(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
 	{
-		//Giá trị trả về
+		//value return
 		String result = "";
 		
-		//các thuộc tính
+		//params
 		String username = request.getParameter("username");
 		String firstName = request.getParameter("firstName");
 		String name = request.getParameter("name");
@@ -100,17 +106,13 @@ public class ProfileController {
 		String phone = request.getParameter("phone");
 		String birthday = request.getParameter("birthday");
 		boolean checkSex = false, checkOther = false;
-		String temp =  new String();
+		
 		if (sex.equals("Nữ"))
 		{
 			checkSex = false;
-			temp ="<input type=\"radio\" name=\"sex\" id =\"sex1_input\" value=\"Nữ\" checked disabled> Nữ\r\n"
-					+ "			  			<input type=\"radio\" name=\"sex\" id =\"sex2_input\" value=\"Nam\" disabled > Nam\r\n";
 		}
 		else
 		{
-			temp = "<input type=\"radio\" name=\"sex\" id =\"sex1_input\" value=\"Nữ\" disabled> Nữ\r\n"
-					+ "			  			<input type=\"radio\" name=\"sex\" id =\"sex2_input\" value=\"Nam\" checked disabled> Nam\r\n";
 			checkSex = true;
 		}
 		Session session = factory.openSession();
@@ -137,6 +139,8 @@ public class ProfileController {
 		String contentBefore = "";
 		String contentAfter = "";
 		// -----------------------------------------------------------
+		
+		// ------------------- check for change of data -------------------
 		if (!guest.getFirstName().equals(firstName))
 		{
 			checkOther = true;
@@ -175,9 +179,9 @@ public class ProfileController {
 			contentBefore += "				<li>Sinh nhật: <b>"+guest.getBirthday_str()+"</b></li>\r\n";
 			contentAfter += "				<li>Sinh nhật: <b>"+birthday+"</b></li>\r\n";
 		}
+		// --------------------------------------------------------------------
 		
 		// ------------------- Content mail (end) -------------------
-		
 		contentMail += "			</ol>\r\n"
 					+ "		</div>"
 					+ "		<h2>Chi tiết: </h2>\r\n"
@@ -204,20 +208,25 @@ public class ProfileController {
 		
 		// -----------------------------------------------------------
 		
+		// ------------------- Set new data -------------------
 		guest.setFirstName(firstName);
 		guest.setName(name);
 		guest.setSex(checkSex);
 		guest.setPhoneNumber(phone);
 		guest.setBirthday(birthday);
+		// -----------------------------------------------------------
 		
 		Transaction transaction = session.beginTransaction();
 		
 		try {
-			session.update(guest);
-			transaction.commit();
+			
 			if (checkOther)
+			{
+				session.update(guest);
 				mailer.send("n18dcat092@student.ptithcm.edu.vn", guest.getAccountGuest().getEmail(), "Thay đổi hồ sơ", contentMail);
-			result += "<form id=\"form\" action=\"#\" style=\"padding-left: 50px;\">\r\n"
+			}
+			transaction.commit();
+			result += "<form id=\"form-profile\" action=\"#\" style=\"padding-left: 50px;\">\r\n"
 					+ "			  		<div>\r\n"
 					+ "				  		<div>Username:</div>\r\n"
 					+ "				  		<input id = \"username\" name = \"username\" value=\""+username+"\" disabled> \r\n"
@@ -233,7 +242,8 @@ public class ProfileController {
 					+ "			  		</div>\r\n"
 					+ "			  		<div style=\"display: flex: ;\">\r\n"
 					+ "			  			<div>Giới tính:</div> \r\n"
-					+ temp 
+					+ "							<input type=\"radio\" name=\"sex\" id =\"sex1_input\" value=\"Nữ\" "+ (sex.equals("Nữ") == true ?"checked":"") +" disabled> Nữ\r\n"
+					+ "			  				<input type=\"radio\" name=\"sex\" id =\"sex2_input\" value=\"Nam\" "+ (sex.equals("Nữ") == false ?"checked":"") +" disabled > Nam\r\n" 
 					+ "			  		</div>\r\n"
 					+ "			  		<div>\r\n"
 					+ "			  			<div>Sinh nhật:</div> <input id =\"date_input\" type=\"date\" value=\""+birthday+"\" disabled >\r\n"
@@ -242,7 +252,7 @@ public class ProfileController {
 					+ "			  			<div>Số điện thoại:</div> <input type=\"text\" id =\"phone_input\" value=\""+phone+"\" disabled >\r\n"
 					+ "			  		</div>\r\n"
 					+ "				<div class=\"d-flex justify-content-center\">\r\n"
-					+ "			  		<button onclick=\"get()\" class=\"btn btn-outline-primary\" type=\"button\" id = \"editButton\">Chỉnh sửa</button>\r\n"
+					+ "			  		<button onclick=\"get()\" class=\"btn btn-outline-primary\" type=\"button\" id = \"button1\">Chỉnh sửa</button>\r\n"
 					+ "				</div>\r\n"
 					+ "			  	</form>"
 					+ "				<div id=\"error-msg\">"+"Cập nhật thành công"+"</div>";
@@ -260,6 +270,104 @@ public class ProfileController {
 		return result.getBytes("UTF-8");
 	}
 	
+	public String encrypt(String input)
+    {
+        try {
+            // getInstance() method is called with algorithm SHA-1
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+  
+            // digest() method is called
+            // to calculate message digest of the input string
+            // returned as array of byte
+            byte[] messageDigest = md.digest(input.getBytes());
+  
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+  
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+  
+            // Add preceding 0s to make it 32 bit
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            // return the HashText
+            return hashtext;
+        }
+  
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	
-
+	@RequestMapping(value = "/checkPasswd", method = RequestMethod.POST)
+	public @ResponseBody String checkPasswd(HttpServletRequest request, HttpServletResponse response)
+	{
+		String username = request.getParameter("username");
+		String password = request.getParameter("oldPasswd");
+		
+		Session session = factory.openSession();
+		String hql = "From Account where username = '" + username + "'";
+		Query query = session.createQuery(hql);
+		
+		if (query.list().isEmpty())
+		{
+			return "ERROR!";
+		}
+		
+		Account account = (Account)query.list().get(0);
+		session.close();
+		if (account.getPassword().equals(encrypt(password)))
+		{
+			return "OK";
+		}
+		else
+			return "Wrong password.";
+	}
+	
+	@RequestMapping(value = "/changePasswd", method = RequestMethod.POST)
+	public @ResponseBody String changePasswd(HttpServletRequest request, HttpServletResponse response)
+	{
+		String result = new String();
+		String time = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(new Date());
+		
+		String username = request.getParameter("username");
+		String password = request.getParameter("newPasswd");
+		Session session = factory.openSession();
+		String hql = "From Account where username = '" + username + "'";
+		Query query = session.createQuery(hql);
+		
+		if (query.list().isEmpty())
+		{
+			session.close();
+			return "ERROR!";
+		}
+		
+		Account account = (Account)query.list().get(0);
+		account.setPassword(encrypt(password));
+		
+		Transaction transaction = session.beginTransaction();
+		result = "Changed";
+		try {
+			session.update(account);
+			hql = "From Guest guest where guest.accountGuest.username = '" + username + "'";
+			query = session.createQuery(hql);
+			String contentMail = "	<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 750px;\">\r\n"
+								+ "		<h1 style=\"text-align: right;\">Xin chào, "+ ((Guest) query.list().get(0)).getFullname() + "</h1>\r\n"
+								+ "		<h1 style=\"text-align: center; font-size: 35px\">Mật khẩu của bạn đã bị thay đổi</h1>\r\n"
+								+ "		<h2>Mật khẩu của bạn đã được thay đổi lúc: <b>"+time+"</b> </h2>\r\n"
+								+ "		<p style=\"font-size: 18px;  font-family: 'Times New Roman'\">Nếu người thay đổi mật khẩu <b>không phải</b> là bạn, hãy báo với admin server ngay! </p>"
+								+ "	</div>";
+			mailer.send("n18dcat092@student.ptithcm.edu.vn", account.getEmail(), "Thay đổi mật khẩu", contentMail);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			result =  "ERROR!";
+		}
+		finally {
+			session.close();
+		}
+		return result;
+	}
 }
