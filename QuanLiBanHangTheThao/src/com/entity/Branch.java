@@ -15,6 +15,9 @@ public class Branch {
 	private String name;
 	@Column(name = "DiaChi")
 	private String address;
+	
+	
+	
 	public Branch() {
 		// TODO Auto-generated constructor stub
 	}

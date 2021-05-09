@@ -33,9 +33,7 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 		}
 		else
 		{
-			Session session = factory.getCurrentSession();
-			//String hql = "From Guest guest where guest.accountGuest.username = '" + account.getUsername() + "'";
-			
+			Session session = factory.getCurrentSession();			
 			account = (Account) session.get(Account.class, account.getUsername());
 
 			if (account != null)
@@ -44,8 +42,7 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 				if (account.getLevel() == 0)
 					request.setAttribute("guest", account.getGuest());
 				else
-					request.setAttribute("guest", account.getStaff());
-					
+					request.setAttribute("staff", account.getStaff());
 			}
 			request.setAttribute("account", account);
 

@@ -1,6 +1,7 @@
 package com.controller;
 
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.Account;
 import com.entity.Guest;
+import com.entity.Staff;
 
 
 @Controller
@@ -351,14 +353,26 @@ public class ProfileController {
 		result = "Changed";
 		try {
 			session.update(account);
-			hql = "From Guest guest where guest.accountGuest.username = '" + username + "'";
-			query = session.createQuery(hql);
-			String contentMail = "	<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 750px;\">\r\n"
-								+ "		<h1 style=\"text-align: right;\">Xin chào, "+ ((Guest) query.list().get(0)).getFullname() + "</h1>\r\n"
-								+ "		<h1 style=\"text-align: center; font-size: 35px\">Mật khẩu của bạn đã bị thay đổi</h1>\r\n"
-								+ "		<h2>Mật khẩu của bạn đã được thay đổi lúc: <b>"+time+"</b> </h2>\r\n"
-								+ "		<p style=\"font-size: 18px;  font-family: 'Times New Roman'\">Nếu người thay đổi mật khẩu <b>không phải</b> là bạn, hãy báo với admin server ngay! </p>"
-								+ "	</div>";
+			String contentMail = new String();
+			if (account.getLevel() == 0)
+			{
+				contentMail = "	<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 750px;\">\r\n"
+						+ "		<h1 style=\"text-align: right;\">Xin chào, "+ account.getGuest().getFullname() + "</h1>\r\n"
+						+ "		<h1 style=\"text-align: center; font-size: 35px\">Mật khẩu của bạn đã bị thay đổi</h1>\r\n"
+						+ "		<h2>Mật khẩu của bạn đã được thay đổi lúc: <b>"+time+"</b> </h2>\r\n"
+						+ "		<p style=\"font-size: 18px;  font-family: 'Times New Roman'\">Nếu người thay đổi mật khẩu <b>không phải</b> là bạn, hãy báo với admin server ngay! </p>"
+						+ "	</div>";
+			}
+			else
+			{
+				contentMail = "	<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 750px;\">\r\n"
+						+ "		<h1 style=\"text-align: right;\">Xin chào, "+account.getStaff().getFullName() + "</h1>\r\n"
+						+ "		<h1 style=\"text-align: center; font-size: 35px\">Mật khẩu của bạn đã bị thay đổi</h1>\r\n"
+						+ "		<h2>Mật khẩu của bạn đã được thay đổi lúc: <b>"+time+"</b> </h2>\r\n"
+						+ "		<p style=\"font-size: 18px;  font-family: 'Times New Roman'\">Nếu người thay đổi mật khẩu <b>không phải</b> là bạn, hãy báo với admin server ngay! </p>"
+						+ "	</div>";
+			}
+
 			mailer.send("n18dcat092@student.ptithcm.edu.vn", account.getEmail(), "Thay đổi mật khẩu", contentMail);
 			transaction.commit();
 		} catch (Exception e) {

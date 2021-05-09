@@ -32,7 +32,8 @@ public class Staff {
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	@Column(name ="NgaySinh")
 	private Date birthday;
-	
+	@Column(name = "SoDienThoai")
+	private String phoneNumber;
 	@ManyToOne
 	@JoinColumn(name = "MaCN")
 	private Branch branch;
@@ -53,23 +54,21 @@ public class Staff {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
-
-	public Staff(String id, String firstName, String name, String address, Date birthday, Branch branch, Boolean status,
-			Boolean sex, Account account) {
+	public Staff(String id, String firstName, String name, String address, Date birthday, String phoneNumber,
+			Branch branch, Boolean status, Boolean sex, Account accountStaff, Collection<Receipt> receipts) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.name = name;
 		this.address = address;
 		this.birthday = birthday;
+		this.phoneNumber = phoneNumber;
 		this.branch = branch;
 		this.status = status;
 		this.sex = sex;
-		this.accountStaff = account;
+		this.accountStaff = accountStaff;
+		this.receipts = receipts;
 	}
-
-
 
 	public String getId() {
 		return id;
@@ -147,5 +146,30 @@ public class Staff {
 	{
 		return firstName + " " + name;
 	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Account getAccountStaff() {
+		return accountStaff;
+	}
+
+	public void setAccountStaff(Account accountStaff) {
+		this.accountStaff = accountStaff;
+	}
+
+	public Collection<Receipt> getReceipts() {
+		return receipts;
+	}
+
+	public void setReceipts(Collection<Receipt> receipts) {
+		this.receipts = receipts;
+	}
+	
 	
 }

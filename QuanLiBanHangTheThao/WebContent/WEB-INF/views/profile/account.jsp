@@ -89,8 +89,7 @@
 		</div>
 		<div class="ground"></div>
 	</div>
-	
-	 <!-- ============================================================================================= -->
+	<!-- ============================================================================================= -->
 	
 	<div class="container-fluid">
   <div class="row justify-content-center">
@@ -109,39 +108,9 @@
 			<!-- ----------------------- Tab content ----------------------- -->
 			<!-- ----------------------- Profile ----------------------- -->
 			<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-			  	<h1>Hồ sơ của <b>${guest.firstName} ${guest.name}</b></h1>
-			  	
+			  	<%-- <h1>Hồ sơ của <b>${guest.id != "" ? guest.getFullname() : staff.getFullName()}</b></h1> --%>
 				<div id="content">
-					<form id="form-profile">
-						<div>
-							<div>Username:</div>
-							<input id = "username" name = "username" value="${account.username}" disabled> 
-						</div>
-						
-						<div style="display: flex">
-							<div>
-								<div>Họ:</div> <input type="text" id ="firstname_input" value="${guest.firstName}" disabled>
-							</div>
-							<div style="padding-left: 100px">
-								<div>Tên:</div> <input type="text" id ="name_input" value="${guest.name}" disabled>
-							</div>
-						</div>
-						<div style="display: flex: ;">
-							<div>Giới tính:</div> 
-							<input type="radio" name="sex" id ="sex1_input" value="Nữ" ${guest.sex==false?'checked':""} disabled> Nữ
-							<input type="radio" name="sex" id ="sex2_input" value="Nam" ${guest.sex==true?'checked':""} disabled> Nam
-						</div>
-						<div>
-							<div>Sinh nhật:</div> <input id ="date_input" type="date" value="${guest.birthday}" disabled>
-						</div>
-						<div>
-							<div>Số điện thoại:</div> <input type="text" id ="phone_input" value="${guest.phoneNumber}" disabled>
-						</div>
-						<div class="d-flex justify-content-center">
-							<button onclick="get()" class="btn btn-outline-primary" type="button" id = "button1">Chỉnh sửa</button>
-						</div>
-					</form>	
-					<div id="error-msg"></div>				
+					
 				</div>
 			</div>
 			<!-- ----------------------- Change password ----------------------- -->
@@ -171,8 +140,24 @@
 <script src="resources/profile/background.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" charset="UTF-8">
-	
+	window.onload = function() {
+		var div = document.createElement('div');
+		div.setAttribute("id","content");
+		if ("${guest}" != "")
+		{
+			document.getElementById("profile").innerHTML = "<h1>Hồ sơ của <b>${guest.getFullname()}</b></h1>";
+			document.getElementById("profile").appendChild(div);
+			document.getElementById("content").innerHTML = document.getElementById("guest").innerHTML;
+		}
+		else
+		{
+			document.getElementById("profile").innerHTML = "<h1>Hồ sơ của <b>${staff.getFullName()}</b></h1>";
+			document.getElementById("profile").appendChild(div);
+			document.getElementById("content").innerHTML = document.getElementById("staff").innerHTML;
+		}
+	}
 	function get() {
+		
 		var user = document.getElementById("username").value;
 		var firstName = document.getElementById("firstname_input").value;
 		var name = document.getElementById("name_input").value;
@@ -394,6 +379,74 @@
 		<div>Nhập lại mật khẩu: </div>
 		<input type="password" id ="re-newPasswd" name ="re-newPasswd" required="required" >
 	</div>
+</script>
+
+<script id="guest" type="text/html">
+	<form id="form-profile">
+		<div>
+			<div>Username:</div>
+			<input id = "username" name = "username" value="${account.username}" disabled> 
+		</div>
+		
+		<div style="display: flex">
+			<div>
+				<div>Họ:</div> <input type="text" id ="firstname_input" value="${guest.firstName}" disabled>
+			</div>
+			<div style="padding-left: 100px">
+				<div>Tên:</div> <input type="text" id ="name_input" value="${guest.name}" disabled>
+			</div>
+		</div>
+		<div style="display: flex: ;">
+			<div>Giới tính:</div> 
+			<input type="radio" name="sex" id ="sex1_input" value="Nữ" ${guest.sex==false?'checked':""} disabled> Nữ
+			<input type="radio" name="sex" id ="sex2_input" value="Nam" ${guest.sex==true?'checked':""} disabled> Nam
+		</div>
+		<div>
+			<div>Sinh nhật:</div> <input id ="date_input" type="date" value="${guest.birthday}" disabled>
+		</div>
+		<div>
+			<div>Số điện thoại:</div> <input type="text" id ="phone_input" value="${guest.phoneNumber}" disabled>
+		</div>
+		<div class="d-flex justify-content-center">
+			<button onclick="get()" class="btn btn-outline-primary" type="button" id = "button1">Chỉnh sửa</button>
+		</div>
+	</form>	
+	<div id="error-msg"></div>
+</script>
+<script id="staff" type="text/html">
+	<form id="form-profile">
+		<div>
+			<div>Username:</div>
+			<input id = "username" name = "username" value="${account.username}" disabled> 
+		</div>
+		
+		<div style="display: flex">
+			<div>
+				<div>Họ:</div> <input type="text" id ="firstname_input" value="${staff.firstName}" disabled>
+			</div>
+			<div style="padding-left: 100px">
+				<div>Tên:</div> <input type="text" id ="name_input" value="${staff.name}" disabled>
+			</div>
+		</div>
+		<div style="display: flex :;">
+			<div>Giới tính:</div> 
+			<input type="radio" name="sex" id ="sex1_input" value="Nữ" ${staff.sex==false?'checked':""} disabled> Nữ
+			<input type="radio" name="sex" id ="sex2_input" value="Nam" ${staff.sex==true?'checked':""} disabled> Nam
+		</div>
+		<div>
+			<div>Địa chỉ:</div> <input type="text" id ="address" value="${staff.address}" disabled>
+		</div>
+		<div>
+			<div>Sinh nhật:</div> <input id ="date_input" type="date" value="${staff.birthday}" disabled>
+		</div>
+		<div>
+			<div>Số điện thoại:</div> <input type="text" id ="phone_input" value="${staff.phoneNumber}" disabled>
+		</div>
+		<div style="display: flex :;">
+			<div>Làm việc tại: </div> <input type="text" id ="branch" value="${staff.branch.name}" disabled>
+			<input type="checkbox" value = "Còn làm việc" ${staff.status==true?'checked':''} disabled> còn làm việc
+		</div>
+	</form>	
 </script>
 </body>
 </html>
