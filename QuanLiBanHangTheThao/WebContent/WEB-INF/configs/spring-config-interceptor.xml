@@ -20,4 +20,12 @@
 			<bean class= "com.interceptor.AuthorizeInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			<bean class= "com.interceptor.DecentralizationInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 </beans>

@@ -9,6 +9,7 @@
 	<base href="${pageContext.servletContext.contextPath}/">
 
 	<link href="resources/profile/profile.css" rel="stylesheet" type="text/css" >
+	<link href="resources/profile/background.css" rel="stylesheet" type="text/css" >
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Lobster" rel="stylesheet">
@@ -21,24 +22,88 @@
 	
 	<style type="text/css">
 	body {
-	  background-color: #ff6666;
-	}
+		  padding: 0;
+		  margin: 0;
+		  font-family: sans-serif;
+		  background-color: #63ec85;
+		}
 	</style>
 
 </head>
 <body>
-	<a href="${pageContext.servletContext.contextPath}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true" style="margin: 20px;">Quay về trang chủ</a>
+ <!-- ============================================ background =========================================== -->
+	<div class="outer_wrapper">
+		<div class="wrapper">
+		  <div class="cat_wrapper">
+			<div class="cat first_pose">
+			  <div class="cat_head">
+				<svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 76.4 61.2" >
+				  <polygon class="eyes" points="63.8,54.1 50.7,54.1 50.7,59.6 27.1,59.6 27.1,54.1 12.4,54.1 12.4,31.8 63.8,31.8 "/>
+				  <path d="M15.3,45.9h5.1V35.7h-5.1C15.3,35.7,15.3,45.9,15.3,45.9z M45.8,56.1V51H30.6v5.1H45.8z M61.1,35.7H56v10.2h5.1
+					V35.7z M10.2,61.2v-5.1H5.1V51H0V25.5h5.1V15.3h5.1V5.1h5.1V0h5.1v5.1h5.1v5.1h5.1v5.1c0,0,15.2,0,15.2,0v-5.1h5.1V5.1H56V0h5.1v5.1
+					h5.1v10.2h5.1v10.2h5.1l0,25.5h-5.1v5.1h-5.1v5.1H10.2z"/>
+				</svg>
+	
+			  </div>
+			  <div class="body">
+				<svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 91.7 40.8" >
+				  <path class="st0" d="M91.7,40.8H0V10.2h5.1V5.1h5.1V0h66.2v5.1h10.2v5.1h5.1L91.7,40.8z"/>
+				</svg>
+	
+				<div class="tail">
+				  <svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 25.5 61.1" >
+					<polygon class="st0" points="10.2,56 10.2,50.9 5.1,50.9 5.1,40.7 0,40.7 0,20.4 5.1,20.4 5.1,10.2 10.2,10.2 10.2,5.1 15.3,5.1 
+					  15.3,0 25.5,0 25.5,10.2 20.4,10.2 20.4,15.3 15.3,15.3 15.3,20.4 10.2,20.4 10.2,40.7 15.3,40.7 15.3,45.8 20.4,45.8 20.4,50.9 
+					  25.5,50.9 25.5,61.1 15.3,61.1 15.3,56 "/>
+				  </svg>
+				</div>
+			  </div>
+			  
+			  <div class="front_legs">
+				<div class="leg one">
+				  <svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 14 30.5" >
+					<polygon points="15.3,30.5 5.1,30.5 5.1,25.4 0,25.4 0,0 15.3,0 "/>
+				  </svg>
+				</div>
+				<div class="leg two">
+				  <svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 14 30.5" >
+					<polygon points="15.3,30.5 5.1,30.5 5.1,25.4 0,25.4 0,0 15.3,0 "/>
+				  </svg>
+				</div>  
+			  </div>
+			  
+			  <div class="back_legs">
+				<div class="leg three">
+				  <svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 14 30.5" >
+					<polygon points="15.3,30.5 5.1,30.5 5.1,25.4 0,25.4 0,0 15.3,0 "/>
+				  </svg>
+				</div>
+				<div class="leg four">
+				  <svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 14 30.5" >
+					<polygon points="15.3,30.5 5.1,30.5 5.1,25.4 0,25.4 0,0 15.3,0 "/>
+				  </svg>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<div class="ground"></div>
+	</div>
+	
+	 <!-- ============================================================================================= -->
+	
 	<div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-5 main">
     	<!-- ----------------------- Tab menu ----------------------- -->
      	<ul class="nav nav-pills" id="myTab" role="tablist">
 	        <li class="nav-item">
-	          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Hồ sơ</a>
+	          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Hồ sơ</a>
 	        </li>
 	        <li class="nav-item">
 	          <a class="nav-link" id="change-passwd-tab" data-toggle="tab" href="#change-passwd" role="tab" aria-controls="change-passwd" aria-selected="false">Đổi mật khẩu</a>
 	        </li>
+			
       	</ul>
 		<div class="tab-content" id="myTabContent">			
 			<!-- ----------------------- Tab content ----------------------- -->
@@ -99,10 +164,11 @@
 				</div>				
 			</div>
 		</div>
+		<a href="${pageContext.servletContext.contextPath}" class="nav-link" role="button" style="text-align: right; color: red; font-size: 200px">Quay về trang chủ</a>
     </div>
   </div>
 </div>
-
+<script src="resources/profile/background.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" charset="UTF-8">
 	

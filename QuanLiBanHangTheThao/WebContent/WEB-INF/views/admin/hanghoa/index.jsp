@@ -41,7 +41,7 @@
 							<c:forEach var="u" items="${dshangHoa}">
 								<tr>
 									<td>${u.ID}</td>
-									<td><img src="images/${u.anh}"
+									<td><img src="images/${u.image}"
 										style="width: 100px; height: 100px" alt="" /></td>
 									<td>${u.name}</td>
 									<td><f:formatNumber type="currency" maxFractionDigits="0"
