@@ -1,15 +1,12 @@
 package com.entity;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -29,11 +26,11 @@ public class Account {
 	private Boolean active;
 	
 	
-	  @OneToMany(mappedBy = "accountGuest", fetch = FetchType.EAGER) 
-	private Collection<Guest> guests;
+	  @OneToOne(mappedBy = "accountGuest", fetch = FetchType.EAGER) 
+	private Guest guest;
 	  
-	  @OneToMany(mappedBy = "accountStaff", fetch = FetchType.EAGER) 
-	private Collection<Staff> staffs;
+	  @OneToOne(mappedBy = "accountStaff", fetch = FetchType.EAGER) 
+	private Staff staff;
 	 
 	
 	public Account() {
@@ -98,25 +95,30 @@ public class Account {
 		this.email = email;
 	}
 
-	public Collection<Guest> getGuests() {
-		return guests;
-	}
-
-	public void setGuests(Collection<Guest> guests) {
-		this.guests = guests;
-	}
 
 
-
-	public Collection<Staff> getStaffs() {
-		return staffs;
+	public Guest getGuest() {
+		return guest;
 	}
 
 
 
-	public void setStaffs(Collection<Staff> staffs) {
-		this.staffs = staffs;
+	public void setGuest(Guest guest) {
+		this.guest = guest;
 	}
+
+
+
+	public Staff getStaff() {
+		return staff;
+	}
+
+
+
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
 	
 	
 	

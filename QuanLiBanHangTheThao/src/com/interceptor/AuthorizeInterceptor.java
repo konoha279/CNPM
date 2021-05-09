@@ -19,7 +19,6 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 
 	@Autowired
 	SessionFactory factory;
-	private Guest guest = null;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request,
@@ -35,12 +34,18 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 		else
 		{
 			Session session = factory.getCurrentSession();
-			String hql = "From Guest guest where guest.accountGuest.username = '" + account.getUsername() + "'";
-			Query query = session.createQuery(hql);
-			if (!query.list().isEmpty())
+			//String hql = "From Guest guest where guest.accountGuest.username = '" + account.getUsername() + "'";
+			
+			account = (Account) session.get(Account.class, account.getUsername());
+
+			if (account != null)
 			{
-				guest = (Guest) query.list().get(0);
-				request.setAttribute("guest", guest);
+				//guest = (Guest) query.list().get(0);
+				if (account.getLevel() == 0)
+					request.setAttribute("guest", account.getGuest());
+				else
+					request.setAttribute("guest", account.getStaff());
+					
 			}
 			request.setAttribute("account", account);
 

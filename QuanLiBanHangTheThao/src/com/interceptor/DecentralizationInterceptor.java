@@ -28,7 +28,6 @@ public class DecentralizationInterceptor extends HandlerInterceptorAdapter {
 			response.sendError(403);
 			return false;
 		}
-		
 		Session session = factory.getCurrentSession();
 		String hql = "From Account where username = '" + account.getUsername() + "'";
 		Query query = session.createQuery(hql);

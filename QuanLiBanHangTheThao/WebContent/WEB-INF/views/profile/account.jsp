@@ -164,7 +164,7 @@
 				</div>				
 			</div>
 		</div>
-		<a href="${pageContext.servletContext.contextPath}" class="nav-link" role="button" style="text-align: right; color: red; font-size: 200px">Quay về trang chủ</a>
+		<a href="${pageContext.servletContext.contextPath}" class="nav-link" role="button" style="text-align: right; color: red; font-size: 20px">Quay về trang chủ</a>
     </div>
   </div>
 </div>
