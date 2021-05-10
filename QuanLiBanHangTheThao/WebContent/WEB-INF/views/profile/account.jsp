@@ -27,6 +27,10 @@
 		  font-family: sans-serif;
 		  background-color: #63ec85;
 		}
+	div#body-content
+	{
+		transition: 1s;
+	}
 	</style>
 
 </head>
@@ -93,7 +97,7 @@
 	
 	<div class="container-fluid">
   <div class="row justify-content-center">
-    <div class="col-5 main">
+    <div class="col-5 main"  >
     	<!-- ----------------------- Tab menu ----------------------- -->
      	<ul class="nav nav-pills" id="myTab" role="tablist">
 	        <li class="nav-item">
@@ -102,9 +106,9 @@
 	        <li class="nav-item">
 	          <a class="nav-link" id="change-passwd-tab" data-toggle="tab" href="#change-passwd" role="tab" aria-controls="change-passwd" aria-selected="false">Đổi mật khẩu</a>
 	        </li>
-			
+
       	</ul>
-		<div class="tab-content" id="myTabContent">			
+		<div class="tab-content">			
 			<!-- ----------------------- Tab content ----------------------- -->
 			<!-- ----------------------- Profile ----------------------- -->
 			<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -140,6 +144,8 @@
 <script src="resources/profile/background.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" charset="UTF-8">
+var height;
+var width;
 	window.onload = function() {
 		var div = document.createElement('div');
 		div.setAttribute("id","content");
@@ -155,7 +161,10 @@
 			document.getElementById("profile").appendChild(div);
 			document.getElementById("content").innerHTML = document.getElementById("staff").innerHTML;
 		}
+		height = document.getElementById('body-content').clientHeight;
+		width = document.getElementById('body-content').clientWidth;
 	}
+
 	function get() {
 		
 		var user = document.getElementById("username").value;
@@ -421,10 +430,13 @@
 		</div>
 		
 		<div style="display: flex">
-			<div>
+			<div style="width: 40%;">
 				<div>Họ:</div> <input type="text" id ="firstname_input" value="${staff.firstName}" disabled>
 			</div>
-			<div style="padding-left: 100px">
+			<div style="width: 20%;">
+
+			</div>
+			<div style="width: 40%;">
 				<div>Tên:</div> <input type="text" id ="name_input" value="${staff.name}" disabled>
 			</div>
 		</div>

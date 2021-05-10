@@ -1,7 +1,6 @@
 package com.controller;
 
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -9,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.Account;
 import com.entity.Guest;
-import com.entity.Staff;
 
 
 @Controller
@@ -306,21 +305,17 @@ public class ProfileController {
 	@RequestMapping(value = "/checkPasswd", method = RequestMethod.POST)
 	public @ResponseBody String checkPasswd(HttpServletRequest request, HttpServletResponse response)
 	{
-		String username = request.getParameter("username");
-		String password = request.getParameter("oldPasswd");
-		
-		Session session = factory.openSession();
-		String hql = "From Account where username = '" + username + "'";
-		Query query = session.createQuery(hql);
-		
-		if (query.list().isEmpty())
+		Cookie[] cookies = request.getCookies();
+		String passwd = new String();
+		for (Cookie cookie: cookies)
 		{
-			return "ERROR!";
+			if (cookie.getName().equalsIgnoreCase("passwd"))
+			{
+				passwd = cookie.getValue();
+			}
 		}
-		
-		Account account = (Account)query.list().get(0);
-		session.close();
-		if (account.getPassword().equals(encrypt(password)))
+		String password = request.getParameter("oldPasswd");
+		if (passwd.equals(encrypt(password)))
 		{
 			return "OK";
 		}
@@ -354,7 +349,7 @@ public class ProfileController {
 		try {
 			session.update(account);
 			String contentMail = new String();
-			if (account.getLevel() == 0)
+			if (account.getRole().getId() == 0)
 			{
 				contentMail = "	<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 750px;\">\r\n"
 						+ "		<h1 style=\"text-align: right;\">Xin chào, "+ account.getGuest().getFullname() + "</h1>\r\n"

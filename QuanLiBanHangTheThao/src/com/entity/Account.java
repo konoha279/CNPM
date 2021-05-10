@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,8 +22,9 @@ public class Account {
 	private String password;
 	@Column(name = "Email")
 	private String email;
-	@Column(name = "level")
-	private int level;
+	@ManyToOne
+	@JoinColumn(name = "Role")
+	private Role role;
 	@Column(name = "Active")
 	private Boolean active;
 	
@@ -38,18 +41,28 @@ public class Account {
 	}
 	
 	
-	
-	public Account(String username, String password, String email, int level, Boolean active) {
+	public Account(String username, String password, String email, Role role, Boolean active) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.level = level;
+		this.role = role;
 		this.active = active;
 	}
 
 
-
+	public Account(String username, String password, String email, Role role, Boolean active, Guest guest,
+			Staff staff) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.active = active;
+		this.guest = guest;
+		this.staff = staff;
+	}
+	
 	public Account(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -71,12 +84,12 @@ public class Account {
 		this.password = password;
 	}
 
-	public int getLevel() {
-		return level;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setLevel(int level) {
-		this.level = level;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public Boolean getActive() {

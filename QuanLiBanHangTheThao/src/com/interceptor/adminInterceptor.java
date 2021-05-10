@@ -13,7 +13,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.entity.Account;
 
 @Transactional
-public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
+public class adminInterceptor extends HandlerInterceptorAdapter {
 
 	@Autowired
 	SessionFactory factory;
@@ -25,26 +25,20 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 		Account account = checkCookie(request);
 		if (account == null)
 		{
-			response.sendRedirect(request.getContextPath() + "/login.htm");
+			response.sendError(404);
 			return false;
 		}
 		else
 		{
 			Session session = factory.getCurrentSession();			
 			account = (Account) session.get(Account.class, account.getUsername());
-
-			if (account != null)
+			if (account.getRole().getId() == 2)
 			{
-				if (account.getRole().getId() == 0)
-					request.setAttribute("guest", account.getGuest());
-				else
-					request.setAttribute("staff", account.getStaff());
+				response.sendError(403);
+				return false;
 			}
-			request.setAttribute("account", account);
-
-			return true;
 		}
-					
+		return true;					
 	}
 	
 	Account checkCookie(HttpServletRequest request)
@@ -71,6 +65,5 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 			// TODO: handle exception
 			return null;
 		}
-		
 	}
 }

@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +24,22 @@ public class DecentralizationInterceptor extends HandlerInterceptorAdapter {
 		Account account = checkCookie(request);
 		if (account == null)
 		{
-			response.sendError(403);
+			response.sendError(404);
 			return false;
 		}
-		Session session = factory.getCurrentSession();
-		String hql = "From Account where username = '" + account.getUsername() + "'";
-		Query query = session.createQuery(hql);
-		account = (Account) query.list().get(0);
-		
-		if (account.getLevel() == 0)
+		else
 		{
-			response.sendError(403);
+			Session session = factory.getCurrentSession();			
+			account = (Account) session.get(Account.class, account.getUsername());
+			if (account.getRole().getId() == 0)
+			{
+				response.sendError(404);
+				return false;
+			}
+			else if (account.getRole().getId() == 1)
+			{
+				request.setAttribute("admin", "admin");
+			}
 		}
 		return true;					
 	}
@@ -48,7 +52,6 @@ public class DecentralizationInterceptor extends HandlerInterceptorAdapter {
 			String username = "", passwd = "";
 			for (Cookie cookie: cookies)
 			{
-				
 				if (cookie.getName().equalsIgnoreCase("username"))
 				{
 					username = cookie.getValue();
@@ -65,6 +68,6 @@ public class DecentralizationInterceptor extends HandlerInterceptorAdapter {
 			// TODO: handle exception
 			return null;
 		}
-		
 	}
+
 }

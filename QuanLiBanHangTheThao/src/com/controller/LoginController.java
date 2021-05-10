@@ -1,8 +1,6 @@
 package com.controller;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
@@ -24,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.entity.Account;
 import com.entity.Guest;
-
+import com.entity.Role;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -50,9 +48,13 @@ public class LoginController {
 	}
 	
 	@RequestMapping("forgot")
-	public String forgot()
+	public String forgot(HttpServletRequest request)
 	{
-		return "forgot";
+		Account account = checkCookie(request);
+		if (account == null)
+			return "forgot";
+		else
+			return "redirect:/index.htm";
 	}
 	
 	@RequestMapping(value = "login", method = RequestMethod.POST)
@@ -77,12 +79,15 @@ public class LoginController {
 			else if (temp.getPassword().equals(encrypt(acc.getPassword())))
 			{
 				Cookie cookieUser = new Cookie("username", acc.getUsername());
-				cookieUser.setMaxAge(3600);
+				cookieUser.setMaxAge(86400);
 				response.addCookie(cookieUser);
 				Cookie cookiePass = new Cookie("passwd", encrypt(acc.getPassword()));
-				cookiePass.setMaxAge(3600);
+				cookiePass.setMaxAge(86400);
 				response.addCookie(cookiePass);
-				return "redirect:/index.htm";
+				if (temp.getRole().getId() == 0)
+					return "redirect:/index.htm";
+				else
+					return "redirect:/admin/admin.htm";
 			}
 			else
 			{
@@ -131,13 +136,7 @@ public class LoginController {
 		String confirmPasswd = request.getParameter("confirmpassword");	
 		String PhoneNumber = request.getParameter("phoneNumber");
 		String date = request.getParameter("birthday");
-		Date birthday = null;
-		try {
-			birthday = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		
 		Boolean sex = false;
 		String sexName = request.getParameter("sex");
 		if (sexName.equals("Male"))
@@ -171,8 +170,8 @@ public class LoginController {
 			model.addAttribute("Msg", "Mật khẩu không khớp!");
 			return "registry";
 		}
-		
-		Account accountGuest = new Account(User, Passwd, Email, 0, true);
+		Role role = (Role) session.get(Role.class, 0);
+		Account accountGuest = new Account(User, Passwd, Email, role, true);
 		accountGuest.setPassword(encrypt(accountGuest.getPassword()));
 		
 		Guest guest= new Guest(Firstname, Lastname, sex, date, PhoneNumber, accountGuest);
@@ -247,7 +246,7 @@ public class LoginController {
 		Transaction transaction = session.beginTransaction();
 		
 		try {
-			Account account2 = new Account(account.getUsername(), account.getPassword(), email, account.getLevel(), account.getActive());
+			Account account2 = new Account(account.getUsername(), account.getPassword(), account.getEmail(), account.getRole(), account.getActive());
 			account2.setPassword(encrypt(newPasswd));
 			session.update(account2);
 			transaction.commit();

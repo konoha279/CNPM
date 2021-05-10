@@ -76,7 +76,7 @@ public class Guest {
 
 
 	public String getId() {
-		return Id.trim();
+		return Id;
 	}
 
 	public void setId(String id) {
@@ -84,7 +84,7 @@ public class Guest {
 	}
 
 	public String getFirstName() {
-		return firstName.trim();
+		return firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -92,7 +92,7 @@ public class Guest {
 	}
 
 	public String getName() {
-		return name.trim();
+		return name;
 	}
 
 	public void setName(String name) {
@@ -130,7 +130,7 @@ public class Guest {
 	}
 
 	public String getPhoneNumber() {
-		return phoneNumber.trim();
+		return phoneNumber;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
@@ -147,7 +147,7 @@ public class Guest {
 
 	public String getFullname()
 	{
-		return this.getFirstName().trim() + " " + this.getName().trim();
+		return this.getFirstName() + " " + this.getName();
 	}
 	
 }

@@ -28,4 +28,14 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/taikhoan/**"/>
+			<mvc:mapping path="/admin/nhanvien/**"/>
+			<mvc:mapping path="/admin/chinhanh/**"/>
+			<mvc:mapping path="/admin/doanhso**"/>
+			<bean class= "com.interceptor.adminInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
 </beans>

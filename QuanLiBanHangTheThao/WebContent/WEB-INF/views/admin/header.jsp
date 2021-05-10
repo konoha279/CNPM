@@ -77,35 +77,35 @@ body ::-webkit-scrollbar {
 		<div class="item">
 			<div class="header">General</div>
 		</div>
-		<a href="admin/admin.htm" class="item">
+		<a href="admin/admin.htm" id="tq" class="item">
 			<div>
 				<i class="icon home"></i> Tổng Quát
 			</div>
-		</a> <a href="admin/hanghoa/index.htm" class="item">
+		</a> <a href="admin/hanghoa/index.htm" id="sp" class="item">
 			<div>
 				<i class="boxes icon"></i> Sản Phẩm
 			</div>
-		</a> <a href="admin/hoadon/index.htm" class="item">
+		</a> <a href="admin/hoadon/index.htm" id="dh" class="item">
 			<div>
 				<i class="cart arrow down icon"></i> Đơn Hàng
 			</div>
-		</a> <a href="admin/nhanvien/index.htm" class="item">
+		</a> <a href="admin/nhanvien/index.htm" id="nv" class="item">
 			<div>
 				<i class="user icon"></i> Nhân Viên
 			</div>
-		</a> <a href="admin/taikhoan/index.htm" class="item">
+		</a> <a href="admin/taikhoan/index.htm" id="tk" class="item">
 			<div>
 				<i class="address card outline icon"></i> Tài khoản
 			</div>
-		</a> <a href="admin/chinhanh/index.htm" class="item">
+		</a> <a href="admin/chinhanh/index.htm" id="cn" class="item">
 			<div>
 				<i class="icon building"></i> Chi Nhánh
 			</div>
-		</a> <a href="admin/nhap/index.htm" class="item">
+		</a> <a href="admin/nhap/index.htm" id="pn" class="item">
 			<div>
 				<i class="icon truck icon"></i> Phiếu Nhập
 			</div>
-		</a>  <a href="admin/doanhso.htm" class="item">
+		</a>  <a href="admin/doanhso.htm" id="ds" class="item">
 			<div>
 				<i class="icon chart line"></i> Doanh Số
 			</div>
@@ -155,6 +155,21 @@ body ::-webkit-scrollbar {
 		src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
 		integrity="sha256-t8GepnyPmw9t+foMh3mKNvcorqNHamSKtKRxxpUEgFI="
 		crossorigin="anonymous"></script>
-	<script src="./js/script.js"></script>
+	<script type="text/javascript">
+		window.onload = function()
+		{
+			if ("${admin}" != "admin")
+			{
+				//document.getElementById('tq').style.display = "none";
+				//document.getElementById('sp').style.display = "none";
+				//document.getElementById('dh').style.display = "none";
+				document.getElementById('nv').style.display = "none";
+				document.getElementById('tk').style.display = "none";
+				document.getElementById('cn').style.display = "none";
+				//document.getElementById('pn').style.display = "none";
+				document.getElementById('ds').style.display = "none";
+			}
+		}
+	</script>
 </body>
 </html>
