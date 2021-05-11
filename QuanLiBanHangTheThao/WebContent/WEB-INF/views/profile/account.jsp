@@ -18,7 +18,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	
-
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<style type="text/css">
 	body {
@@ -27,10 +27,10 @@
 		  font-family: sans-serif;
 		  background-color: #63ec85;
 		}
-	div#body-content
+	div#tab-content
 	{
-		transition: 1s;
-	}
+		transition: height 1s, width 1s, padding 1s, opacity 0.5s ease-out;
+	}	
 	</style>
 
 </head>
@@ -99,20 +99,32 @@
   <div class="row justify-content-center">
     <div class="col-5 main"  >
     	<!-- ----------------------- Tab menu ----------------------- -->
-     	<ul class="nav nav-pills" id="myTab" role="tablist">
-	        <li class="nav-item">
-	          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Hồ sơ</a>
-	        </li>
-	        <li class="nav-item">
-	          <a class="nav-link" id="change-passwd-tab" data-toggle="tab" href="#change-passwd" role="tab" aria-controls="change-passwd" aria-selected="false">Đổi mật khẩu</a>
-	        </li>
-
-      	</ul>
-		<div class="tab-content">			
+    	<div style="display: inline;">
+			<ul class="nav justify-content-end">
+				<li class="nav-item">
+					<button class="btn btn-outline-dark" onclick="showhide()" id="btnEvent" type="button">
+						<i class="fa fa-compress" aria-hidden="true"></i>
+					</button>
+				</li>
+				<li class="nav-item">
+					<button onclick="location.href='${pageContext.servletContext.contextPath}/'" class="btn btn-outline-danger" type="button">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</button>
+				</li>
+			</ul>
+			<ul class="nav nav-tabs" id="myTab" role="tablist" >
+				<li class="nav-item">
+					<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Hồ sơ</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="change-passwd-tab" data-toggle="tab" href="#change-passwd" role="tab" aria-controls="change-passwd" aria-selected="false">Đổi mật khẩu</a>
+				</li>
+			</ul>
+		</div>
+		<div class="tab-content" id="tab-content">			
 			<!-- ----------------------- Tab content ----------------------- -->
 			<!-- ----------------------- Profile ----------------------- -->
 			<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-			  	<%-- <h1>Hồ sơ của <b>${guest.id != "" ? guest.getFullname() : staff.getFullName()}</b></h1> --%>
 				<div id="content">
 					
 				</div>
@@ -137,15 +149,40 @@
 				</div>				
 			</div>
 		</div>
-		<a href="${pageContext.servletContext.contextPath}" class="nav-link" role="button" style="text-align: right; color: red; font-size: 20px">Quay về trang chủ</a>
     </div>
   </div>
 </div>
 <script src="resources/profile/background.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" charset="UTF-8">
-var height;
-var width;
+var btn = document.getElementById("btnEvent");
+var content = document.getElementById('tab-content');
+var height = content.clientHeight;
+var	width = content.clientWidth;
+
+function show()
+{
+	document.getElementById('btnEvent').onclick = hide;
+	console.log("show");
+	content.style.transition = "visibility 1s";
+	content.style.visibility = 'visible';
+	content.style.height = height + 'px';
+	content.style.width = width + 'px';
+	content.style.padding = '.5em';
+}
+
+function hide()
+{
+	content.style.transition = "visibility 0s";
+	document.getElementById('btnEvent').onclick = show;
+	console.log("hide");
+	content.style.visibility = 'hidden';
+	content.style.height = '0';
+	content.style.width = '0';
+	content.style.padding = '0';
+}
+
+
 	window.onload = function() {
 		var div = document.createElement('div');
 		div.setAttribute("id","content");
@@ -161,9 +198,16 @@ var width;
 			document.getElementById("profile").appendChild(div);
 			document.getElementById("content").innerHTML = document.getElementById("staff").innerHTML;
 		}
-		height = document.getElementById('body-content').clientHeight;
-		width = document.getElementById('body-content').clientWidth;
+		height = content.clientHeight;
+		width = content.clientWidth;
+		document.getElementById('btnEvent').onclick = hide;
+		content.style.visibility = 'visible';
+		content.style.height = height + 'px';
+		content.style.width = width + 'px';
+		content.style.padding = '.5em';
 	}
+	
+	
 
 	function get() {
 		

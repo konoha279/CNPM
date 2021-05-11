@@ -84,7 +84,7 @@ public class LoginController {
 				Cookie cookiePass = new Cookie("passwd", encrypt(acc.getPassword()));
 				cookiePass.setMaxAge(86400);
 				response.addCookie(cookiePass);
-				if (temp.getRole().getId() == 0)
+				if (temp.getRole().getId().equals("0"))
 					return "redirect:/index.htm";
 				else
 					return "redirect:/admin/admin.htm";

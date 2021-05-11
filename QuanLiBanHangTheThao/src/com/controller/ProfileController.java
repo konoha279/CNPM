@@ -349,7 +349,7 @@ public class ProfileController {
 		try {
 			session.update(account);
 			String contentMail = new String();
-			if (account.getRole().getId() == 0)
+			if (account.getRole().getId().equals("0"))
 			{
 				contentMail = "	<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 750px;\">\r\n"
 						+ "		<h1 style=\"text-align: right;\">Xin chào, "+ account.getGuest().getFullname() + "</h1>\r\n"

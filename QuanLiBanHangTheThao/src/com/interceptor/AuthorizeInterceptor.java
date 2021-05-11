@@ -35,7 +35,7 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 
 			if (account != null)
 			{
-				if (account.getRole().getId() == 0)
+				if (account.getRole().getId().equals("0"))
 					request.setAttribute("guest", account.getGuest());
 				else
 					request.setAttribute("staff", account.getStaff());

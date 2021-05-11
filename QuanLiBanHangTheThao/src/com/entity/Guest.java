@@ -74,6 +74,15 @@ public class Guest {
 		this.accountGuest = accountGuest;
 	}
 
+	
+
+	public Guest(String firstName, String name, Boolean sex, String phoneNumber) {
+		super();
+		this.firstName = firstName;
+		this.name = name;
+		this.sex = sex;
+		this.phoneNumber = phoneNumber;
+	}
 
 	public String getId() {
 		return Id;

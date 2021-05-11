@@ -40,7 +40,6 @@ public class Account {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
 	public Account(String username, String password, String email, Role role, Boolean active) {
 		super();
 		this.username = username;

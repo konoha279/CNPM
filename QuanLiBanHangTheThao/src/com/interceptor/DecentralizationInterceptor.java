@@ -31,12 +31,12 @@ public class DecentralizationInterceptor extends HandlerInterceptorAdapter {
 		{
 			Session session = factory.getCurrentSession();			
 			account = (Account) session.get(Account.class, account.getUsername());
-			if (account.getRole().getId() == 0)
+			if (account.getRole().getId().equals("0"))
 			{
 				response.sendError(404);
 				return false;
 			}
-			else if (account.getRole().getId() == 1)
+			else if (account.getRole().getId().equals("1"))
 			{
 				request.setAttribute("admin", "admin");
 			}

@@ -1,4 +1,3 @@
-
 .main {
 	background-color: white;
 	margin-top: 50px;
@@ -81,4 +80,10 @@ p.msg
 p.congrat
 {
 	color: green;
+}
+
+div#profile
+{
+	height: auto;
+	width: auto;
 }

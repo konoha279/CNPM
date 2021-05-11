@@ -1,11 +1,13 @@
 package com.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,12 +22,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "NhanVien")
 public class Staff {
 	@Id
+	@GeneratedValue
 	@Column(name = "MaNV")
 	private String id;
 	@Column(name = "Ho")
 	private String firstName;
 	@Column(name = "Ten")
 	private String name;
+	@Column(name = "CMND")
+	private String cmnd;
 	@Column(name ="DiaChi")
 	private String address;
 	@Temporal(TemporalType.DATE)
@@ -70,6 +75,19 @@ public class Staff {
 		this.receipts = receipts;
 	}
 
+	public Staff(String firstName, String name, String cmnd, String address, String phoneNumber, Branch branch,
+			Boolean status, Boolean sex) {
+		super();
+		this.firstName = firstName;
+		this.name = name;
+		this.cmnd = cmnd;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.branch = branch;
+		this.status = status;
+		this.sex = sex;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -108,6 +126,24 @@ public class Staff {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+	
+	public void setBirthday(String birthday) {
+		try {
+			this.birthday = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			this.birthday = null;
+		}
+	}
+
+	public String getCmnd() {
+		return cmnd;
+	}
+
+	public void setCmnd(String cmnd) {
+		this.cmnd = cmnd;
 	}
 
 	public Branch getBranch() {

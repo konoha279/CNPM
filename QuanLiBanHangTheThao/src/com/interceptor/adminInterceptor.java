@@ -32,7 +32,7 @@ public class adminInterceptor extends HandlerInterceptorAdapter {
 		{
 			Session session = factory.getCurrentSession();			
 			account = (Account) session.get(Account.class, account.getUsername());
-			if (account.getRole().getId() == 2)
+			if (account.getRole().getId().equals("2"))
 			{
 				response.sendError(403);
 				return false;
