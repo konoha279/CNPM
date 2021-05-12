@@ -58,7 +58,7 @@
 								</div>
 							</div>
 							<div class="column">
-								<label>Hình ảnh</label> <input type="file" name="image">
+								<label>Hình ảnh</label> <input type="file" name="photo">
 							</div>
 						</div>
 						<div class="field">
@@ -69,7 +69,7 @@
 							<button class="ui button" type="submit">Cập Nhật</button>
 							${message}
 						</div>
-					</form:form>
+					</form:form>				
 				</div>
 			</div>
 		</div>

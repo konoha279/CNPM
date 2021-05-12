@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -90,7 +92,7 @@ public class HangHoaController {
 
 	@RequestMapping(value = "insert", method = RequestMethod.GET)
 	public String insert(ModelMap model) {
-		model.addAttribute("hangHoa", new Product());
+		model.addAttribute("Product", new Product());
 		return "admin/hanghoa/insert";
 	}
 
@@ -145,17 +147,18 @@ public class HangHoaController {
 	}
 
 	@RequestMapping(value = "update/{maHangHoa}", method = RequestMethod.GET)
-	public String update(ModelMap model, @PathVariable("maHangHoa") String maHangHoa) {
+	public String update(ModelMap model, @PathVariable("maHangHoa") String maHangHoa, HttpServletRequest request) {
 		Session session = factory.getCurrentSession();
 		Product hangHoa = (Product) session.get(Product.class, maHangHoa);
-		model.addAttribute("hangHoa", hangHoa);
+		model.addAttribute("Product", hangHoa);
+		String rootPath = request.getSession().getServletContext().getRealPath("/");
+		System.out.print(rootPath);
 		return "admin/hanghoa/update";
 	}
 
 	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public String update(ModelMap model, @ModelAttribute("hangHoa") Product hangHoa,
-			@RequestParam("photo") MultipartFile photo, BindingResult errors, RedirectAttributes re)
-			throws IllegalStateException, IOException {
+	public String update(ModelMap model, @ModelAttribute("Product") Product hangHoa,
+			@RequestParam("photo") MultipartFile photo, BindingResult errors, RedirectAttributes re) {
 		if (hangHoa.getName().trim().length() == 0) {
 			errors.rejectValue("tenHangHoa", "tenHangHoa", "Vui Lòng Nhập Tên Hàng Hóa");
 		}
@@ -166,17 +169,23 @@ public class HangHoaController {
 		} else {
 			Session session = factory.openSession();
 			Transaction t = session.beginTransaction();
-			if (photo.getOriginalFilename().isEmpty()) {
+			if (photo.isEmpty()) {
 				Session session1 = factory.getCurrentSession();
 				Product temp = (Product) session1.get(Product.class, hangHoa.getID());
 				hangHoa.setImage(temp.getImage());
 				System.out.println(temp.getImage());
 			} else {
-				String photoPath = "";
-				photoPath = context.getRealPath("/images/" + photo.getOriginalFilename());
-				photo.transferTo(new File(photoPath));
-				hangHoa.setImage(photo.getOriginalFilename());
-				System.out.println(hangHoa.getImage());
+				try {
+					String photoPath = "";
+					photoPath = context.getRealPath("/images/" + photo.getOriginalFilename());
+					photo.transferTo(new File(photoPath));
+					
+					hangHoa.setImage(photo.getOriginalFilename());
+					System.out.println(hangHoa.getImage());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
 			}
 			try {
 				session.update(hangHoa);

@@ -32,6 +32,7 @@
 								<th>Tên Hàng Hóa</th>
 								<th>Đơn Giá</th>
 								<th>Giảm Giá</th>
+								<th>Giá tiền sau khi giảm</th>
 								<th>Thể Loại</th>
 								<th>Tình Trạng</th>
 								<th></th>
@@ -48,6 +49,8 @@
 											currencySymbol="" value="${u.price}" /> đ</td>
 									<td><f:formatNumber type="currency" maxFractionDigits="0"
 											currencySymbol="" value="${u.discount}" />%</td>
+											<td><f:formatNumber type="currency" maxFractionDigits="0"
+											currencySymbol="" value="${u.price - u.price * (u.discount / 100)}" /> đ</td>
 									<td>${u.productlist.name}</td>
 									<td>${u.status==false?'Không Bán':'Bán'}</td>
 									<td><a href="admin/hanghoa/update/${u.ID}.htm"><button

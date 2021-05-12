@@ -34,11 +34,11 @@
 							</div>
 							<div class="column">
 								<label>Đơn Giá</label>
-								<form:input type="number" path="donGia" value="1000" min="1000" />
+								<form:input type="number" path="price" value="1000" min="1000" />
 							</div>
 							<div class="column">
 								<label>Giảm Giá</label>
-								<form:input type="number" path="giamGia" value="0" min="0" />
+								<form:input type="number" path="discount" value="0" min="0" />
 								<div style="color: red">
 									<form:errors path="discount" />
 								</div>
@@ -65,7 +65,7 @@
 						</div>
 						<div class="field">
 							<label>Mô tả</label>
-							<form:textarea path="ghiChu"></form:textarea>
+							<form:textarea path="notes"></form:textarea>
 						</div>
 						<div>
 							<button class="ui button" type="submit">Thêm</button>
