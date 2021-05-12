@@ -40,7 +40,7 @@ public class ChiNhanhController {
 	@RequestMapping(value="insert",method=RequestMethod.GET)
 	public String insert(ModelMap model)
 	{
-		model.addAttribute("chiNhanh",new Branch());
+		model.addAttribute("Branch",new Branch());
 		return "admin/chinhanh/insert";
 	}
 	
@@ -82,7 +82,7 @@ public class ChiNhanhController {
 	{
 		Session session = factory.getCurrentSession();
 		Branch chiNhanh = (Branch) session.get(Branch.class, maCN);
-		model.addAttribute("chiNhanh",chiNhanh);
+		model.addAttribute("Branch",chiNhanh);
 		return "admin/chinhanh/update";
 	}
 	
