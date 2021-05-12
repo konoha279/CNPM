@@ -19,7 +19,6 @@ import javax.persistence.Table;
 public class Product {
 	@Id
 	@Column(name = "MaHangHoa")
-	@GeneratedValue
 	private String id;
 	@Column(name = "TenHangHoa")
 	private String name;
