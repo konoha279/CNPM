@@ -30,7 +30,7 @@ public class ChiNhanhController {
 	@RequestMapping("index")
 	public String index(ModelMap model) {
 		Session session = factory.getCurrentSession();
-		String hql = "from ChiNhanh";
+		String hql = "from Branch";
 		Query query = session.createQuery(hql);
 		List<Branch> list = query.list();
 		model.addAttribute("dsChiNhanh",list);

@@ -32,6 +32,7 @@
 								<th>Chứng minh nhân dân</th>
 								<th>Giới Tính</th>
 								<th>Ngày Sinh</th>
+								<th>Chức vụ</th>
 								<th>Địa Chỉ</th>
 								<th>Chi Nhánh</th>
 								<th>Tình Trạng</th>
@@ -47,6 +48,7 @@
 									<td>${u.cmnd}</td>
 									<td>${u.sex==false?'Nữ':'Nam'}</td>
 									<td>${u.birthday}</td>
+									<td>${u.accountStaff.role.name}</td>
 									<td>${u.address}</td>
 									<td>${u.branch.name}</td>
 									<td>${u.status==false?'Đã Nghỉ':'Còn Làm'}</td>

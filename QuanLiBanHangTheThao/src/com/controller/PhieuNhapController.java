@@ -36,7 +36,7 @@ public class PhieuNhapController {
 	@ModelAttribute("dsNhanVien")
 	public List<Staff> getLoai() {
 		Session session = factory.getCurrentSession();
-		String hql = "FROM NhanVien";
+		String hql = "FROM Staff";
 		Query query = session.createQuery(hql);
 		List<Staff> list = query.list();
 		return list;
