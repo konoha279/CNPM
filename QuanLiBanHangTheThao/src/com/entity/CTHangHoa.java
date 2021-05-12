@@ -44,17 +44,24 @@ public class CTHangHoa implements Serializable {
 	public void setMaHangHoa(Product maHangHoa) {
 		MaHangHoa = maHangHoa;
 	}
-	public Size getMaSize() {
-		return size;
-	}
-	public void setMaSize(Size maSize) {
-		size = maSize;
-	}
+	
 	public int getSoLuong() {
 		return soLuong;
 	}
 	public void setSoLuong(int soLuong) {
 		this.soLuong = soLuong;
+	}
+
+
+
+	public Size getSize() {
+		return size;
+	}
+
+
+
+	public void setSize(Size size) {
+		this.size = size;
 	}
 	
 	

@@ -31,7 +31,7 @@ div.detail {
 					<div class="ui items">
 						<div class="item">
 							<div class="ui big image">
-								<img src="images/1.jpg" style="width: 500px; height: 500px"
+								<img src="images/${hangHoa.image}" style="width: 500px; height: 500px"
 									alt="">
 							</div>
 							<div class="content">
@@ -55,8 +55,8 @@ div.detail {
 										<tbody>
 											<c:forEach var="u" items="${hangHoa.CT_HangHoa}">
 												<tr>
-													<td>${u.MaSize}</td>
-													<td>${u.SoLuong}</td>
+													<td>${u.size.size}</td>
+													<td>${u.soLuong}</td>
 												</tr>
 											</c:forEach>
 										</tbody>
