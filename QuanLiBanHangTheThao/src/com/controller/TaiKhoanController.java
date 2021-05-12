@@ -200,10 +200,10 @@ public class TaiKhoanController {
 		Role role = (Role) session.get(Role.class, request.getParameter("role"));
 		Account account = new Account(username, encrypt(passwd), email, role, true);
 		Staff staff = new Staff(firstName, name, cmnd, address, phone, branch, status, sex);
-		staff.setBirthday(birthday);
+		staff.setBirthday_Str(birthday);
 		account.setGuest(null);
 		account.setStaff(staff);
-		staff.setAccount(account);
+		staff.setAccountStaff(account);
 		
 		session = factory.openSession();
 		Transaction transaction = session.beginTransaction();

@@ -15,24 +15,41 @@
 			<div class="ui grid stackable padded">
 				<div class="column">
 					<form:form class="ui form" action="admin/nhanvien/insert.htm"
-						modelAttribute="Staff" method="post">
+						modelAttribute="staff" method="post">
+						<h1 style="text-align: center;margin-top: 50px;">Thông tin nhân viên</h1>
 						<div class="two fields">
 							<div class="field">
 								<label>Họ</label>
 								<div class="field">
-									<form:input path="FirstName" />
+									<form:input path="firstName" />
 									<div style="color: red">
-										<form:errors path="FirstName" />
+										<form:errors path="firstName" />
 									</div>
 								</div>
 							</div>
 							<div class="field">
 								<label>Tên</label>
 								<div class="field">
-									<form:input path="Name" />
+									<form:input path="name" />
 									<div style="color: red">
-										<form:errors path="Name" />
+										<form:errors path="name" />
 									</div>
+								</div>
+							</div>
+						</div>
+						<div class="two fields">
+							<div class="field">
+								<label>Chứng minh nhân dân </label>
+								<form:input path="cmnd" />
+								<div style="color: red">
+									<form:errors path="cmnd" />
+								</div>
+							</div>
+							<div class="field">
+								<label>Ngày Sinh </label>
+								<form:input path="birthday" type="date"/>
+								<div style="color: red">
+									<form:errors path="birthday" />
 								</div>
 							</div>
 						</div>
@@ -45,11 +62,11 @@
 								</div>
 							</div>
 							<div class="field">
-								<label>Ngày Sinh </label>
-								<form:input path="birthday" type="date" />
+							<label>Số điện thoại </label>
+								<form:input path="phoneNumber" type="text"/>
 								<div style="color: red">
-									<form:errors path="birthday" />
-								</div>
+									<form:errors path="phoneNumber" />
+								</div>								
 							</div>
 						</div>
 						<div class="field">
@@ -75,14 +92,51 @@
 									</form:select>
 								</div>
 							</div>
+							<h1 style="text-align: center;margin-top: 50px;">Thông tin tài khoản cho nhân viên</h1>
+							<div class="three fields">
+								<div class="field">
+									<label>Tên tài khoản </label>
+									<form:input path="accountStaff.username" />
+									<div style="color: red">
+										<form:errors path="accountStaff.username" />
+									</div>
+								</div>
+								<div class="field">
+									<label>Mật khẩu </label>
+									<form:password path="accountStaff.password" />
+									<div style="color: red">
+										<form:errors path="accountStaff.password" />
+									</div>								
+								</div>
+								<div class="field">
+									<label>Email </label>
+									<form:input type="email" path="accountStaff.email" />
+									<div style="color: red">
+										<form:errors path="accountStaff.email" />
+									</div>								
+								</div>
+							</div>
+							
+							<div class="field">
+								<label>Vai trò</label>
+								<form:select path="accountStaff.role.id">
+									<c:forEach items="${role}" var="role">
+										<c:if test="${role.id != '0'}">
+											<form:option value="${role.id}">${role.name}</form:option>
+										</c:if>
+									</c:forEach>								
+								</form:select>
+							</div>
 						</div>
 						<div>
 							<button class="ui green button" type="submit">
 								<i class="plus icon"></i>Thêm
 							</button>
-							<a href="admin/nhanvien/index.htm"><div class="ui button">Trở
-									Lại</div></a> ${message}
+							<a href="admin/nhanvien/index.htm">
+							<div class="ui button">Trở Lại</div></a> ${message}
 						</div>
+						
+						
 					</form:form>
 				</div>
 			</div>

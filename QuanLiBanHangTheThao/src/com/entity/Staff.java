@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,7 +35,7 @@ public class Staff {
 	@Column(name ="DiaChi")
 	private String address;
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "MM/dd/yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name ="NgaySinh")
 	private Date birthday;
 	@Column(name = "SoDienThoai")
@@ -48,7 +49,7 @@ public class Staff {
 	@Column(name ="GioiTinh")
 	private Boolean sex;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "username")
 	private Account accountStaff;
 	
@@ -128,7 +129,7 @@ public class Staff {
 		this.birthday = birthday;
 	}
 	
-	public void setBirthday(String birthday) {
+	public void setBirthday_Str(String birthday) {
 		try {
 			this.birthday = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
 
@@ -168,14 +169,6 @@ public class Staff {
 
 	public void setSex(Boolean sex) {
 		this.sex = sex;
-	}
-
-	public Account getAccount() {
-		return accountStaff;
-	}
-
-	public void setAccount(Account account) {
-		this.accountStaff = account;
 	}
 	
 	public String getFullName()

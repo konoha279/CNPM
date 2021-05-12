@@ -14,26 +14,41 @@
 		<div class="main-content">
 			<div class="ui grid stackable padded">
 				<div class="column">
-					<form:form class="ui form" action="admin/nhanvien/update.htm"
-						modelAttribute="Staff" method="post">
-						<form:input path="maNV" value="${maNV}" type="hidden" />
+					<form:form class="ui form" action="admin/nhanvien/update.htm" modelAttribute="staff" method="post">
+						<form:input path="id" value="${id}" type="hidden" />					
 						<div class="two fields">
 							<div class="field">
 								<label>Họ</label>
 								<div class="field">
-									<form:input path="FirstName" />
+									<form:input path="firstName" />
 									<div style="color: red">
-										<form:errors path="FirstName" />
+										<form:errors path="firstName" />
 									</div>
 								</div>
 							</div>
 							<div class="field">
 								<label>Tên</label>
 								<div class="field">
-									<form:input path="Name" />
+									<form:input path="name" />
 									<div style="color: red">
-										<form:errors path="Name" />
+										<form:errors path="name" />
 									</div>
+								</div>
+							</div>
+						</div>
+						<div class="two fields">
+							<div class="field">
+								<label>Chứng minh nhân dân </label>
+								<form:input path="cmnd" />
+								<div style="color: red">
+									<form:errors path="cmnd" />
+								</div>
+							</div>
+							<div class="field">
+								<label>Ngày Sinh </label>
+								<form:input path="birthday" type="date"/>
+								<div style="color: red">
+									<form:errors path="birthday" />
 								</div>
 							</div>
 						</div>
@@ -46,11 +61,11 @@
 								</div>
 							</div>
 							<div class="field">
-								<label>Ngày Sinh </label>
-								<form:input path="birthday" type="date" />
+							<label>Số điện thoại </label>
+								<form:input path="phoneNumber" type="text"/>
 								<div style="color: red">
-									<form:errors path="birthday" />
-								</div>
+									<form:errors path="phoneNumber" />
+								</div>								
 							</div>
 						</div>
 						<div class="field">

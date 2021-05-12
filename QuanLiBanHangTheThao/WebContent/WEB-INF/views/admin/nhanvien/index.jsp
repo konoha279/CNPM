@@ -29,6 +29,7 @@
 								<th>Mã Nhân Viên</th>
 								<th>Họ</th>
 								<th>Tên</th>
+								<th>Chứng minh nhân dân</th>
 								<th>Giới Tính</th>
 								<th>Ngày Sinh</th>
 								<th>Địa Chỉ</th>
@@ -38,17 +39,18 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="u" items="${products}">
+							<c:forEach var="u" items="${Staff}">
 								<tr>
-									<td>${u.maNV}</td>
-									<td>${u.ho}</td>
-									<td>${u.ten}</td>
-									<td>${u.gioiTinh==false?'Nữ':'Nam'}</td>
-									<td>${u.ngaySinh}</td>
-									<td>${u.diaChi}</td>
-									<td>${u.chiNhanh.chiNhanh}</td>
-									<td>${u.tinhTrang==false?'Đã Nghỉ':'Còn Làm'}</td>
-									<td><a href="admin/nhanvien/update/${u.maNV}.htm"><button
+									<td>${u.id}</td>
+									<td>${u.firstName}</td>
+									<td>${u.name}</td>
+									<td>${u.cmnd}</td>
+									<td>${u.sex==false?'Nữ':'Nam'}</td>
+									<td>${u.birthday}</td>
+									<td>${u.address}</td>
+									<td>${u.branch.name}</td>
+									<td>${u.status==false?'Đã Nghỉ':'Còn Làm'}</td>
+									<td><a href="admin/nhanvien/update/${u.id}.htm"><button
 												class="ui blue basic button">
 												<i class="edit icon"></i>Sửa
 											</button></a>
