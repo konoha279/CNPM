@@ -191,7 +191,7 @@ public class HangHoaController {
 			} else {
 				try {
 					String photoPath = "";
-					photoPath = context.getRealPath("/images/" + photo.getOriginalFilename());
+					photoPath = context.getRealPath(photo.getOriginalFilename());
 					photo.transferTo(new File(photoPath));
 					
 					hangHoa.setImage(photo.getOriginalFilename());
@@ -285,6 +285,11 @@ public class HangHoaController {
 		}
 		int count = Integer.parseInt(temp) ;
 		
+		if (count < 0)
+		{
+			return "Số lượng phải lớn hơn hoặc bằng 0".getBytes("UTF-8");
+		}
+		
 		CTHangHoa ctHangHoa = new CTHangHoa(product, size, count);
 		
 		session = factory.openSession();
@@ -319,7 +324,12 @@ public class HangHoaController {
 			return "Không được để số lượng trống".getBytes("UTF-8");
 		}
 		int count = Integer.parseInt(temp) ;
-
+	
+		if (count < 0)
+		{
+			return "Số lượng phải lớn hơn hoặc bằng 0".getBytes("UTF-8");
+		}
+		
 		String hql = "From CTHangHoa cthanghoa where cthanghoa.MaHangHoa.id = '"+product.getID()+"' AND cthanghoa.size.size = '"+size.size+"'";
 		Query query = session.createQuery(hql);
 		

@@ -27,10 +27,10 @@
 							<tr>
 								<c:forEach var="u" items="${dsPhieuNhap}">
 									<tr>
-										<td>${u.maPN}</td>
-										<td>${u.ngay}</td>
-										<td>${u.nhanVien.fullName}</td>
-										<td><a href="admin/nhap/detail/${u.maPN}.htm"><button
+										<td>${u.id}</td>
+										<td>${u.date}</td>
+										<td>${u.staff.fullName}</td>
+										<td><a href="admin/nhap/detail/${u.id}.htm"><button
 													class="ui pink basic button">
 													<i class="file alternate outline icon"></i>Xem Chi Tiết
 												</button></a></td>
