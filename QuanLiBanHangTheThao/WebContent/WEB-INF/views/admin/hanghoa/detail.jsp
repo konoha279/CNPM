@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Chi tiết ${hangHoa.name}</title>
 <base href="${pageContext.servletContext.contextPath}/">
 <style>
 h1.headerD {
@@ -167,7 +167,7 @@ div.detail {
 					</div>
 					<div class="form-group">
 						<label  class="form-label">Số lượng</label>
-						<input class="form-control" type="number" id="countAdd" min="0"/>
+						<input class="form-control" type="number" id="countAdd" min="0" value="0" required="required"/>
 					</div>
 				</div>
 			  
