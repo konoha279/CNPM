@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.bean.LinkedList;
+import com.entity.Product;
 import com.entity.ProductList;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Transactional
@@ -23,6 +25,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ShopController {
 	@Autowired
 	SessionFactory factory;
+	
+	@ModelAttribute("Products")
+	public List<Product> getProducts()
+	{
+		Session session = factory.getCurrentSession();
+		String hql = "From Product";
+		Query query = session.createQuery(hql);
+		List<Product> list = query.list();
+		return list;
+	}
+	
+	@ModelAttribute("product")
+	public List<ProductList> getProductLists()
+	{
+		Session session = factory.getCurrentSession();
+		String hql ="FROM ProductList";
+		Query query = session.createQuery(hql);
+		List<ProductList> productlist= query.list();
+		return productlist;
+	}
 	
 	public void Setup(ModelMap model) 
 	{
@@ -66,12 +88,6 @@ public class ShopController {
 		menu.add(thanhtoan);
 		
 		model.addAttribute("Menu",menu);
-		
-		Session session = factory.getCurrentSession();
-		String hql ="FROM ProductList";
-		Query query = session.createQuery(hql);
-		List<ProductList> productlist= query.list();
-		model.addAttribute("product",productlist);
 	}
 	
 

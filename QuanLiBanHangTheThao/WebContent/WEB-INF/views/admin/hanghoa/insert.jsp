@@ -49,7 +49,7 @@
 							<div class="column">
 								<div class="ui two column centered grid">
 									<div class="column">
-										<label>Thể Loại</label>
+										<label>Loại sản phẩm</label>
 										<form:select path="productlist.id" items="${dsLoai}"
 											itemValue="id" itemLabel="name" />
 									</div>
