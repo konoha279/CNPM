@@ -2,10 +2,12 @@ package com.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.entity.CTHangHoa;
 import com.entity.Product;
 import com.entity.ProductList;
+import com.entity.Size;
 
 @Transactional
 @Controller
@@ -55,6 +59,16 @@ public class HangHoaController {
 		String hql = "FROM CTHangHoa";
 		Query query = session.createQuery(hql);
 		List<CTHangHoa> list = query.list();
+		return list;
+	}
+	
+	@ModelAttribute("size")
+	public List<Size> listSize()
+	{
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Size";
+		Query query = session.createQuery(hql);
+		List<Size> list = query.list();
 		return list;
 	}
 
@@ -227,4 +241,117 @@ public class HangHoaController {
 		model.addAttribute("hangHoa", hangHoa);
 		return "admin/hanghoa/detail";
 	}
+	
+	@RequestMapping(value = "deleteDetail", method = RequestMethod.POST)
+	public @ResponseBody byte[] deleteDetail(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		String result= "";
+		Session session = factory.getCurrentSession();
+		Size size = new Size(request.getParameter("size"));
+		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
+		
+		CTHangHoa ctHangHoa = new CTHangHoa();
+		ctHangHoa.setSize(size);
+		ctHangHoa.setMaHangHoa(product);
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		try {
+			session.delete(ctHangHoa);
+			transaction.commit();
+			result = "Xóa thành công.";
+		} catch (Exception e) {
+			transaction.rollback();
+			result = "Xóa thất bại";
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "editDetail", method = RequestMethod.POST)
+	public @ResponseBody byte[] editDetail(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		String result= "";
+		Session session = factory.getCurrentSession();
+		Size size = new Size(request.getParameter("size"));
+		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
+		int count = Integer.parseInt(request.getParameter("count")) ;
+		
+		CTHangHoa ctHangHoa = new CTHangHoa(product, size, count);
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		try {
+			session.update(ctHangHoa);
+			transaction.commit();
+			result = "Sửa thành công.";
+		} catch (Exception e) {
+			transaction.rollback();
+			result = "Sửa thất bại";
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "addDetail", method = RequestMethod.POST)
+	public @ResponseBody byte[] addDetail(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		String result= "";
+		Session session = factory.getCurrentSession();
+		Size size = (Size) session.get(Size.class, request.getParameter("size"));
+		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
+		int count = Integer.parseInt(request.getParameter("count")) ;
+
+		String hql = "From CTHangHoa cthanghoa where cthanghoa.MaHangHoa.id = '"+product.getID()+"' AND cthanghoa.size.size = '"+size.size+"'";
+		Query query = session.createQuery(hql);
+		
+		if (query.list().isEmpty())
+		{
+			CTHangHoa ctHangHoa = new CTHangHoa(product, size, count);
+			
+			session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
+			
+			try {
+				session.save(ctHangHoa);
+				transaction.commit();
+				result = "Thêm thành công.";
+			} catch (Exception e) {
+				transaction.rollback();
+				result = "Thêm thất bại.\n"+e;
+				// TODO: handle exception
+			}
+			finally {
+				session.close();
+			}
+		}
+		else
+		{
+			session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
+			
+			CTHangHoa ctHangHoa = (CTHangHoa) query.list().get(0);
+			ctHangHoa.setSoLuong(ctHangHoa.getSoLuong() + count);
+			try {
+				session.update(ctHangHoa);
+				transaction.commit();
+				result = "Thêm thành công.";
+			} catch (Exception e) {
+				transaction.rollback();
+				result = "Thêm thất bại.\n"+e;
+				// TODO: handle exception
+			}
+		}
+		
+		
+		return result.getBytes("UTF-8");
+	}
+	
 }

@@ -29,7 +29,7 @@ public class Size {
 	}
 
 	public String getSize() {
-		return size;
+		return size.trim();
 	}
 
 	public void setSize(String size) {

@@ -22,11 +22,11 @@
 								</div>
 								<div class="four wide field">
 									<label>Size</label> <input type="number"
-										path="hangHoa.tenHangHoa" />
+										path="hangHoa.name" />
 								</div>
 								<div class="four wide field">
 									<label>Số Lượng</label> <input type="number"
-										path="hangHoa.tenHangHoa" />
+										path="hangHoa.name" />
 								</div>
 								<div class="field" style="margin-top: 24px">
 									<a href="#"><button class="ui green button">

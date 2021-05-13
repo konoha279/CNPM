@@ -29,22 +29,24 @@ public class CTHangHoa implements Serializable {
 	}
 	
 	
-	
-	public CTHangHoa(Product maHangHoa, Size maSize, int soLuong) {
-		MaHangHoa = maHangHoa;
-		size = maSize;
+	public CTHangHoa(Product maHangHoa, Size size, int soLuong) {
+		super();
+		this.MaHangHoa = maHangHoa;
+		this.size = size;
 		this.soLuong = soLuong;
 	}
-
 
 
 	public Product getMaHangHoa() {
 		return MaHangHoa;
 	}
+
+
 	public void setMaHangHoa(Product maHangHoa) {
-		MaHangHoa = maHangHoa;
+		this.MaHangHoa = maHangHoa;
 	}
-	
+
+
 	public int getSoLuong() {
 		return soLuong;
 	}
