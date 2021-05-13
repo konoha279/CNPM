@@ -278,7 +278,12 @@ public class HangHoaController {
 		Session session = factory.getCurrentSession();
 		Size size = new Size(request.getParameter("size"));
 		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
-		int count = Integer.parseInt(request.getParameter("count")) ;
+		String temp = request.getParameter("count");
+		if (temp.isEmpty())
+		{
+			return "Không được để số lượng trống".getBytes("UTF-8");
+		}
+		int count = Integer.parseInt(temp) ;
 		
 		CTHangHoa ctHangHoa = new CTHangHoa(product, size, count);
 		
@@ -307,7 +312,13 @@ public class HangHoaController {
 		Session session = factory.getCurrentSession();
 		Size size = (Size) session.get(Size.class, request.getParameter("size"));
 		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
-		int count = Integer.parseInt(request.getParameter("count")) ;
+		
+		String temp = request.getParameter("count");
+		if (temp.isEmpty())
+		{
+			return "Không được để số lượng trống".getBytes("UTF-8");
+		}
+		int count = Integer.parseInt(temp) ;
 
 		String hql = "From CTHangHoa cthanghoa where cthanghoa.MaHangHoa.id = '"+product.getID()+"' AND cthanghoa.size.size = '"+size.size+"'";
 		Query query = session.createQuery(hql);
