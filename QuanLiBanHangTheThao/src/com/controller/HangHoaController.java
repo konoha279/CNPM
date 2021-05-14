@@ -134,9 +134,9 @@ public class HangHoaController {
 				re.addFlashAttribute("message", "This file type is not supported !");
 			} else {
 				try {
-					String photoPath = context.getRealPath("/images/" + photo.getOriginalFilename());
+					String photoPath = context.getRealPath("/images/" +photo.getOriginalFilename());
 					photo.transferTo(new File(photoPath));
-					hangHoa.setImage("images/" + photo.getOriginalFilename());
+					hangHoa.setImage(photo.getOriginalFilename());
 				} catch (Exception e) {
 					re.addFlashAttribute("message", "Save file error: " + e);
 					return "redirect:/admin/hanghoa/insert.htm";

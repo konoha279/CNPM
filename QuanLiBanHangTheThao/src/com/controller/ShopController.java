@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Transactional
 @Controller
@@ -113,10 +115,14 @@ public class ShopController {
 		return "/Shop/cart";
 	}
 	
-	@RequestMapping("shop")
-	public String shop(ModelMap model)
+	@RequestMapping(value = "shop{id}", method = RequestMethod.GET)
+	public String shop(ModelMap model,@PathVariable("id") String id)
 	{
 		Setup(model);
+		Session session = factory.getCurrentSession();
+		ProductList productList = (ProductList) session.get(ProductList.class, id);
+		List<Product> listProducts = new ArrayList<>(productList.getProducts());
+		model.addAttribute("listProducts", listProducts);
 		return "/Shop/shop";
 	}
 
