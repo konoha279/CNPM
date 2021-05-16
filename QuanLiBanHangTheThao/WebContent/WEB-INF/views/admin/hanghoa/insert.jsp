@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Thêm sản phẩm</title>
 </head>
 <body>
 	<jsp:include page="../header.jsp" />
@@ -18,6 +18,7 @@
 						method="post" enctype="multipart/form-data"
 						modelAttribute="Product">
 						<div class="ui two column centered grid">
+						
 							<div class="column">
 								<label>Mã Hàng Hóa</label>
 								<form:input type="text" path="ID" />
@@ -25,6 +26,7 @@
 									<form:errors path="ID" />
 								</div>
 							</div>
+							
 							<div class="column">
 								<label>Tên Hàng Hóa</label>
 								<form:input path="name" />
@@ -32,20 +34,13 @@
 									<form:errors path="name" />
 								</div>
 							</div>
+							
 							<div class="column">
-								<label>Đơn Giá</label>
-								<form:input type="number" path="price" value="1000" min="1000" />
+								<label>Thương hiệu</label>
+								<form:select path="brand.id" items="${Brands}"
+									itemValue="id" itemLabel="name" />
 							</div>
-							<div class="column">
-								<label>Giảm Giá</label>
-								<form:input type="number" path="discount" value="0" min="0" />
-								<div style="color: red">
-									<form:errors path="discount" />
-								</div>
-							</div>
-							<div class="column">
-								<label>Hình ảnh</label> <input type="file" name="photo">
-							</div>
+							
 							<div class="column">
 								<div class="ui two column centered grid">
 									<div class="column">
@@ -62,6 +57,27 @@
 									</div>
 								</div>
 							</div>
+							
+							<div class="column">
+								<label>Hình ảnh</label> <input type="file" name="photo">
+							</div>
+							
+							<div class="column">
+								<div class="ui two column centered grid">
+									<div class="column">
+										<label>Đơn Giá</label>
+										<form:input type="number" path="price" value="1000" min="1000" />
+									</div>
+									<div class="column">
+										<label>Giảm Giá</label>
+										<form:input type="number" path="discount" value="0" min="0" />
+										<div style="color: red">
+											<form:errors path="discount" />
+										</div>
+									</div>
+								</div>
+							</div>
+							
 						</div>
 						<div class="field">
 							<label>Mô tả</label>

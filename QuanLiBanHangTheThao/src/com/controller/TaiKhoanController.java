@@ -86,8 +86,6 @@ public class TaiKhoanController {
 		String name = request.getParameter("name");
 		String birthday = request.getParameter("birthday");
 
-		/*String branch = request.getParameter("branch");
-		String status = request.getParameter("status");*/
 		
 		if (username.isEmpty())
 			return "Vui lòng nhập tài khoản".getBytes("UTF-8");

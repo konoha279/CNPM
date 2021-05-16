@@ -37,6 +37,10 @@ public class Product {
 	@JoinColumn(name = "MaDanhMuc")
 	private ProductList productlist;
 	
+	@ManyToOne
+	@JoinColumn(name = "ThuongHieu")
+	private Brand brand;
+	
 	@OneToMany(mappedBy = "MaHangHoa", fetch = FetchType.EAGER)
 	private Collection<CTHangHoa> CT_HangHoa;
 	
@@ -69,6 +73,21 @@ public class Product {
 		this.notes = notes;
 		this.status = status;
 		this.productlist = productlist;
+		CT_HangHoa = cT_HangHoa;
+	}
+
+	public Product(String id, String name, int price, int discount, String image, String notes, Boolean status,
+			ProductList productlist, Brand brand, Collection<CTHangHoa> cT_HangHoa) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.discount = discount;
+		this.image = image;
+		this.notes = notes;
+		this.status = status;
+		this.productlist = productlist;
+		this.brand = brand;
 		CT_HangHoa = cT_HangHoa;
 	}
 
@@ -142,6 +161,22 @@ public class Product {
 
 	public void setCT_HangHoa(Collection<CTHangHoa> cT_HangHoa) {
 		CT_HangHoa = cT_HangHoa;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Brand getBrand() {
+		return brand;
+	}
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
 	}
 	
 	

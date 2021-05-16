@@ -29,18 +29,32 @@
 									<form:errors path="name" />
 								</div>
 							</div>
+							
+							
 							<div class="column">
-								<label>Đơn Giá</label>
-								<form:input type="number" path="price" min="1000" />
-								<div style="color: red">
-									<form:errors path="price" />
+								<label>Thương hiệu</label>
+								<form:select path="brand.id" items="${Brands}"
+									itemValue="id" itemLabel="name" />
+							</div>
+							
+							
+							
+							<div class="column">
+								<div class="ui two column centered grid">
+									<div class="column">
+										<label>Đơn Giá</label>
+											<form:input type="number" path="price" min="1000" />
+											<div style="color: red">
+												<form:errors path="price" />
+											</div>
+									</div>
+									<div class="column">
+											<label>Giảm Giá</label>
+											<form:input type="number" path="discount" min="0" />
+									</div>
 								</div>
 							</div>
-							<div class="column">
-								<label>Giảm Giá</label>
-								<form:input type="number" path="discount" min="0" />
-
-							</div>
+							
 							<div class="column">
 								<div class="ui two column centered grid">
 									<div class="column">

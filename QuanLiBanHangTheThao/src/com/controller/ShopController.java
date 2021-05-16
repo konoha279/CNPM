@@ -34,9 +34,41 @@ public class ShopController {
 		Session session = factory.getCurrentSession();
 		String hql = "From Product";
 		Query query = session.createQuery(hql);
-		List<Product> list = query.list();
+		List<Product> list = query.list();		
+		int size = list.size();
+		for (int i=0;i<size;i++)
+		{
+			if (!list.get(i).getStatus())
+			{
+				list.remove(i);
+				size = list.size();
+				i--;
+			}
+		}
 		return list;
 	}
+	
+//	@ModelAttribute("onHeaderProducts")
+//	public List<Product> onHeader()
+//	{
+//		Session session = factory.getCurrentSession();
+//		String hql = "From Product";
+//		Query query = session.createQuery(hql);
+//		List<Product> list = query.list();		
+//		int size = list.size();
+//		for (int i=0;i<size;i++)
+//		{
+//			if (!list.get(i).getStatus())
+//			{
+//				list.remove(i);
+//				size = list.size();
+//				i--;
+//			}
+//		}
+//		
+//		
+//		return list;
+//	}
 	
 	@ModelAttribute("product")
 	public List<ProductList> getProductLists()
@@ -122,6 +154,32 @@ public class ShopController {
 		Session session = factory.getCurrentSession();
 		ProductList productList = (ProductList) session.get(ProductList.class, id);
 		List<Product> listProducts = new ArrayList<>(productList.getProducts());
+		
+//		Loại bỏ sự trùng lặp sản phẩm
+		int size = listProducts.size();
+		for (int i=0; i< size ; i++)
+		{
+			for (int j=i+1; j < size; j++)
+			{
+				if (listProducts.get(i).getId().equals(listProducts.get(j).getId()))
+				{
+					listProducts.remove(j);
+					size = listProducts.size();
+					j--;
+				}
+			}
+		}
+		
+		for (int i=0;i<size;i++)
+		{
+			if (!listProducts.get(i).getStatus())
+			{
+				listProducts.remove(i);
+				size = listProducts.size();
+				i--;
+			}
+		}
+		
 		model.addAttribute("listProducts", listProducts);
 		return "/Shop/shop";
 	}

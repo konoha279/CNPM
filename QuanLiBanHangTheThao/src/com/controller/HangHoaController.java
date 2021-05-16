@@ -30,6 +30,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.entity.Brand;
 import com.entity.CTHangHoa;
 import com.entity.Product;
 import com.entity.ProductList;
@@ -71,16 +72,21 @@ public class HangHoaController {
 		List<Size> list = query.list();
 		return list;
 	}
+	
+	@ModelAttribute("Brands")
+	public List<Brand> listBrand()
+	{
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Brand";
+		Query query = session.createQuery(hql);
+		List<Brand> list = query.list();
+		return list;
+	}
 
-//	@RequestMapping("index")
-//	public String index(ModelMap model) {
-//		Session session = factory.getCurrentSession();
-//		String hql = "from HangHoa";
-//		Query query = session.createQuery(hql);
-//		List<HangHoa> list = query.list();
-//		model.addAttribute("dshangHoa", list);
-//		return "admin/hanghoa/index";
-//	}
+	@RequestMapping("size")
+	public String indexSize(ModelMap model, HttpSession httpSession) {
+		return "admin/hanghoa/size";
+	}
 
 	@RequestMapping("index")
 	public String index(ModelMap model, HttpSession httpSession) {
@@ -114,7 +120,7 @@ public class HangHoaController {
 	public String insert(ModelMap model, @ModelAttribute("Product") Product hangHoa,
 			@RequestParam("photo") MultipartFile photo, BindingResult errors, RedirectAttributes re)
 			throws IllegalStateException, IOException {
-		if (hangHoa.getID().trim().length() == 0) {
+		if (hangHoa.getId().trim().length() == 0) {
 			errors.rejectValue("ID", "ID", "Vui Lòng Nhập Mã Hàng Hóa");
 		}
 		if (hangHoa.getName().trim().length() == 0) {
@@ -185,7 +191,7 @@ public class HangHoaController {
 			Transaction t = session.beginTransaction();
 			if (photo.isEmpty()) {
 				Session session1 = factory.getCurrentSession();
-				Product temp = (Product) session1.get(Product.class, hangHoa.getID());
+				Product temp = (Product) session1.get(Product.class, hangHoa.getId());
 				hangHoa.setImage(temp.getImage());
 				System.out.println(temp.getImage());
 			} else {
@@ -315,7 +321,13 @@ public class HangHoaController {
 	public @ResponseBody byte[] addDetail(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		String result= "";
 		Session session = factory.getCurrentSession();
-		Size size = (Size) session.get(Size.class, request.getParameter("size"));
+		String size_str = request.getParameter("size");
+		Size size = (Size) session.get(Size.class,"5");
+		if (!size_str.isEmpty())
+		{
+			size = (Size) session.get(Size.class,size_str);
+		}
+		
 		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
 		
 		String temp = request.getParameter("count");
@@ -330,7 +342,12 @@ public class HangHoaController {
 			return "Số lượng phải lớn hơn hoặc bằng 0".getBytes("UTF-8");
 		}
 		
-		String hql = "From CTHangHoa cthanghoa where cthanghoa.MaHangHoa.id = '"+product.getID()+"' AND cthanghoa.size.size = '"+size.size+"'";
+		String hql = "";
+
+		if (!size_str.isEmpty())
+			hql = "From CTHangHoa cthanghoa where cthanghoa.MaHangHoa.id = '"+product.getId()+"' AND cthanghoa.size.id = '"+size.getId()+"'";
+		else
+			hql = "From CTHangHoa cthanghoa where cthanghoa.MaHangHoa.id = '"+product.getId()+"' AND cthanghoa.size.id = '5'";
 		Query query = session.createQuery(hql);
 		
 		if (query.list().isEmpty())
@@ -346,6 +363,7 @@ public class HangHoaController {
 				result = "Thêm thành công.";
 			} catch (Exception e) {
 				transaction.rollback();
+				System.out.print(e);
 				result = "Thêm thất bại.\n"+e;
 				// TODO: handle exception
 			}
@@ -369,8 +387,39 @@ public class HangHoaController {
 				result = "Thêm thất bại.\n"+e;
 				// TODO: handle exception
 			}
+			finally {
+				session.close();
+			}
 		}
 		
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value ="editSize", method = RequestMethod.POST)
+	public @ResponseBody byte[] editSize(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
+	{
+		String result ="Error";
+		String id = request.getParameter("ID");
+		String name = request.getParameter("name");
+		String notes = request.getParameter("notes");
+		Size size = new Size(id, name, notes);
+		
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.update(size);
+			transaction.commit();
+			result = "Sửa thành công.";
+		} catch (Exception e) {
+			result = "Sửa thất bại.";
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
 		
 		return result.getBytes("UTF-8");
 	}

@@ -57,7 +57,9 @@ div.detail {
 									<table class="ui blue table">
 										<thead>
 											<tr>
-												<th>Size</th>
+												<c:if test="${hangHoa.productlist.id == 'QA' }">
+													<th>Size</th>
+												</c:if>
 												<th>Số Lượng</th>
 												<th>Tương tác</th>
 											</tr>
@@ -65,11 +67,13 @@ div.detail {
 										<tbody>										
 											<c:forEach var="u" items="${hangHoa.CT_HangHoa}">
 												<tr>
-													<td id="Size${hangHoa.ID}${u.size.size}">${u.size.size}</td>
-													<td id="detailSize${hangHoa.ID}${u.size.size}">${u.soLuong}</td>
+													<c:if test="${hangHoa.productlist.id == 'QA' }">
+														<td >${u.size.name}</td>
+													</c:if>
+													<td >${u.soLuong}</td>
 													<td>
-														<button data-bs-toggle="modal" data-bs-target="#delete${u.size.size}"  class="btn btn-outline-danger btn-lg"><i class="fa fa-ban" aria-hidden="true"></i> Xóa </button>
-														<button data-bs-toggle="modal" data-bs-target="#edit${u.size.size}" class="btn btn-outline-secondary btn-lg"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa </button>
+														<button data-bs-toggle="modal" data-bs-target="#delete${u.size.id}"  class="btn btn-outline-danger btn-lg"><i class="fa fa-ban" aria-hidden="true"></i> Xóa </button>
+														<button data-bs-toggle="modal" data-bs-target="#edit${u.size.id}" class="btn btn-outline-secondary btn-lg"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa </button>
 													</td>
 												</tr>
 												
@@ -90,46 +94,41 @@ div.detail {
 		</div>
 	</div>
 	<c:forEach var="u" items="${hangHoa.CT_HangHoa}">
-	<!-- -------------------------------------------------------------------------------------- Chỉnh sửa ${u.size.size} -------------------------------------------------------------------------------------- -->
+	<!-- -------------------------------------------------------------------------------------- Chỉnh sửa ${u.size.name} -------------------------------------------------------------------------------------- -->
 	
-		<div class="modal fade" id="edit${u.size.size}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal fade" id="edit${u.size.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h3 class="modal-title" id="staticBackdropLabel">Sửa chi tiết (size: ${u.size.size})</h3>
+				  <h3 class="modal-title" id="staticBackdropLabel">Sửa chi tiết (size: ${u.size.name})</h3>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div>
 					<div class="container">
 						<div class="form-group">
 							<label  class="form-label">Size</label>
-							<input class="form-control" type="text" value="${u.size.size}"  readonly="readonly"/>
-							<%-- <select class="form-control" name="selectedSize" id="selectedSize" di>
-								<c:forEach items="${size}" var="size">
-									<option  ${u.size.size == size.size ? 'selected' : '' }  value="${size.size}">${size.size}</option>
-								</c:forEach>
-							</select> --%>
+							<input class="form-control" type="text" value="${u.size.name}"  readonly="readonly"/>
 						</div>
 						<div class="form-group">
 							<label  class="form-label">Số lượng</label>
-							<input class="form-control" type="number" value="${u.soLuong}" id="editCount${u.size.size}" min="0"/>
+							<input class="form-control" type="number" value="${u.soLuong}" id="editCount${u.size.id}" min="0"/>
 						</div>
 					</div>
 				  
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				  <button type="button" class="btn btn-primary" onclick="editSize('${hangHoa.ID}','${u.size.size}')">Sửa</button>
+				  <button type="button" class="btn btn-primary" onclick="editSize('${hangHoa.ID}','${u.size.id}')">Sửa</button>
 				</div>
 			  </div>
 			</div>
 		</div>
-<!-- -------------------------------------------------------------------------------------- Xóa ${u.size.size} -------------------------------------------------------------------------------------- -->
-		<div class="modal fade" id="delete${u.size.size}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- -------------------------------------------------------------------------------------- Xóa ${u.size.name} -------------------------------------------------------------------------------------- -->
+		<div class="modal fade" id="delete${u.size.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h3 class="modal-title" id="staticBackdropLabel">Xóa chi tiết (size: ${u.size.size})</h3>
+				  <h3 class="modal-title" id="staticBackdropLabel">Xóa chi tiết (size: ${u.size.name})</h3>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div>
@@ -141,7 +140,7 @@ div.detail {
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chưa chắc</button>
-				  <button type="button" class="btn btn-primary" onclick="deleteSize('${hangHoa.ID}','${u.size.size}')">Chắc luôn</button>
+				  <button type="button" class="btn btn-primary" onclick="deleteSize('${hangHoa.ID}','${u.size.id}')">Chắc luôn</button>
 				</div>
 			  </div>
 			</div>
@@ -157,14 +156,18 @@ div.detail {
 			</div>
 			<div>
 				<div class="container">
-					<div class="form-group">
-						<label  class="form-label">Size</label>
-						<select class="form-control" name="selectedSize" id="sizeAdd">
-							<c:forEach items="${size}" var="size">
-								<option value="${size.size}">${size.size}</option>
-							</c:forEach>
-						</select>
-					</div>
+					<c:if test="${hangHoa.productlist.id == 'QA' }">
+						<div class="form-group">
+							<label  class="form-label">Size</label>
+							
+							<select class="form-control" name="selectedSize" id="sizeAdd">
+								<c:forEach items="${size}" var="size">
+									<option value="${size.id}">${size.name}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</c:if>
+					
 					<div class="form-group">
 						<label  class="form-label">Số lượng</label>
 						<input class="form-control" type="number" id="countAdd" min="0" value="0" required="required"/>
@@ -236,7 +239,15 @@ div.detail {
 	
 	function addSize(id)
 	{
-		var m_size = document.getElementById('sizeAdd').value;
+		var m_size = document.getElementById('sizeAdd');
+		if (m_size != null) 
+		{
+			m_size = m_size.value;
+		}
+		else
+		{
+			m_size = "";
+		}
 		var m_count = document.getElementById('countAdd').value;
 		
 		$.ajax({

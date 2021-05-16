@@ -28,13 +28,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="resources/Shop/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/Shop/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="resources/Shop/images/ico/apple-touch-icon-57-precomposed.png">
-    <style type="text/css">
-    	img#features-items-image
-		{
-			width: 215px;
-			height: 210px;
-		}
-    </style>
+    
+
 </head><!--/head-->
 
 <body>
@@ -255,13 +250,25 @@
 								<div class="product-image-wrapper">
 									<div class="single-products">
 											<div class="productinfo text-center">
-												<img id="features-items-image" src="images/${p.image}" alt="" />
+												<img class="image-content-product" src="images/${p.image}" alt="" />
+												<c:choose>
+													<c:when test="${p.discount != 0 }">
+														<h2><del><f:formatNumber value="${p.price}" type="currency"/></del></h2>
+													</c:when>
+													<c:otherwise><div class="content-none"></div></c:otherwise>
+												</c:choose>
 												<h2> <f:formatNumber value="${p.price - p.price*(p.discount/100)}" type="currency"/></h2>
 												<p>${p.name}</p>
 												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 											</div>
 											<div class="product-overlay">
 												<div class="overlay-content">
+													<c:choose>
+														<c:when test="${p.discount != 0 }">
+															<h2><del><f:formatNumber value="${p.price}" type="currency"/></del></h2>
+														</c:when>
+														<c:otherwise><div class="content-none"></div></c:otherwise>
+													</c:choose>
 													<h2><f:formatNumber value="${p.price - p.price*(p.discount/100)}" type="currency"/></h2>
 													<p>${p.name}</p>
 													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>

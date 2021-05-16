@@ -33,7 +33,14 @@
 			width: 215px;
 			height: 210px;
 		}
+    	div.content-none
+    	{
+    		height: 26px;
+    		margin-top: 20px;
+    		margin-bottom: 10px;
+    	}
     </style>
+       
 </head><!--/head-->
 <body>
 <header id="header"><!--header-->

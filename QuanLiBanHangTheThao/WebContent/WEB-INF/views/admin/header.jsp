@@ -70,6 +70,10 @@ body ::-webkit-scrollbar {
 	}
 }
 </style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
 <body>
 	<!-- sidebar -->
 	<div class="ui sidebar inverted vertical menu sidebar-menu"
@@ -81,33 +85,55 @@ body ::-webkit-scrollbar {
 			<div>
 				<i class="icon home"></i> Tổng Quát
 			</div>
-		</a> <a href="admin/hanghoa/index.htm" id="sp" class="item">
-			<div>
-				<i class="boxes icon"></i> Sản Phẩm
+		</a> 
+		<div onmouseover="showitem()" onmouseout="hideitem()">
+			<a  href="admin/hanghoa/index.htm" id="sp" class="item">
+				<div>
+					<i class="boxes icon"></i> Sản Phẩm
+				</div>
+			</a> 
+			<div id="hide-content" style="display: none">
+				<a href="admin/hanghoa/size.htm" id="ncc" class="item">
+					<div>
+						Size
+					</div>
+				</a>
 			</div>
-		</a> <a href="admin/hoadon/index.htm" id="dh" class="item">
+		</div>
+		
+		<a href="admin/hoadon/index.htm" id="dh" class="item">
 			<div>
 				<i class="cart arrow down icon"></i> Đơn Hàng
 			</div>
-		</a> <a href="admin/nhanvien/index.htm" id="nv" class="item">
+		</a> 
+		<a href="admin/nhanvien/index.htm" id="nv" class="item">
 			<div>
 				<i class="user icon"></i> Nhân Viên
 			</div>
-		</a> <a href="admin/taikhoan/index.htm" id="tk" class="item">
+		</a> 
+		<a href="admin/taikhoan/index.htm" id="tk" class="item">
 			<div>
 				<i class="address card outline icon"></i> Tài khoản
 			</div>
-		</a> <a href="admin/chinhanh/index.htm" id="cn" class="item">
+		</a> 
+		<a href="admin/chinhanh/index.htm" id="cn" class="item">
 			<div>
 				<i class="icon building"></i> Chi Nhánh
 			</div>
-		</a> <a href="admin/nhap/index.htm" id="pn" class="item">
+		</a> 
+		<a href="admin/nhap/index.htm" id="pn" class="item">
 			<div>
 				<i class="icon truck icon"></i> Phiếu Nhập
 			</div>
-		</a>  <a href="admin/doanhso.htm" id="ds" class="item">
+		</a>  
+		<a href="admin/doanhso.htm" id="ds" class="item">
 			<div>
 				<i class="icon chart line"></i> Doanh Số
+			</div>
+		</a>  
+		<a href="admin/thuonghieu/index.htm" id="ncc" class="item">
+			<div>
+				<i class="fa fa-font-awesome"></i> Thương hiệu
 			</div>
 		</a>
 		<div class="item">
@@ -121,7 +147,6 @@ body ::-webkit-scrollbar {
 			</form>
 		</div>
 	</div>
-
 	<!-- sidebar -->
 	<!-- top nav -->
 
@@ -160,15 +185,19 @@ body ::-webkit-scrollbar {
 		{
 			if ("${admin}" != "admin")
 			{
-				//document.getElementById('tq').style.display = "none";
-				//document.getElementById('sp').style.display = "none";
-				//document.getElementById('dh').style.display = "none";
 				document.getElementById('nv').style.display = "none";
 				document.getElementById('tk').style.display = "none";
 				document.getElementById('cn').style.display = "none";
-				//document.getElementById('pn').style.display = "none";
 				document.getElementById('ds').style.display = "none";
 			}
+		}
+		function showitem() {
+			document.getElementById('hide-content').style.display = "";
+			
+		}
+		function hideitem()
+		{
+			document.getElementById('hide-content').style.display = "none";
 		}
 	</script>
 </body>

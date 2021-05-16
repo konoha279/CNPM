@@ -189,13 +189,25 @@
 							<div class="product-image-wrapper">
 								<div class="single-products">
 									<div class="productinfo text-center">
-										<img src="images/${lp.image}" alt="" />
+										<img class="image-content-product" src="images/${lp.image}" alt="" />
+										<c:choose>
+											<c:when test="${lp.discount != 0 }">
+												<h2><del><f:formatNumber value="${lp.price}" type="currency"/></del></h2>
+											</c:when>
+											<c:otherwise><div class="content-none"></div></c:otherwise>
+										</c:choose>
 										<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
 										<p>${lp.name}</p>
 										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
+											<c:choose>
+												<c:when test="${lp.discount != 0 }">
+													<h2><del><f:formatNumber value="${lp.price}" type="currency"/></del></h2>
+												</c:when>
+												<c:otherwise><div class="content-none"></div></c:otherwise>
+											</c:choose>
 											<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
 											<p>${lp.name}</p>
 											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>

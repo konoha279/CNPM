@@ -23,7 +23,7 @@
 			</div>
 			<div class="ui grid stackable padded">
 				<div class="column">
-					<table class="ui blue table">
+					<table class="ui blue table table-bordered">
 						<thead>
 							<tr>
 								<th>Mã Nhân Viên</th>

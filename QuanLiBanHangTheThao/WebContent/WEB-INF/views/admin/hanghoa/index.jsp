@@ -24,7 +24,7 @@
 			</div>
 			<div class="ui grid stackable padded">
 				<div class="column">
-					<table class="ui blue table">
+					<table class="ui blue table table-bordered">
 						<thead>
 							<tr>
 								<th>Mã Hàng Hóa</th>
@@ -34,8 +34,9 @@
 								<th>Giảm Giá</th>
 								<th>Giá tiền sau khi giảm</th>
 								<th>Thể Loại</th>
+								<th>Thương hiệu </th>
 								<th>Tình Trạng</th>
-								<th></th>
+								<th>Tương tác</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -52,6 +53,7 @@
 											<td><f:formatNumber type="currency" maxFractionDigits="0"
 											currencySymbol="" value="${u.price - u.price * (u.discount / 100)}" /> đ</td>
 									<td>${u.productlist.name}</td>
+									<td>${u.brand.name}</td>
 									<td>${u.status==false?'Không Bán':'Bán'}</td>
 									<td><a href="admin/hanghoa/update/${u.ID}.htm"><button
 												class="ui green basic button">

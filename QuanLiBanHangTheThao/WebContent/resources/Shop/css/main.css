@@ -2440,3 +2440,8 @@ textarea {
     color: #FE980F;
 }
 
+img.image-content-product
+{
+    height: 205px;
+    width: 205px;
+}
