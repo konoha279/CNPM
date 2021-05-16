@@ -77,7 +77,7 @@
 						</div>
 						<div class="field">
 							<label>Ghi Chú</label>
-							<form:textarea path="notes"></form:textarea>
+							<form:textarea class="ckeditor"  path="notes"></form:textarea>
 						</div>
 						<div>
 							<button class="ui button" type="submit">Cập Nhật</button>

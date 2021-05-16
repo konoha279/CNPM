@@ -404,8 +404,16 @@ public class HangHoaController {
 		String name = request.getParameter("name");
 		String notes = request.getParameter("notes");
 		Size size = new Size(id, name, notes);
+		Session session = factory.getCurrentSession();
+		String hql = "From Size where name ='"+name+"'";
+		Query query = session.createQuery(hql);
 		
-		Session session = factory.openSession();
+		if (!query.list().isEmpty())
+		{
+			return "Tên size đã có sẵn.".getBytes("UTF-8");
+		}
+		
+		session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(size);
@@ -413,6 +421,75 @@ public class HangHoaController {
 			result = "Sửa thành công.";
 		} catch (Exception e) {
 			result = "Sửa thất bại.";
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value ="delSize", method = RequestMethod.POST)
+	public @ResponseBody byte[] delSize(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
+	{
+		String result ="Error";
+		String id = request.getParameter("ID");
+		Session session = factory.getCurrentSession();
+		
+		Size size = (Size) session.get(Size.class, request.getParameter("ID"));
+		if (!size.getCtHangHoa().isEmpty())
+		{
+			return "Không thể xóa size đã có sản phẩm sử dụng.".getBytes("UTF-8");
+		}
+		size = new Size(size.getId());
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.delete(size);
+			transaction.commit();
+			result = "Xóa thành công.";
+		} catch (Exception e) {
+			result = String.valueOf(e);
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value ="addSize", method = RequestMethod.POST)
+	public @ResponseBody byte[] addSize(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
+	{
+		String result ="Error";
+		String name = request.getParameter("name");
+		Session session = factory.getCurrentSession();
+		String hql = "From Size where name ='"+name+"'";
+		Query query = session.createQuery(hql);
+		
+		if (!query.list().isEmpty())
+		{
+			return "Tên size đã tồn tại.".getBytes("UTF-8");
+		}
+		String notes = request.getParameter("notes");
+		Size size = new Size(name, notes);
+		
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(size);
+			transaction.commit();
+			result = "Thêm thành công.";
+		} catch (Exception e) {
+			result = String.valueOf(e);
 			System.out.print(e);
 			transaction.rollback();
 			// TODO: handle exception

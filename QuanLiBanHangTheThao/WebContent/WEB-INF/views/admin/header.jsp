@@ -20,6 +20,8 @@
 	integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ="
 	crossorigin="anonymous" />
 </head>
+<script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
+
 <style type="text/css">
 @import
 	url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap")
