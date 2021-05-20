@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f"%>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Product Details | E-Shopper</title>
+    <title>Chi tiết ${detailProduct.name}</title>
     <link href="resources/Shop/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/Shop/css/font-awesome.min.css" rel="stylesheet">
     <link href="resources/Shop/css/prettyPhoto.css" rel="stylesheet">
@@ -143,16 +146,12 @@
 						</div><!--/category-products-->
 					
 						<div class="brands_products"><!--brands_products-->
-							<h2>Brands</h2>
+							<h2>Thương hiệu</h2>
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
-									<li><a href=""> <span class="pull-right">(50)</span>Acne</a></li>
-									<li><a href=""> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-									<li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
-									<li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
-									<li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
-									<li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
-									<li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
+									<c:forEach items="${listBrand}" var="b">
+										<li><a href="brand${b.id}.htm"> <span class="pull-right">(${b.getSizeProduct()})</span>${b.name }</a></li>								
+									</c:forEach>
 								</ul>
 							</div>
 						</div><!--/brands_products-->
@@ -165,10 +164,6 @@
 							</div>
 						</div><!--/price-range-->
 						
-						<div class="shipping text-center"><!--shipping-->
-							<img src="images/home/shipping.jpg" alt="" />
-						</div><!--/shipping-->
-						
 					</div>
 				</div>
 				
@@ -176,8 +171,8 @@
 					<div class="product-details"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img src="images/product-details/1.jpg" alt="" />
-								<h3>ZOOM</h3>
+								<img src="images/${detailProduct.image}" alt="" />
+								<!-- <h3>ZOOM</h3> -->
 							</div>
 							<div id="similar-product" class="carousel slide" data-ride="carousel">
 								
@@ -202,33 +197,88 @@
 									</div>
 
 								  <!-- Controls -->
-								  <a class="left item-control" href="#similar-product" data-slide="prev">
+								  <!-- <a class="left item-control" href="#similar-product" data-slide="prev">
 									<i class="fa fa-angle-left"></i>
 								  </a>
 								  <a class="right item-control" href="#similar-product" data-slide="next">
 									<i class="fa fa-angle-right"></i>
-								  </a>
+								  </a> -->
 							</div>
 
 						</div>
 						<div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
 								<img src="images/product-details/new.jpg" class="newarrival" alt="" />
-								<h2>Anne Klein Sleeveless Colorblock Scuba</h2>
-								<p>Web ID: 1089772</p>
+								<h2>${detailProduct.name}</h2>
+								<p>Mã sản phẩm : ${detailProduct.id}</p>
 								<img src="images/product-details/rating.png" alt="" />
 								<span>
-									<span>US $59</span>
-									<label>Quantity:</label>
-									<input type="text" value="3" />
+										
+								</span>
+								<div>
+									<c:choose>
+										<c:when test="${detailProduct.getCount() == 0 }">
+											<span>
+												<h3>Hết hàng</h3>
+											</span>
+										</c:when>
+										<c:when test="${detailProduct.CT_HangHoa[0].getSize().getId() != '5'}">
+											<c:forEach items="${detailProduct.CT_HangHoa}" var="s">
+												<c:choose>
+													<c:when test="${s.soLuong == 0 }">
+														<label>
+															<input class="btn-check" disabled="disabled" type="radio" value="${s.size.id}" name="optionSize">
+															<span class="btn btn-outline-success" for="success-outlined">${s.size.name}</span>
+														</label>
+													</c:when>
+													<c:when test="${s.size.id == detailProduct.getFirstSize().id}">
+														<label>
+															<input checked="checked" class="btn-check" id="success-outlined" type="radio" value="${s.size.id}" name="optionSize">
+															<span class="btn btn-outline-success" for="success-outlined">${s.size.name}</span>
+														</label>
+													</c:when>
+													<c:otherwise>
+														<label>
+															<input class="btn-check" id="success-outlined" type="radio" value="${s.size.id}" name="optionSize">
+															<span class="btn btn-outline-success" for="success-outlined">${s.size.name}</span>
+														</label>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</c:when>
+									</c:choose>
+									
+								</div>
+								<span>
+								<c:choose>
+										<c:when test="${detailProduct.discount != 0}">
+											<span><del><f:formatNumber value="${detailProduct.price}" type="currency"/></del> <f:formatNumber value="${detailProduct.price - detailProduct.price*(detailProduct.discount/100)}" type="currency"/></span>	
+										</c:when>
+										<c:otherwise>
+											<span><f:formatNumber value="${detailProduct.price}" type="currency"/></span>	
+										</c:otherwise>
+									</c:choose>
+								</span>
+								<span>
+									
+									<label>Số lượng:</label>
+									<input type="number" min="0" max="${detailProduct.getCount() }" value="0" />
 									<button type="button" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
-										Add to cart
+										Thêm vào giỏ hàng
 									</button>
 								</span>
-								<p><b>Availability:</b> In Stock</p>
-								<p><b>Condition:</b> New</p>
-								<p><b>Brand:</b> E-SHOPPER</p>
+								
+								
+								<p><b>Số lượng:</b> ${detailProduct.getCount() }</p>
+								<p><b>Danh mục:</b> ${detailProduct.productlist.name }</p>
+								<p><b>Thương hiệu:</b> ${detailProduct.brand.name }</p>
+								<span>
+									<button type="button" class="btn btn-fefault cart">
+										<i class="fa fa-shopping-cart"></i>
+										Mua ngay
+									</button>
+								</span>
 								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
 							</div><!--/product-information-->
 						</div>
@@ -237,182 +287,62 @@
 					<div class="category-tab shop-details-tab"><!--category-tab-->
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
-								<li><a href="#details" data-toggle="tab">Details</a></li>
-								<li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
+								<li><a href="#details" data-toggle="tab">MÔ TẢ</a></li>
+								<li><a href="#companyprofile" data-toggle="tab">Sản phẩm cùng thương hiệu</a></li>
 								<li><a href="#tag" data-toggle="tab">Tag</a></li>
-								<li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+								<li class="active"><a href="#reviews" data-toggle="tab">Bình luận (${detailProduct.getCountComment()})</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">
 							<div class="tab-pane fade" id="details" >
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery1.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery2.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery3.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery4.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
+								<div style="padding: 10px">
+										${detailProduct.notes }
 								</div>
 							</div>
 							
+							<!-- Recommended items -->
 							<div class="tab-pane fade" id="companyprofile" >
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery1.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+								<c:forEach items="${detailProduct.brand.products}" var="p">
+									<c:choose>
+										<c:when test="${p.id != detailProduct.id}">
+											<div class="col-sm-3">
+												<div class="product-image-wrapper">
+													<div class="single-products">
+														<div class="productinfo text-center">
+															<img src="images/${p.image}" alt="" />
+															<h2><f:formatNumber value="${p.price}" type="currency"/></h2>
+															<p style="max-height: 20px; overflow: hidden; -webkit-line-clamp: 1;">${p.name}</p>
+															<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+														</div>
+													</div>
+												</div>
 											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery3.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery2.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery4.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
+										</c:when>
+									</c:choose>
+								</c:forEach>
+								
 							</div>
 							
-							<div class="tab-pane fade" id="tag" >
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery1.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery2.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery3.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="images/home/gallery4.jpg" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							
+							<!-- Bình luận -->
 							<div class="tab-pane fade active in" id="reviews" >
 								<div class="col-sm-12">
-									<ul>
-										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-									</ul>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-									<p><b>Write Your Review</b></p>
+									<div >
+										<c:forEach items="${detailProduct.comments}" var="cmt">
+											<ul>
+												<li><a href=""><i class="fa fa-user"></i>${cmt.getName() }</a></li>
+												<li><a href=""><i class="fa fa-calendar-o"></i>${cmt.time }</a></li>
+											</ul>
+											<p style="padding: 10px">${cmt.content }</p>
+										</c:forEach>
+									</div>
+									<p><b>Viết bình luận của bạn</b></p>
 									
 									<form action="#">
 										<span>
 											<input type="text" placeholder="Your Name"/>
 											<input type="email" placeholder="Email Address"/>
 										</span>
-										<textarea name="" ></textarea>
+										<textarea class="ckeditor" name="" ></textarea>
 										<b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
 										<button type="button" class="btn btn-default pull-right">
 											Submit

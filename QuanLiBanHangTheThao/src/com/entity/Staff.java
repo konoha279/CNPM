@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "NhanVien")
 public class Staff {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MaNV")
 	private String id;
 	@Column(name = "Ho")
@@ -38,6 +39,10 @@ public class Staff {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name ="NgaySinh")
 	private Date birthday;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name ="NgayVaoLam")
+	private Date workday;
 	@Column(name = "SoDienThoai")
 	private String phoneNumber;
 	@ManyToOne
@@ -55,7 +60,7 @@ public class Staff {
 	
 	@OneToMany(mappedBy = "staff", fetch = FetchType.EAGER)
 	private Collection<Receipt> receipts;
-	
+
 	public Staff() {
 		// TODO Auto-generated constructor stub
 	}
@@ -75,6 +80,8 @@ public class Staff {
 		this.accountStaff = accountStaff;
 		this.receipts = receipts;
 	}
+	
+	
 
 	public Staff(String firstName, String name, String cmnd, String address, String phoneNumber, Branch branch,
 			Boolean status, Boolean sex) {
@@ -87,6 +94,23 @@ public class Staff {
 		this.branch = branch;
 		this.status = status;
 		this.sex = sex;
+	}
+
+	public Staff(String id, String firstName, String name, String cmnd, String address, Date birthday, Date workday,
+			String phoneNumber, Branch branch, Boolean status, Boolean sex, Account accountStaff) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.name = name;
+		this.cmnd = cmnd;
+		this.address = address;
+		this.birthday = birthday;
+		this.workday = workday;
+		this.phoneNumber = phoneNumber;
+		this.branch = branch;
+		this.status = status;
+		this.sex = sex;
+		this.accountStaff = accountStaff;
 	}
 
 	public String getId() {
@@ -132,6 +156,16 @@ public class Staff {
 	public void setBirthday_Str(String birthday) {
 		try {
 			this.birthday = new SimpleDateFormat("yyyy-MM-dd").parse(birthday);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			this.birthday = null;
+		}
+	}
+	
+	public void setWorkday_Str(String workdayStr) {
+		try {
+			this.workday = new SimpleDateFormat("yyyy-MM-dd").parse(workdayStr);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -199,6 +233,16 @@ public class Staff {
 	public void setReceipts(Collection<Receipt> receipts) {
 		this.receipts = receipts;
 	}
+
+	public Date getWorkday() {
+		return workday;
+	}
+
+	public void setWorkday(Date workday) {
+		this.workday = workday;
+	}
+
+
 	
 	
 }

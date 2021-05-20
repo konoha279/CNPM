@@ -57,7 +57,7 @@
 										  <div class="modal-dialog modal-dialog-centered modal-lg">
 										    <div class="modal-content">
 										      <div class="modal-header">
-										        <h5 class="modal-title" id="staticBackdropLabel">Chỉnh sửa size "${size.name}</h5>
+										        <h5 class="modal-title" id="staticBackdropLabel">Chỉnh sửa size "${size.name}"</h5>
 										        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										      </div>
 										      <div class="modal-body">
@@ -71,7 +71,7 @@
 														<input class="form-control" type="text" value="${size.name}" id="editName${size.id}" min="0"/>
 													</div>
 													<div class="form-group">
-														<label  class="form-label">Tên size</label>
+														<label  class="form-label">Ghi chú</label>
 														<textarea class="form-control ckeditor" name="editNotes${size.id}" id="editNotes${size.id}" rows="10" style="align-self: center; resize: none;" >${size.notes}</textarea>													
 													</div>
 												</div>
@@ -88,7 +88,7 @@
 										  <div class="modal-dialog modal-dialog-centered modal-lg">
 										    <div class="modal-content">
 										      <div class="modal-header">
-										        <h5 class="modal-title" id="staticBackdropLabel">Chỉnh sửa size "${size.name}</h5>
+										        <h5 class="modal-title" id="staticBackdropLabel">Xóa size "${size.name}</h5>
 										        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										      </div>
 										      <div class="modal-body">

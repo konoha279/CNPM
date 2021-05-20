@@ -158,6 +158,7 @@ public class TaiKhoanController {
 		String email = request.getParameter("email");
 		String name = request.getParameter("name");
 		String birthday = request.getParameter("birthday");
+		String workday = request.getParameter("workday");
 		String cmnd = request.getParameter("cmnd");
 		String address = request.getParameter("address");
 		
@@ -171,6 +172,8 @@ public class TaiKhoanController {
 			return "Vui lòng nhập tên của nhân viên.".getBytes("UTF-8");
 		else if (birthday.isEmpty())
 			return "Vui lòng nhập ngày sinh của nhân viên.".getBytes("UTF-8");
+		else if (workday.isEmpty())
+			return "Vui lòng nhập ngày làm của nhân viên.".getBytes("UTF-8");
 		else if (cmnd.isEmpty())
 			return "Vui lòng nhập chứng minh nhân dân của nhân viên.".getBytes("UTF-8");
 		
@@ -199,6 +202,7 @@ public class TaiKhoanController {
 		Account account = new Account(username, encrypt(passwd), email, role, true);
 		Staff staff = new Staff(firstName, name, cmnd, address, phone, branch, status, sex);
 		staff.setBirthday_Str(birthday);
+		staff.setWorkday_Str(workday);
 		account.setGuest(null);
 		account.setStaff(staff);
 		staff.setAccountStaff(account);

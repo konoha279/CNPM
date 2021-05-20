@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.entity.Brand;
 import com.entity.CTHangHoa;
+import com.entity.Comment;
 import com.entity.Product;
 import com.entity.ProductList;
 import com.entity.Size;
@@ -197,7 +198,7 @@ public class HangHoaController {
 			} else {
 				try {
 					String photoPath = "";
-					photoPath = context.getRealPath(photo.getOriginalFilename());
+					photoPath = context.getRealPath("/images/" +photo.getOriginalFilename());
 					photo.transferTo(new File(photoPath));
 					
 					hangHoa.setImage(photo.getOriginalFilename());
@@ -213,6 +214,7 @@ public class HangHoaController {
 				re.addFlashAttribute("message", "Cập Nhật Thành Công!");
 			} catch (Exception e) {
 				t.rollback();
+				System.out.print(e);
 				re.addFlashAttribute("message", "Cập Nhật Thất Bại!");
 				return "admin/hanghoa/update";
 			} finally {
@@ -224,15 +226,34 @@ public class HangHoaController {
 
 	@RequestMapping(value = "delete/{maHangHoa}", method = RequestMethod.GET)
 	public String delete(ModelMap model, @PathVariable("maHangHoa") String maHangHoa) {
-		Session session = factory.openSession();
+		Session session = factory.getCurrentSession();
+		Product product = new Product();
+		product.setId(maHangHoa);
+		CTHangHoa ctHangHoa = new CTHangHoa();
+		ctHangHoa.setMaHangHoa(product);
+		String hql = "From Comment cmt where cmt.productCmt.id = '"+product.getId()+"'";
+		Query query = session.createQuery(hql);
+		List<Comment> comments = query.list();
+		
+		hql = "From CTHangHoa ct where ct.MaHangHoa.id = '"+product.getId()+"'";
+		query = session.createQuery(hql);
+		List<CTHangHoa> ctHangHoas = query.list();
+		
+		session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			Product hangHoa = (Product) session.get(Product.class, maHangHoa);
-			session.delete(hangHoa);
+			for (Comment cmt : comments) {
+				session.delete(cmt);
+			}
+			for (CTHangHoa ct : ctHangHoas) {
+				session.delete(ct);
+			}
+			session.delete(product);
 			t.commit();
 			model.addAttribute("message", "Xóa Thành Công!");
 		} catch (Exception e) {
 			t.rollback();
+			System.out.print(e);
 			model.addAttribute("message", "Xóa Thất Bại!");
 		} finally {
 			session.close();

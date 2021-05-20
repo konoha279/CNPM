@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import jdk.jfr.Unsigned;
+
 
 @Entity
 @Table(name = "HangHoa")
@@ -43,6 +45,9 @@ public class Product {
 	
 	@OneToMany(mappedBy = "MaHangHoa", fetch = FetchType.EAGER)
 	private Collection<CTHangHoa> CT_HangHoa;
+	
+	@OneToMany(mappedBy = "productCmt", fetch = FetchType.EAGER)
+	private Collection<Comment> comments;
 	
 	public Product() {
 		// TODO Auto-generated constructor stub
@@ -179,6 +184,37 @@ public class Product {
 		this.brand = brand;
 	}
 	
+	public int getCount()
+	{
+		int count = 0;
+		for (CTHangHoa ctHangHoa : CT_HangHoa) {
+			count += ctHangHoa.getSoLuong();
+		}
+		return count;
+	}
+
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Collection<Comment> comments) {
+		this.comments = comments;
+	}
 	
+	public int getCountComment()
+	{
+		return this.comments.size();
+	}
 	
+	public Size getFirstSize()
+	{
+		Size size = null;
+		for (CTHangHoa ctHangHoa : CT_HangHoa) {
+			if (ctHangHoa.getSoLuong() != 0)
+			{
+				size = ctHangHoa.getSize();
+			}
+		}
+		return size;
+	}
 }

@@ -173,6 +173,10 @@
 																			<form:input  readonly="true" class="form-control" type="date" path="staff.birthday" value="${acc.staff.getBirthday()}"/>
 																		</div>
 																		<div class="mb-3">
+																			<label class="form-label">Ngày vào làm</label>
+																			<form:input  readonly="true" class="form-control" type="date" path="staff.workday" value="${acc.staff.getWorkday()}"/>
+																		</div>
+																		<div class="mb-3">
 																			<label class="form-label">Số điện thoại</label>
 																			<form:input  readonly="true" class="form-control" path="staff.phoneNumber" value = "${acc.staff.getPhoneNumber()}" />
 																		</div>
@@ -363,6 +367,10 @@
 												<input  class="form-control" type="date" id="staffBirthday"/>
 											</div>
 											<div class="mb-3">
+												<label class="form-label">Ngày vào làm</label>
+												<input  class="form-control" type="date" id="staffWorkday"/>
+											</div>
+											<div class="mb-3">
 												<label class="form-label">Số điện thoại</label>
 												<input type="text" class="form-control" id="staffPhoneNumber"/>
 											</div>
@@ -451,6 +459,7 @@ function add() {
 		var m_firstName = document.getElementById("staffFirstName").value;
 		var m_name = document.getElementById("staffName").value;
 		var m_sexs = document.getElementsByName("staffSex");
+		var m_workday = document.getElementById("staffWorkday").value;
 		var m_sex;
 		for (var i = 0, length = m_sexs.length;i<length;i++)
 			if (m_sexs[i].checked)
@@ -479,7 +488,8 @@ function add() {
 			branch: m_branch,
 			status: m_status,
 			cmnd: m_cmnd,
-			address: m_address
+			address: m_address,
+			workday: m_workday
 		},
 		type: "post",
 		success: function (data)

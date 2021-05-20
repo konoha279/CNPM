@@ -40,6 +40,7 @@
     		margin-bottom: 10px;
     	}
     </style>
+<script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
        
 </head><!--/head-->
 <body>
@@ -105,7 +106,7 @@
                                 </li> 
 								<li class="dropdown"><a href="#">Danh mục sản phẩm<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <c:forEach var="p" items="${product}">
+                                        <c:forEach var="p" items="${productList}">
                                         	<li><a href="shop${p.id}.htm">${p.name}</a></li>
                                         </c:forEach>
                                     </ul>

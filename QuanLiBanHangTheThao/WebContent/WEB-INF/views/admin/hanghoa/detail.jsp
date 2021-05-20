@@ -31,7 +31,7 @@ div.detail {
 		<div class="ui grid stackable padded">
 				<div class="column">
 					<div class="column">
-						<a href="admin/hanghoa/index.htm"><button class="ui button">Trở Lại</button></a>
+						<a onclick="history.back()"><button class="ui button">Trở Lại</button></a>
 					</div>
 				</div>
 			</div>
@@ -48,6 +48,9 @@ div.detail {
 									<span class="abc">Loại: ${hangHoa.productlist.name}</span>
 								</div>
 								<div class="meta">
+									<span class="abc">Tổng số lượng: ${hangHoa.getCount()}</span>
+								</div>
+								<div class="meta">
 									<span class="abc">Tình Trạng:
 										${u.status==false?'Không Bán':'Bán'}</span>
 								</div>
@@ -57,7 +60,7 @@ div.detail {
 									<table class="ui blue table">
 										<thead>
 											<tr>
-												<c:if test="${hangHoa.productlist.id == 'QA' }">
+												<c:if test="${hangHoa.productlist.id != 'PK' }">
 													<th>Size</th>
 												</c:if>
 												<th>Số Lượng</th>
@@ -67,7 +70,7 @@ div.detail {
 										<tbody>										
 											<c:forEach var="u" items="${hangHoa.CT_HangHoa}">
 												<tr>
-													<c:if test="${hangHoa.productlist.id == 'QA' }">
+													<c:if test="${hangHoa.productlist.id != 'PK' }">
 														<td >${u.size.name}</td>
 													</c:if>
 													<td >${u.soLuong}</td>
@@ -146,6 +149,7 @@ div.detail {
 			</div>
 		</div>
 	</c:forEach>
+<!-- -------------------------------------------------------------------------------------- Thêm -------------------------------------------------------------------------------------- -->
 
 	<div class="modal fade" id="addSize" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
@@ -156,7 +160,7 @@ div.detail {
 			</div>
 			<div>
 				<div class="container">
-					<c:if test="${hangHoa.productlist.id == 'QA' }">
+					<c:if test="${hangHoa.productlist.id != 'PK' }">
 						<div class="form-group">
 							<label  class="form-label">Size</label>
 							

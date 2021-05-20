@@ -21,6 +21,7 @@
 	crossorigin="anonymous" />
 </head>
 <script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 
 <style type="text/css">
 @import
@@ -138,6 +139,11 @@ body ::-webkit-scrollbar {
 				<i class="fa fa-font-awesome"></i> Thương hiệu
 			</div>
 		</a>
+		<a href="admin/comment.htm" id="ncc" class="item">
+			<div>
+				<i class="fa fa-commenting-o"></i> Bình luận sản phẩm
+			</div>
+		</a>
 		<div class="item">
 			<form action="#">
 				<div class="ui mini action input">
@@ -160,17 +166,16 @@ body ::-webkit-scrollbar {
 		</div>
 
 		<div class="right menu">
-			<a href="#" class="item"> <i class="bell icon"></i>
-			</a>
+			<a href="#" class="item"> <i class="bell icon"></i></a>
 			<div class="ui dropdown item">
 				<i class="user cirlce icon"></i>
-				<div class="menu">
-					<a href="#" class="item"> <i class="info circle icon"></i>
-						Profile
-					</a> <a href="#" class="item"> <i class="wrench icon"></i> Settings
-					</a> <a href="#" class="item"> <i class="sign-out icon"></i> Logout
-					</a>
-				</div>
+					<ul class="menu">
+						<li><a href="#" class="item"> <i class="info circle icon"></i>
+							Profile
+						</a></li> 
+						<li><a href="#" class="item"> <i class="wrench icon"></i> Settings</a></li> 
+						<li><a href="#" class="item"> <i class="sign-out icon"></i> Logout</a></li>
+					</ul>
 			</div>
 		</div>
 	</nav>
@@ -201,6 +206,15 @@ body ::-webkit-scrollbar {
 		{
 			document.getElementById('hide-content').style.display = "none";
 		}
+		function showOptios() {
+			
+		}
+		
+		function hideOption()
+		{
+			
+		}
 	</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
 </body>
 </html>

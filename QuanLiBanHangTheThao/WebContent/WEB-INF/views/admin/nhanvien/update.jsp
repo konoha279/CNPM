@@ -36,12 +36,19 @@
 								</div>
 							</div>
 						</div>
+						<div class="field">
+							<label>Chứng minh nhân dân </label>
+							<form:input path="cmnd" />
+							<div style="color: red">
+								<form:errors path="cmnd" />
+							</div>
+						</div>
 						<div class="two fields">
 							<div class="field">
-								<label>Chứng minh nhân dân </label>
-								<form:input path="cmnd" />
+								<label>Ngày vào làm </label>
+								<form:input path="workday" type="date"/>
 								<div style="color: red">
-									<form:errors path="cmnd" />
+									<form:errors path="workday" />
 								</div>
 							</div>
 							<div class="field">

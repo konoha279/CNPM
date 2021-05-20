@@ -2,12 +2,15 @@ package com.entity;
 
 
 
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -35,6 +38,8 @@ public class Account {
 	  @OneToOne(mappedBy = "accountStaff", fetch = FetchType.EAGER) 
 	private Staff staff;
 	 
+	  @OneToMany(mappedBy = "accountCmt")
+	private Collection<Comment> comments;
 	
 	public Account() {
 		// TODO Auto-generated constructor stub
@@ -129,6 +134,14 @@ public class Account {
 
 	public void setStaff(Staff staff) {
 		this.staff = staff;
+	}
+
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Collection<Comment> comments) {
+		this.comments = comments;
 	}
 
 	

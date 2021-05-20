@@ -107,7 +107,7 @@
 					</button>
 				</li>
 				<li class="nav-item">
-					<button onclick="location.href='${pageContext.servletContext.contextPath}/'" class="btn btn-outline-danger" type="button">
+					<button onclick="history.back()" class="btn btn-outline-danger" type="button">
 						<i class="fa fa-times" aria-hidden="true"></i>
 					</button>
 				</li>

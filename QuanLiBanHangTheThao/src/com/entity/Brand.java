@@ -49,4 +49,9 @@ public class Brand {
 	public Brand() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public int getSizeProduct()
+	{
+		return this.products.size();
+	}
 }

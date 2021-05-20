@@ -109,7 +109,11 @@ public class NhanVienController {
 		}
 		if (staff.getBirthday() == null)
 		{
-			errors.rejectValue("phoneNumber", "phoneNumber", "Vui lòng nhập ngày sinh cho nhân viên");
+			errors.rejectValue("birthday", "birthday", "Vui lòng nhập ngày sinh cho nhân viên");
+		}
+		if (staff.getWorkday() == null)
+		{
+			errors.rejectValue("workday", "workday", "Vui lòng nhập ngày bắt đầu làm cho nhân viên");
 		}
 		if (staff.getCmnd().trim().length() == 0) {
 			errors.rejectValue("cmnd", "cmnd", "Vui Lòng nhập chứng minh nhân dân.");
@@ -152,7 +156,7 @@ public class NhanVienController {
 			account.setStaff(newStaff);
 			newStaff.setAccountStaff(account);
 			newStaff.setBirthday(staff.getBirthday());
-
+			newStaff.setWorkday(staff.getWorkday());
 			
 			session = factory.openSession();
 			Transaction t = session.beginTransaction();
@@ -200,7 +204,11 @@ public class NhanVienController {
 		}
 		if (staff.getBirthday() == null)
 		{
-			errors.rejectValue("phoneNumber", "phoneNumber", "Vui lòng nhập ngày sinh cho nhân viên");
+			errors.rejectValue("birthday", "birthday", "Vui lòng nhập ngày sinh cho nhân viên");
+		}
+		if (staff.getWorkday() == null)
+		{
+			errors.rejectValue("workday", "workday", "Vui lòng nhập ngày bắt đầu làm cho nhân viên");
 		}
 		if (staff.getCmnd().trim().length() == 0) {
 			errors.rejectValue("cmnd", "cmnd", "Vui Lòng nhập chứng minh nhân dân.");

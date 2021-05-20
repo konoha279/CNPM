@@ -30,8 +30,9 @@
 								<th>Họ</th>
 								<th>Tên</th>
 								<th>Chứng minh nhân dân</th>
-								<th>Giới Tính</th>
-								<th>Ngày Sinh</th>
+								<th>Giới tính</th>
+								<th>Ngày sinh</th>
+								<th>Ngày vào làm</th>
 								<th>Chức vụ</th>
 								<th>Địa Chỉ</th>
 								<th>Chi Nhánh</th>
@@ -48,6 +49,7 @@
 									<td>${u.cmnd}</td>
 									<td>${u.sex==false?'Nữ':'Nam'}</td>
 									<td>${u.birthday}</td>
+									<td>${u.workday}</td>
 									<td>${u.accountStaff.role.name}</td>
 									<td>${u.address}</td>
 									<td>${u.branch.name}</td>

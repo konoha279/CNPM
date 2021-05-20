@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.bean.LinkedList;
+import com.entity.Brand;
 import com.entity.Product;
 import com.entity.ProductList;
 
@@ -48,29 +49,17 @@ public class ShopController {
 		return list;
 	}
 	
-//	@ModelAttribute("onHeaderProducts")
-//	public List<Product> onHeader()
-//	{
-//		Session session = factory.getCurrentSession();
-//		String hql = "From Product";
-//		Query query = session.createQuery(hql);
-//		List<Product> list = query.list();		
-//		int size = list.size();
-//		for (int i=0;i<size;i++)
-//		{
-//			if (!list.get(i).getStatus())
-//			{
-//				list.remove(i);
-//				size = list.size();
-//				i--;
-//			}
-//		}
-//		
-//		
-//		return list;
-//	}
+	@ModelAttribute("listBrand")
+	public List<Brand> listBrand()
+	{
+		Session session = factory.getCurrentSession();
+		String hql ="FROM Brand";
+		Query query = session.createQuery(hql);
+		List<Brand> list= query.list();
+		return list;
+	}
 	
-	@ModelAttribute("product")
+	@ModelAttribute("productList")
 	public List<ProductList> getProductLists()
 	{
 		Session session = factory.getCurrentSession();
@@ -78,6 +67,25 @@ public class ShopController {
 		Query query = session.createQuery(hql);
 		List<ProductList> productlist= query.list();
 		return productlist;
+	}
+	
+	@RequestMapping("Menu")
+	public List<LinkedList> listMenu()
+	{
+		List<LinkedList> menu = new ArrayList<LinkedList>();
+		
+		LinkedList home = new LinkedList("Trang chủ", "index.htm");
+		LinkedList storepage = new LinkedList("Trang cửa hàng", "shop.htm");
+		LinkedList product = new LinkedList("Sản phẩm", "single-product.htm");
+		LinkedList cart = new LinkedList("Giỏ hàng", "cart.htm");
+		LinkedList thanhtoan = new LinkedList("Thanh toán","checkout.htm");
+		
+		menu.add(home);
+		menu.add(storepage);
+		menu.add(product);
+		menu.add(cart);
+		menu.add(thanhtoan);
+		return menu;
 	}
 	
 	public void Setup(ModelMap model) 
@@ -107,23 +115,9 @@ public class ShopController {
 
 		model.addAttribute("Currency", currencyList);
 		
-		List<LinkedList> menu = new ArrayList<LinkedList>();
-		
-		LinkedList home = new LinkedList("Trang chủ", "index.htm");
-		LinkedList storepage = new LinkedList("Trang cửa hàng", "shop.htm");
-		LinkedList product = new LinkedList("Sản phẩm", "single-product.htm");
-		LinkedList cart = new LinkedList("Giỏ hàng", "cart.htm");
-		LinkedList thanhtoan = new LinkedList("Thanh toán","checkout.htm");
-		
-		menu.add(home);
-		menu.add(storepage);
-		menu.add(product);
-		menu.add(cart);
-		menu.add(thanhtoan);
-		
-		model.addAttribute("Menu",menu);
 	}
 	
+
 
 	
 	@RequestMapping("index")
@@ -148,7 +142,7 @@ public class ShopController {
 	}
 	
 	@RequestMapping(value = "shop{id}", method = RequestMethod.GET)
-	public String shop(ModelMap model,@PathVariable("id") String id)
+	public String shopProduct(ModelMap model,@PathVariable("id") String id)
 	{
 		Setup(model);
 		Session session = factory.getCurrentSession();
@@ -183,11 +177,51 @@ public class ShopController {
 		model.addAttribute("listProducts", listProducts);
 		return "/Shop/shop";
 	}
-
-	@RequestMapping("single-product")
-	public String SingleProduct(ModelMap model)
+	
+	@RequestMapping(value = "brand{id}", method = RequestMethod.GET)
+	public String shopBrand(ModelMap model,@PathVariable("id") String id)
 	{
 		Setup(model);
-		return "/Shop/single-product";
+		Session session = factory.getCurrentSession();
+		Brand brand = (Brand) session.get(Brand.class, id);
+		List<Product> listProducts = new ArrayList<>(brand.getProducts());
+		
+//		Loại bỏ sự trùng lặp sản phẩm
+		int size = listProducts.size();
+		for (int i=0; i< size ; i++)
+		{
+			for (int j=i+1; j < size; j++)
+			{
+				if (listProducts.get(i).getId().equals(listProducts.get(j).getId()))
+				{
+					listProducts.remove(j);
+					size = listProducts.size();
+					j--;
+				}
+			}
+		}
+		
+		for (int i=0;i<size;i++)
+		{
+			if (!listProducts.get(i).getStatus())
+			{
+				listProducts.remove(i);
+				size = listProducts.size();
+				i--;
+			}
+		}
+		
+		model.addAttribute("listProducts", listProducts);
+		return "/Shop/shop";
+	}
+
+	@RequestMapping(value ="SanPham-{id}", method = RequestMethod.GET)
+	public String SingleProduct(ModelMap model,@PathVariable("id") String id)
+	{
+		Setup(model);
+		Session session = factory.getCurrentSession();
+		Product product = (Product) session.get(Product.class, id);
+		model.addAttribute("detailProduct", product);
+		return "/Shop/product-details";
 	}
 }

@@ -152,38 +152,31 @@
 						</div><!--/category-productsr-->
 					
 						<div class="brands_products"><!--brands_products-->
-							<h2>Brands</h2>
+							<h2>Thương hiệu</h2>
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
-									<li><a href=""> <span class="pull-right">(50)</span>Acne</a></li>
-									<li><a href=""> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-									<li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
-									<li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
-									<li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
-									<li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
-									<li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
+									<c:forEach items="${listBrand}" var="b">
+										<li><a href="brand${b.id}.htm"> <span class="pull-right">(${b.getSizeProduct()})</span>${b.name }</a></li>								
+									</c:forEach>
 								</ul>
 							</div>
 						</div><!--/brands_products-->
 						
-						<div class="price-range"><!--price-range-->
+						<!-- <div class="price-range">price-range
 							<h2>Price Range</h2>
 							<div class="well">
 								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
 								 <b>$ 0</b> <b class="pull-right">$ 600</b>
 							</div>
-						</div><!--/price-range-->
+						</div>/price-range -->
 						
-						<div class="shipping text-center"><!--shipping-->
-							<img src="images/home/shipping.jpg" alt="" />
-						</div><!--/shipping-->
 						
 					</div>
 				</div>
 				
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">Features Items</h2>
+						<h2 class="title text-center">Danh sách sản phẩm</h2>
 						<c:forEach items="${listProducts}" var="lp">
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
@@ -197,8 +190,8 @@
 											<c:otherwise><div class="content-none"></div></c:otherwise>
 										</c:choose>
 										<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
-										<p>${lp.name}</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+										<p style="max-height: 20px; overflow: hidden; -webkit-line-clamp: 1;">${lp.name}</p>
+										<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
@@ -210,7 +203,7 @@
 											</c:choose>
 											<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
 											<p>${lp.name}</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
 										</div>
 									</div>
 								</div>
