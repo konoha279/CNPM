@@ -29,6 +29,15 @@ public class CTHangHoa implements Serializable {
 	}
 	
 	
+	
+	public CTHangHoa(Product maHangHoa, Size size) {
+		super();
+		MaHangHoa = maHangHoa;
+		this.size = size;
+	}
+
+
+
 	public CTHangHoa(Product maHangHoa, Size size, int soLuong) {
 		super();
 		this.MaHangHoa = maHangHoa;

@@ -191,7 +191,7 @@
 										</c:choose>
 										<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
 										<p style="max-height: 20px; overflow: hidden; -webkit-line-clamp: 1;">${lp.name}</p>
-										<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+										<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-info"></i>Chi tiết</a>
 									</div>
 									<div class="product-overlay">
 										<div class="overlay-content">
@@ -203,14 +203,13 @@
 											</c:choose>
 											<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
 											<p>${lp.name}</p>
-											<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-info"></i>Chi tiết</a>
 										</div>
 									</div>
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
-										<li><a href=""><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href=""><i class="fa fa-plus-square"></i>Add to compare</a></li>
+										<li><a href=""><i class="fa fa-plus-square"></i>Thêm vào danh sách yêu thích</a></li>
 									</ul>
 								</div>
 							</div>

@@ -56,7 +56,7 @@
 				<div class="row">
 					<div class="col-md-4 clearfix">
 						<div class="logo pull-left">
-							<a href="index.htm"><img src="resources/Shop/images/home/logo.png" alt="" /></a>
+							<a href="index.htm"><img src="resources/Shop/images/logo.png" alt="" /></a>
 						</div>
 						
 					</div>
@@ -65,8 +65,8 @@
 							<ul class="nav navbar-nav">
 								<li><a href="profile/account.htm" ><i class="fa fa-user"></i> Tài khoản</a></li>
 								<li><a href=""><i class="fa fa-star"></i> Danh sách yêu thích</a></li>
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<!-- <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li> -->
+								<li id="CartOnHeader"><a href="cart.htm"><i class="fa fa-shopping-cart"></i> Giỏ hàng (${myCartItems.size()})</a></li>
 								<c:choose>
 									<c:when test="${cookie.containsKey('username')}">
 										<li><a href="logout.htm"><i class="fa fa-lock"></i> Đăng xuất</a></li>
@@ -97,13 +97,6 @@
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="index.htm" class="active">Trang chủ</a></li>
-								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
-                                    <ul role="menu" class="sub-menu">
-                                        <c:forEach var="p" items="${Menu}">
-                                        	<li><a href="${p.link}">${p.name}</a></li>
-                                        </c:forEach>
-                                    </ul>
-                                </li> 
 								<li class="dropdown"><a href="#">Danh mục sản phẩm<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <c:forEach var="p" items="${productList}">

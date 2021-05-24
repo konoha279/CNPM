@@ -14,7 +14,7 @@ public class CTPhieuNhap implements Serializable {
 
 	@Id
 	@ManyToOne
-	@JoinColumns({ @JoinColumn(name = "MaHangHoa"), @JoinColumn(name = "Size") })
+	@JoinColumns({ @JoinColumn(name = "MaHangHoa"), @JoinColumn(name = "MaSize") })
 	private CTHangHoa cTHangHoa;
 	@Column(name = "DonGia")
 	private int donGia;

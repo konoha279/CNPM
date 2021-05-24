@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,7 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "HoaDon")
 public class Bill {
 
-	@Id
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MaHoaDon")
 	private String id;
 	@Temporal(TemporalType.DATE)
@@ -28,25 +30,31 @@ public class Bill {
 	@JoinColumn(name = "MaNV")
 	private Staff staff;
 	@Column(name ="TinhTrang")
-	private String status;
-	@Column(name = "TongTien")
-	private int money;
+	private boolean status;
+	@Column(name = "TongTienSanPham")
+	private int moneyProduct;
+	@Column(name = "PhiVanChuyen")
+	private int transportationFee;
 	@ManyToOne
-	@JoinColumn(name = "MaKhachHang")
-	private Guest guest;
-	
+	@JoinColumn(name = "Username")
+	private Account account;
+	@Column(name = "DiaChiNhanHang")
+	private String address;
 	public Bill() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Bill(String id, Date date, Staff staff, String status, int money, Guest guest) {
+	public Bill(String id, Date date, Staff staff, boolean status, int moneyProduct, int transportationFee,
+			Account account, String address) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.staff = staff;
 		this.status = status;
-		this.money = money;
-		this.guest = guest;
+		this.moneyProduct = moneyProduct;
+		this.transportationFee = transportationFee;
+		this.account = account;
+		this.address = address;
 	}
 
 	public String getId() {
@@ -73,30 +81,52 @@ public class Bill {
 		this.staff = staff;
 	}
 
-	public String getStatus() {
+
+	
+
+	public boolean isStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+
+
+	public void setStatus(boolean status) {
 		this.status = status;
 	}
 
-	public int getMoney() {
-		return money;
+
+
+	public String getAddress() {
+		return address;
 	}
 
-	public void setMoney(int money) {
-		this.money = money;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public Guest getGuest() {
-		return guest;
+	public int getMoneyProduct() {
+		return moneyProduct;
 	}
 
-	public void setGuest(Guest guest) {
-		this.guest = guest;
+	public void setMoneyProduct(int moneyProduct) {
+		this.moneyProduct = moneyProduct;
 	}
-	
-	
+
+	public int getTransportationFee() {
+		return transportationFee;
+	}
+
+	public void setTransportationFee(int transportationFee) {
+		this.transportationFee = transportationFee;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
 	
 }

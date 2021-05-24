@@ -41,6 +41,9 @@ public class Account {
 	  @OneToMany(mappedBy = "accountCmt")
 	private Collection<Comment> comments;
 	
+	  @OneToMany(mappedBy = "account")
+	private Collection<Bill> bills;  
+	  
 	public Account() {
 		// TODO Auto-generated constructor stub
 	}

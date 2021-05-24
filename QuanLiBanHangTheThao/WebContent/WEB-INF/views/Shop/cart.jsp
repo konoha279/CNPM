@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f"%>    
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Cart | E-Shopper</title>
+    <title>Giỏ hàng</title>
     <link href="resources/Shop/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/Shop/css/font-awesome.min.css" rel="stylesheet">
     <link href="resources/Shop/css/prettyPhoto.css" rel="stylesheet">
@@ -24,355 +26,340 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="resources/Shop/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/Shop/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="resources/Shop/images/ico/apple-touch-icon-57-precomposed.png">
+
 </head><!--/head-->
 
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
-
-	<section id="cart_items">
-		<div class="container">
-			<div class="breadcrumbs">
-				<ol class="breadcrumb">
-				  <li><a href="#">Home</a></li>
-				  <li class="active">Shopping Cart</li>
-				</ol>
-			</div>
-			<div class="table-responsive cart_info">
-				<table class="table table-condensed">
-					<thead>
-						<tr class="cart_menu">
-							<td class="image">Item</td>
-							<td class="description"></td>
-							<td class="price">Price</td>
-							<td class="quantity">Quantity</td>
-							<td class="total">Total</td>
-							<td></td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/one.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/two.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-						<tr>
-							<td class="cart_product">
-								<a href=""><img src="images/cart/three.png" alt=""></a>
-							</td>
-							<td class="cart_description">
-								<h4><a href="">Colorblock Scuba</a></h4>
-								<p>Web ID: 1089772</p>
-							</td>
-							<td class="cart_price">
-								<p>$59</p>
-							</td>
-							<td class="cart_quantity">
-								<div class="cart_quantity_button">
-									<a class="cart_quantity_up" href=""> + </a>
-									<input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href=""> - </a>
-								</div>
-							</td>
-							<td class="cart_total">
-								<p class="cart_total_price">$59</p>
-							</td>
-							<td class="cart_delete">
-								<a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</section> <!--/#cart_items-->
-
-	<section id="do_action">
-		<div class="container">
-			<div class="heading">
-				<h3>What would you like to do next?</h3>
-				<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
-			</div>
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="chose_area">
-						<ul class="user_option">
-							<li>
-								<input type="checkbox">
-								<label>Use Coupon Code</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Use Gift Voucher</label>
-							</li>
-							<li>
-								<input type="checkbox">
-								<label>Estimate Shipping & Taxes</label>
-							</li>
-						</ul>
-						<ul class="user_info">
-							<li class="single_field">
-								<label>Country:</label>
-								<select>
-									<option>United States</option>
-									<option>Bangladesh</option>
-									<option>UK</option>
-									<option>India</option>
-									<option>Pakistan</option>
-									<option>Ucrane</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-								
-							</li>
-							<li class="single_field">
-								<label>Region / State:</label>
-								<select>
-									<option>Select</option>
-									<option>Dhaka</option>
-									<option>London</option>
-									<option>Dillih</option>
-									<option>Lahore</option>
-									<option>Alaska</option>
-									<option>Canada</option>
-									<option>Dubai</option>
-								</select>
-							
-							</li>
-							<li class="single_field zip-field">
-								<label>Zip Code:</label>
-								<input type="text">
-							</li>
-						</ul>
-						<a class="btn btn-default update" href="">Get Quotes</a>
-						<a class="btn btn-default check_out" href="">Continue</a>
-					</div>
+	<c:choose>
+		<c:when test="${!cookie.containsKey('username')}">
+			<section id="cart_items">
+				<div class="container">
+					<h1> Bạn cần phải <a href="login.htm">đăng nhập</a> để tiếp tục</h1>
 				</div>
-				<div class="col-sm-6">
-					<div class="total_area">
-						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
-							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
-						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section><!--/#do_action-->
-
-	<footer id="footer"><!--Footer-->
-		<div class="footer-top">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-2">
-						<div class="companyinfo">
-							<h2><span>e</span>-shopper</h2>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
-						</div>
-					</div>
-					<div class="col-sm-7">
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="images/home/iframe1.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-						
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="images/home/iframe2.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-						
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="images/home/iframe3.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-						
-						<div class="col-sm-3">
-							<div class="video-gallery text-center">
-								<a href="#">
-									<div class="iframe-img">
-										<img src="images/home/iframe4.png" alt="" />
-									</div>
-									<div class="overlay-icon">
-										<i class="fa fa-play-circle-o"></i>
-									</div>
-								</a>
-								<p>Circle of Hands</p>
-								<h2>24 DEC 2014</h2>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-3">
-						<div class="address">
-							<img src="images/home/map.png" alt="" />
-							<p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="footer-widget">
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>Service</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Online Help</a></li>
-								<li><a href="">Contact Us</a></li>
-								<li><a href="">Order Status</a></li>
-								<li><a href="">Change Location</a></li>
-								<li><a href="">FAQ’s</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>Quock Shop</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">T-Shirt</a></li>
-								<li><a href="">Mens</a></li>
-								<li><a href="">Womens</a></li>
-								<li><a href="">Gift Cards</a></li>
-								<li><a href="">Shoes</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>Policies</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Terms of Use</a></li>
-								<li><a href="">Privecy Policy</a></li>
-								<li><a href="">Refund Policy</a></li>
-								<li><a href="">Billing System</a></li>
-								<li><a href="">Ticket System</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2>About Shopper</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Company Information</a></li>
-								<li><a href="">Careers</a></li>
-								<li><a href="">Store Location</a></li>
-								<li><a href="">Affillate Program</a></li>
-								<li><a href="">Copyright</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-sm-3 col-sm-offset-1">
-						<div class="single-widget">
-							<h2>About Shopper</h2>
-							<form action="#" class="searchform">
-								<input type="text" placeholder="Your email address" />
-								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
-								<p>Get the most recent updates from <br />our site and be updated your self...</p>
-							</form>
-						</div>
-					</div>
+			</section> <!--/#cart_items-->
+		</c:when>
+		<c:when test="${empty myCartItems}">
+			<section id="cart_items">
+				<div class="container">
+					<h1> Bạn chưa mua hàng</h1>
 					
 				</div>
-			</div>
-		</div>
-		
-		<div class="footer-bottom">
-			<div class="container">
-				<div class="row">
-					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+			</section> <!--/#cart_items-->
+		</c:when>
+		<c:otherwise>
+			<section id="cart_items">
+				<div class="container" id ="container">
+					<div class="table-responsive cart_info">
+						<table class="table table-condensed">
+							<thead>
+								<tr class="cart_menu">
+									<td class="image">Hình sản phẩm</td>
+									<td class="description">Tên sản phẩm</td>
+									<td class="price">Giá</td>
+									<td class="quantity">Số lượng</td>
+									<td class="total">Tổng tiền</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${myCartItems}" var="c">
+								<tr>
+									<td class="cart_product">
+										<a href=""><img style="width: 120px; height: 90px;" src="images/${c.product.getMaHangHoa().image }" alt=""></a>
+									</td>
+									<td class="cart_description">
+										<h4><a href="">${c.product.maHangHoa.name }</a></h4>
+										<p>Size: ${c.product.size.name }</p>
+									</td>
+									<td class="cart_price">
+										<p> <f:formatNumber value="${c.product.getMaHangHoa().price - c.product.getMaHangHoa().price*(c.product.getMaHangHoa().discount/100)}" type="currency"/> </p>
+									</td>
+									<td class="cart_quantity">
+										<div class="cart_quantity_button">
+											<a style="text-decoration: none;" class="cart_quantity_down" href="javascript:decrease('${c.product.size.id }','${c.product.maHangHoa.id}','${c.product.maHangHoa.price - c.product.maHangHoa.price*(c.product.maHangHoa.discount/100)}')"> - </a>
+											<input class="cart_quantity_input" type="text" id="quantity-${c.product.size.id }-${c.product.maHangHoa.id}" name="quantity" value="${ c.count }" max="${c.product.soLuong }" autocomplete="off" size="2">
+											<a style="text-decoration: none;" class="cart_quantity_up" href="javascript:increase('${c.product.size.id }','${c.product.maHangHoa.id}','${c.product.maHangHoa.price - c.product.maHangHoa.price*(c.product.maHangHoa.discount/100)}')"> + </a>
+										</div>
+									</td>
+									<td class="cart_total">
+										<p  class="cart_total_price" name="moneyProduct" id="money-${c.product.size.id }-${c.product.maHangHoa.id}"><f:formatNumber value="${(c.product.maHangHoa.price - c.product.maHangHoa.price*(c.product.maHangHoa.discount/100))* c.count }" type="currency"/></p>
+									</td>
+									<td class="cart_delete">
+										<a class="cart_quantity_delete" onclick="remove('${c.product.size.id }','${c.product.maHangHoa.id}')"><i class="fa fa-times"></i></a>
+									</td>
+								</tr>
+								</c:forEach>
+								
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
-		</div>
+			</section> <!--/#cart_items-->
 		
-	</footer><!--/Footer-->
+			<section id="do_action">
+				<div class="container" id="container2">
+					<div class="heading">
+						<h3>Tiếp tục hoàn thành đơn đặt hàng của bạn</h3>
+						<p>Vui lòng nhập thông tin nhận hàng và kiểm tra lại đơn hàng của bạn trước khi hoàn thành đơn hàng.</p>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div style="padding-bottom: 42px;" class="chose_area">
+								<h4 style="padding-left: 30px;">Thông tin nhận hàng</h4>
+								<ul class="user_info">	
+									<li class="single_field">
+										<label>Tỉnh / Thành phố:</label>
+										<select name="calc_shipping_provinces" id="calc_shipping_provinces" required="">
+										  <option value="">Tỉnh/Thành phố</option>
+										</select>
+										
+									</li>
+									<li class="single_field">
+										<label>Quận / Huyện:</label>
+										<select name="calc_shipping_district" id="calc_shipping_district" required="">
+										  <option value="">Quận/Huyện</option>
+										</select>
+									
+									</li>
+									
+								</ul>
+								<ul class="user_info">
+									<li>
+										<label>Địa chỉ</label>
+										<input id="calc_shipping_address" style="width: 310px;" required="required" type="text" />
+									</li>
+								</ul>
+								<!-- <a class="btn btn-default check_out" href="">Thanh toán</a> -->
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="total_area" style="height: 269px;">
+							<h4 style="padding-left: 30px;">Chi tiết số tiền thanh toán đơn hàng.</h4>
+								<ul>				
+									<li>Tạm tính <span id="TamTinh"><f:formatNumber value="${Money}" type="currency"/> </span></li>
+								<%-- 	<li>Phí dịch vụ <span id="KhuyenMai"><f:formatNumber value="0" type="currency"/></span></li> --%>
+									<li>Phí vận chuyển <span id="PhiVanChuyen"><f:formatNumber value="0" type="currency"/></span></span></li>
+									<li>Thành tiền <span id="ThanhTien"><f:formatNumber value="${Money}" type="currency"/></span></li>
+								</ul>
+									
+							</div>
+						</div>
+						<a style="display: flex;align-items: center;justify-content: center;height: 40px;" class="btn btn-default check_out" onclick="send()">Xác nhận</a>
+					</div>
+				</div>
+			</section><!--/#do_action-->
+		</c:otherwise>
+	</c:choose>
+
+	
+	
+
+	<jsp:include page="footer.jsp"></jsp:include>
+
 	
 
 
     <script src="resources/Shop/js/jquery.js"></script>
-	<script src="resources/Shop/resources/Shop/js/bootstrap.min.js"></script>
 	<script src="resources/Shop/js/jquery.scrollUp.min.js"></script>
     <script src="resources/Shop/js/jquery.prettyPhoto.js"></script>
     <script src="resources/Shop/js/main.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'/></script>
+	<script src='https://cdn.jsdelivr.net/gh/vietblogdao/js/districts.min.js'></script>
+	<script>//<![CDATA[
+	if (address_2 = localStorage.getItem('address_2_saved')) {
+	  $('select[name="calc_shipping_district"] option').each(function() {
+	    if ($(this).text() == address_2) {
+	      $(this).attr('selected', '')
+	    }
+	  })
+	  $('input.billing_address_2').attr('value', address_2)
+	}
+	if (district = localStorage.getItem('district')) {
+	  $('select[name="calc_shipping_district"]').html(district)
+	  $('select[name="calc_shipping_district"]').on('change', function() {
+	    var target = $(this).children('option:selected')
+	    target.attr('selected', '')
+	    $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
+	    address_2 = target.text()
+	    $('input.billing_address_2').attr('value', address_2)
+	    district = $('select[name="calc_shipping_district"]').html()
+	    localStorage.setItem('district', district)
+	    localStorage.setItem('address_2_saved', address_2)
+	  })
+	}
+	$('select[name="calc_shipping_provinces"]').each(function() {
+	  var $this = $(this),
+	    stc = ''
+	  c.forEach(function(i, e) {
+	    e += +1
+	    stc += '<option value=' + e + '>' + i + '</option>'
+	    $this.html('<option value="">Tỉnh / Thành phố</option>' + stc)
+	    if (address_1 = localStorage.getItem('address_1_saved')) {
+	      $('select[name="calc_shipping_provinces"] option').each(function() {
+	        if ($(this).text() == address_1) {
+	          $(this).attr('selected', '')
+	        }
+	      })
+	      $('input.billing_address_1').attr('value', address_1)
+	    }
+	    $this.on('change', function(i) {
+	      i = $this.children('option:selected').index() - 1
+	      var str = '',
+	        r = $this.val()
+	      if (r != '') {
+	        arr[i].forEach(function(el) {
+	          str += '<option value="' + el + '">' + el + '</option>'
+	          $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>' + str)
+	        })
+	        var address_1 = $this.children('option:selected').text()
+	        var district = $('select[name="calc_shipping_district"]').html()
+	        localStorage.setItem('address_1_saved', address_1)
+	        localStorage.setItem('district', district)
+	        $('select[name="calc_shipping_district"]').on('change', function() {
+	          var target = $(this).children('option:selected')
+	          target.attr('selected', '')
+	          $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
+	          var address_2 = target.text()
+	          $('input.billing_address_2').attr('value', address_2)
+	          district = $('select[name="calc_shipping_district"]').html()
+	          localStorage.setItem('district', district)
+	          localStorage.setItem('address_2_saved', address_2)
+	        })
+	      } else {
+	        $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>')
+	        district = $('select[name="calc_shipping_district"]').html()
+	        localStorage.setItem('district', district)
+	        localStorage.removeItem('address_1_saved', address_1)
+	      }
+	    })
+	  })
+	})
+	//]]></script>
+	
+	<script type="text/javascript">
+	function remove(size,id)
+	{
+		
+		$.ajax
+		({
+			url: "${pageContext.servletContext.contextPath}/removeItem.htm",
+			data: {
+				id_product: id,
+				size_product: size
+			},
+			type: "post",
+			success: function (data)
+			{
+				window.location.replace("${pageContext.servletContext.contextPath}/cart.htm");
+			},
+			error: function(data)
+			{
+				
+			}
+		})
+	}
+
+		function increase(size,id,money)
+		{
+			var count = document.getElementById('quantity-'+size+'-'+id).value;
+			if (count < document.getElementById('quantity-'+size+'-'+id).max)
+				count = count - '0' + 1;
+			document.getElementById('quantity-'+size+'-'+id).value = count;
+			var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(count * money);
+			document.getElementById('money-'+size+'-'+id).innerHTML = money;
+			
+			$.ajax
+			({
+				url: "${pageContext.servletContext.contextPath}/editCart.htm",
+				data: {
+					id_product: id,
+					size_product: size,
+					count_product: count
+				},
+				type: "post",
+				success: function (data)
+				{
+					document.getElementById('TamTinh').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+					document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+					
+				},
+				error: function(data)
+				{
+					
+				}
+			})
+		}
+
+		function decrease(size,id,money)
+		{
+			var count = document.getElementById('quantity-'+size+'-'+id).value;
+			if (count > 1)
+				count = count - '0' - 1;			
+			document.getElementById('quantity-'+size+'-'+id).value = count;
+			var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(count * money);
+			document.getElementById('money-'+size+'-'+id).innerHTML = money;
+			
+			$.ajax
+			({
+				url: "${pageContext.servletContext.contextPath}/editCart.htm",
+				data: {
+					id_product: id,
+					size_product: size,
+					count_product: count
+				},
+				type: "post",
+				success: function (data)
+				{
+					document.getElementById('TamTinh').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+					document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+				},
+				error: function(data)
+				{
+					
+				}
+			})
+		}
+		
+		function send() {
+			var provinces = document.getElementById('calc_shipping_provinces');
+			provinces = provinces.options[provinces.selectedIndex].text;
+			var district = document.getElementById('calc_shipping_district').value;
+			var address = document.getElementById('calc_shipping_address').value;
+			
+			if (district == "" || address == "")
+				alert("Vui lòng nhập đầy đủ thông tin nhận hàng.");
+			else
+			{
+			  	$.ajax
+			  	({
+			  		url: "${pageContext.servletContext.contextPath}/pay.htm",
+					data: {
+						province: provinces,
+						district: district,
+						address: address
+					},
+					type: "post",
+					success: function (data)
+					{
+						
+					},
+					error: function(data)
+					{
+						
+					}
+			  	})
+			  	document.getElementById('container').innerHTML =  document.getElementById('thankyou').innerHTML ;
+			 	document.getElementById('container2').innerHTML =  "";
+			}
+		 	
+		}
+	</script>
+	<script id="thankyou" type="text/html">
+<div style="text-align: center;">
+	<h2> Cảm ơn bạn đã mua hàng, nhân viên sẽ xác nhận đơn hàng của bạn sau vài giờ.</h2>
+	<image style="width: 700px; height: 500px;" src = "resources/Thanks.jpg" />
+</div>
+	</script>
 </body>
 </html>

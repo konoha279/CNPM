@@ -98,16 +98,17 @@ public class HangHoaController {
 		Session session = factory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		List<Object> list = query.list();
-		model.addAttribute("dshangHoa",
-				list.subList((page - 1) * 4, (page * 4 > list.size() ? list.size() : page * 4)));
-		model.addAttribute("page", page);
-		model.addAttribute("maxpage", Math.ceil(list.size() / 4.0));
+		//model.addAttribute("dshangHoa", list.subList((page - 1) * 4, (page * 4 > list.size() ? list.size() : page * 4)));
+		model.addAttribute("dshangHoa",list);
 	}
 
-	@RequestMapping(value = "index", params = { "page" })
-	public String indexpage(ModelMap model, @PathParam("page") Integer page) {
+	@RequestMapping(value = "index", method = RequestMethod.GET)
+	public String indexpage(ModelMap model) {
 		String hql = "From Product";
-		loadindex(model, hql, page);
+		Session session = factory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		List<Product> list = query.list();
+		model.addAttribute("dshangHoa",list);
 		return "admin/hanghoa/index";
 	}
 

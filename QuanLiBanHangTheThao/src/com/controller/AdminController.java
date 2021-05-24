@@ -54,6 +54,7 @@ public class AdminController {
 		return "admin/comment";
 	}
 	
+//	-------------------------------------------------	comment	-----------------------------------------------
 	@RequestMapping(value = "comment/edit", method = RequestMethod.POST)
 	public @ResponseBody byte[] editComment(HttpServletRequest request) throws UnsupportedEncodingException
 	{

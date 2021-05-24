@@ -217,4 +217,9 @@ public class Product {
 		}
 		return size;
 	}
+	
+	public int getMoney()
+	{
+		return (getPrice() - (getPrice() * (getDiscount() /100)));
+	}
 }

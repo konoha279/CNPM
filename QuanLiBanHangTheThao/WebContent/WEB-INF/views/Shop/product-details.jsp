@@ -227,30 +227,34 @@
 												<c:choose>
 													<c:when test="${s.soLuong == 0 }">
 														<label>
-															<input class="btn-check" disabled="disabled" type="radio" value="${s.size.id}" name="optionSize">
+															<input onclick="changeCount('${s.soLuong}')" class="btn-check" disabled="disabled" type="radio" value="${s.size.id}" name="optionSize">
 															<span class="btn btn-outline-success" for="success-outlined">${s.size.name}</span>
 														</label>
 													</c:when>
 													<c:when test="${s.size.id == detailProduct.getFirstSize().id}">
 														<label>
-															<input checked="checked" class="btn-check" id="success-outlined" type="radio" value="${s.size.id}" name="optionSize">
+															<input onclick="changeCount('${s.soLuong}')" checked="checked" class="btn-check" id="success-outlined" type="radio" value="${s.size.id}" name="optionSize">
 															<span class="btn btn-outline-success" for="success-outlined">${s.size.name}</span>
 														</label>
 													</c:when>
 													<c:otherwise>
 														<label>
-															<input class="btn-check" id="success-outlined" type="radio" value="${s.size.id}" name="optionSize">
+															<input onclick="changeCount('${s.soLuong}')" class="btn-check" id="success-outlined" type="radio" value="${s.size.id}" name="optionSize">
 															<span class="btn btn-outline-success" for="success-outlined">${s.size.name}</span>
 														</label>
 													</c:otherwise>
 												</c:choose>
 											</c:forEach>
 										</c:when>
+										<c:otherwise>
+											<input onclick="changeCount('${detailProduct.CT_HangHoa[0].soLuong}')" checked="checked" style="display: none;" type="radio" value="${s.size.id}" name="optionSize">
+										</c:otherwise>
 									</c:choose>
 									
 								</div>
 								<span>
-								<c:choose>
+								<c:if test="${detailProduct.getCount() > 0  }">
+									<c:choose>
 										<c:when test="${detailProduct.discount != 0}">
 											<span><del><f:formatNumber value="${detailProduct.price}" type="currency"/></del> <f:formatNumber value="${detailProduct.price - detailProduct.price*(detailProduct.discount/100)}" type="currency"/></span>	
 										</c:when>
@@ -258,26 +262,31 @@
 											<span><f:formatNumber value="${detailProduct.price}" type="currency"/></span>	
 										</c:otherwise>
 									</c:choose>
+								</c:if>
 								</span>
 								<span>
 									
 									<label>Số lượng:</label>
-									<input type="number" min="0" max="${detailProduct.getCount() }" value="0" />
-									<button type="button" class="btn btn-fefault cart">
-										<i class="fa fa-shopping-cart"></i>
-										Thêm vào giỏ hàng
-									</button>
+									<input type="number" id="countSelect" name="countSelect" min="0" max="${detailProduct.getCount() }" value="1" />
+									<c:if test="${detailProduct.getCount() > 0  }">
+										<button onclick="addCart('${detailProduct.id}')" type="button" class="btn btn-fefault cart">
+											<i class="fa fa-shopping-cart"></i>
+											Thêm vào giỏ hàng
+										</button>
+									</c:if>
 								</span>
 								
 								
-								<p><b>Số lượng:</b> ${detailProduct.getCount() }</p>
+								<p id="showCount"><b>Số lượng:</b> null</p>
 								<p><b>Danh mục:</b> ${detailProduct.productlist.name }</p>
 								<p><b>Thương hiệu:</b> ${detailProduct.brand.name }</p>
 								<span>
-									<button type="button" class="btn btn-fefault cart">
-										<i class="fa fa-shopping-cart"></i>
-										Mua ngay
-									</button>
+									<c:if test="${detailProduct.getCount() > 0  }">
+										<button onclick="paynow('${detailProduct.id}')" type="button" class="btn btn-fefault cart">
+											<i class="fa fa-shopping-cart"></i>
+											Mua ngay
+										</button>
+									</c:if>
 								</span>
 								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
 							</div><!--/product-information-->
@@ -616,5 +625,99 @@
 	<script src="resources/Shop/js/bootstrap.min.js"></script>
     <script src="resources/Shop/js/jquery.prettyPhoto.js"></script>
     <script src="resources/Shop/js/main.js"></script>
+<script type="text/javascript">
+
+	function changeCount(count)
+	{
+		document.getElementById('showCount').innerHTML = "<b>Số lượng: </b>" +count;
+		var input = document.getElementById('countSelect');
+		input.max = count;
+		if (input.value > count) {
+			input.value = count;
+		}
+	}
+
+	window.onload = function()
+	{
+		var sizeList = document.getElementsByName('optionSize');
+		for (var i=0; i < sizeList.length; i++)
+		{
+			if (sizeList[i].checked)
+			{
+				sizeList[i].click();
+				break;
+			}
+		}
+	}
+
+	function addCart(m_id)
+	{
+		var sizeList = document.getElementsByName('optionSize');
+		var m_size = null;
+		for (var i=0; i < sizeList.length; i++)
+		{
+			if (sizeList[i].checked)
+			{
+				m_size = sizeList[i].value;
+				break;
+			}
+		}
+		var m_count = document.getElementById('countSelect').value;
+		if (m_size == null)
+			m_size = "5";
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath}/addCart.htm",
+			data: {
+				id: m_id,
+				size: m_size,
+				count: m_count				
+			},
+			type: "post",
+			success: function (data)
+				{
+					document.getElementById('CartOnHeader').innerHTML= "<a href=\"cart.htm\"><i class=\"fa fa-shopping-cart\"></i> Giỏ hàng ("+data+")</a>";
+				},
+				error: function(data)
+				{
+					alert(data);
+				}
+			})
+	}
+	
+	function paynow(m_id)
+	{
+		var sizeList = document.getElementsByName('optionSize');
+		var m_size = null;
+		for (var i=0; i < sizeList.length; i++)
+		{
+			if (sizeList[i].checked)
+			{
+				m_size = sizeList[i].value;
+				break;
+			}
+		}
+		var m_count = document.getElementById('countSelect').value;
+		if (m_size == null)
+			m_size = "5";
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath}/addCart.htm",
+			data: {
+				id: m_id,
+				size: m_size,
+				count: m_count				
+			},
+			type: "post",
+			success: function (data)
+				{
+					window.location.replace("${pageContext.servletContext.contextPath}/cart.htm");
+				},
+				error: function(data)
+				{
+					alert(data);
+				}
+			})
+	}
+
+</script>
 </body>
 </html>
