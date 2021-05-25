@@ -169,11 +169,11 @@ public class ShopController {
 		List<Cart> cartItems = (List<Cart>) httpSession.getAttribute("myCartItems");
 		if (cartItems == null)
 			cartItems = new ArrayList<Cart>();
-		int AllMoney = 0;
+		float AllMoney = 0;
 		Bill bill = new Bill();
 		
 		for (Cart cart : cartItems) {
-			int temp = cart.getProduct().getMaHangHoa().getMoney() ;
+			float temp = cart.getProduct().getMaHangHoa().getMoney() ;
 			AllMoney += temp * cart.getCount();
 		}
 		
@@ -372,7 +372,8 @@ public class ShopController {
 				ctBill.setBill(bill);
 				ctBill.setcTHangHoa(cart.getProduct());
 				ctBill.setCount(cart.getCount());
-				ctBill.setPromotion(cart.getProduct().getMaHangHoa().getDiscount());				
+				ctBill.setPromotion(cart.getProduct().getMaHangHoa().getDiscount());			
+				ctBill.setUnitPrice(cart.getProduct().getMaHangHoa().getPrice());
 				session.save(ctBill);
 				
 				

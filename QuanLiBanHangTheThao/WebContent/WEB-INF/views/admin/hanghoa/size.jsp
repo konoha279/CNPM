@@ -26,7 +26,7 @@
 		<div class="main-content">
 			<div class="ui grid stackable padded">
 				<div class="column">
-				<h1 class="ui header" style="text-align:center ;margin-top: 30px">QUẢN LÝ SIZE</h1>
+				<h1 class="ui header" style="text-align:center ;margin-top: 30px">DANH SÁCH SIZE</h1>
 					<table id="TableSize" class="table table-striped table-bordered dt-responsive nowrap">
 						<colgroup>
 							<col span="1" style="width: 5%">
@@ -261,6 +261,12 @@
                 },
                 {
                     extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2 ]
+                    }
+                },
+                {
+                	extend: 'print',
                     exportOptions: {
                         columns: [ 0, 1, 2 ]
                     }

@@ -45,9 +45,6 @@ public class Staff {
 	private Date workday;
 	@Column(name = "SoDienThoai")
 	private String phoneNumber;
-	@ManyToOne
-	@JoinColumn(name = "MaCN")
-	private Branch branch;
 	
 	@Column(name =" TinhTrang")
 	private Boolean status;
@@ -66,7 +63,7 @@ public class Staff {
 	}
 	
 	public Staff(String id, String firstName, String name, String address, Date birthday, String phoneNumber,
-			Branch branch, Boolean status, Boolean sex, Account accountStaff, Collection<Receipt> receipts) {
+			Boolean status, Boolean sex, Account accountStaff, Collection<Receipt> receipts) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -74,7 +71,6 @@ public class Staff {
 		this.address = address;
 		this.birthday = birthday;
 		this.phoneNumber = phoneNumber;
-		this.branch = branch;
 		this.status = status;
 		this.sex = sex;
 		this.accountStaff = accountStaff;
@@ -83,21 +79,19 @@ public class Staff {
 	
 	
 
-	public Staff(String firstName, String name, String cmnd, String address, String phoneNumber, Branch branch,
-			Boolean status, Boolean sex) {
+	public Staff(String firstName, String name, String cmnd, String address, String phoneNumber, Boolean status, Boolean sex) {
 		super();
 		this.firstName = firstName;
 		this.name = name;
 		this.cmnd = cmnd;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
-		this.branch = branch;
 		this.status = status;
 		this.sex = sex;
 	}
 
 	public Staff(String id, String firstName, String name, String cmnd, String address, Date birthday, Date workday,
-			String phoneNumber, Branch branch, Boolean status, Boolean sex, Account accountStaff) {
+			String phoneNumber, Boolean status, Boolean sex, Account accountStaff) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -107,7 +101,6 @@ public class Staff {
 		this.birthday = birthday;
 		this.workday = workday;
 		this.phoneNumber = phoneNumber;
-		this.branch = branch;
 		this.status = status;
 		this.sex = sex;
 		this.accountStaff = accountStaff;
@@ -179,14 +172,6 @@ public class Staff {
 
 	public void setCmnd(String cmnd) {
 		this.cmnd = cmnd;
-	}
-
-	public Branch getBranch() {
-		return branch;
-	}
-
-	public void setBranch(Branch branch) {
-		this.branch = branch;
 	}
 
 	public Boolean getStatus() {

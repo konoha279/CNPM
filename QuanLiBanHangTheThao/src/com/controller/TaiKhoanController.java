@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entity.Account;
-import com.entity.Branch;
 import com.entity.Guest;
 import com.entity.Role;
 import com.entity.Staff;
@@ -54,10 +53,7 @@ public class TaiKhoanController {
 		query = session.createQuery(hql);
 		List<Role> listRole = query.list();
 		model.addAttribute("role", listRole);
-		hql = "From Branch";
-		query = session.createQuery(hql);
-		List<Branch> listBranch = query.list();
-		model.addAttribute("branch", listBranch);
+		
 		return "admin/taikhoan/index";
 	}
 	
@@ -191,7 +187,6 @@ public class TaiKhoanController {
 			}
 		}
 		
-		Branch branch = (Branch) session.get(Branch.class, request.getParameter("branch"));
 		boolean status = Boolean.parseBoolean(request.getParameter("status"));
 		
 		String firstName = request.getParameter("firstName");
@@ -200,7 +195,7 @@ public class TaiKhoanController {
 		
 		Role role = (Role) session.get(Role.class, request.getParameter("role"));
 		Account account = new Account(username, encrypt(passwd), email, role, true);
-		Staff staff = new Staff(firstName, name, cmnd, address, phone, branch, status, sex);
+		Staff staff = new Staff(firstName, name, cmnd, address, phone, status, sex);
 		staff.setBirthday_Str(birthday);
 		staff.setWorkday_Str(workday);
 		account.setGuest(null);
@@ -227,26 +222,35 @@ public class TaiKhoanController {
 	}
 	
 	@RequestMapping(value = "delete/{username}", method = RequestMethod.GET)
-	public String delete(@PathVariable("username") String username)
+	public String delete(@PathVariable("username") String username, ModelMap model)
 	{
 		Session session = factory.openSession();
 		Account account = (Account) session.get(Account.class, username);
-		Transaction transaction = session.beginTransaction();
-		try {
-			if (account.getRole().getId().equals("0"))			
-				session.delete(account.getGuest());			
-			else
-				session.delete(account.getStaff());
-			session.delete(account);
-			transaction.commit();
-		} catch (Exception e) {
-			transaction.rollback();
-			System.out.print(e);
-			// TODO: handle exception
+		if (!account.getBills().isEmpty())
+		{
+			return "redirect:/404.htm";
 		}
-		finally {
-			session.close();
-		}
+		else
+		{
+			Transaction transaction = session.beginTransaction();
+			try {
+				if (account.getRole().getId().equals("0"))			
+					session.delete(account.getGuest());			
+				else
+					session.delete(account.getStaff());
+				session.delete(account);
+				transaction.commit();
+
+			} catch (Exception e) {
+				transaction.rollback();
+				System.out.print(e);
+				// TODO: handle exception
+			}
+			finally {
+				session.close();
+			}
+		}	
+		
 		return "redirect:/admin/taikhoan/index.htm";
 	}
 	

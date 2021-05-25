@@ -52,6 +52,13 @@
 				<div class="container" id ="container">
 					<div class="table-responsive cart_info">
 						<table class="table table-condensed">
+						<colgroup>
+							<col span="1" style="width: 15%">
+							<col span="1" style="width: 40%">
+							<col span="1" style="width: 10%">
+							<col span="1" style="width: 15%">
+							<col span="1" style="width: 10%">
+						</colgroup>	
 							<thead>
 								<tr class="cart_menu">
 									<td class="image">Hình sản phẩm</td>
@@ -78,7 +85,7 @@
 									<td class="cart_quantity">
 										<div class="cart_quantity_button">
 											<a style="text-decoration: none;" class="cart_quantity_down" href="javascript:decrease('${c.product.size.id }','${c.product.maHangHoa.id}','${c.product.maHangHoa.price - c.product.maHangHoa.price*(c.product.maHangHoa.discount/100)}')"> - </a>
-											<input class="cart_quantity_input" type="text" id="quantity-${c.product.size.id }-${c.product.maHangHoa.id}" name="quantity" value="${ c.count }" max="${c.product.soLuong }" autocomplete="off" size="2">
+											<input class="cart_quantity_input" onchange="editcount('${c.product.size.id }','${c.product.maHangHoa.id}','${c.product.maHangHoa.price - c.product.maHangHoa.price*(c.product.maHangHoa.discount/100)}')" type="text" id="quantity-${c.product.size.id }-${c.product.maHangHoa.id}" name="quantity" value="${ c.count }" max="${c.product.soLuong }" autocomplete="off" size="2">
 											<a style="text-decoration: none;" class="cart_quantity_up" href="javascript:increase('${c.product.size.id }','${c.product.maHangHoa.id}','${c.product.maHangHoa.price - c.product.maHangHoa.price*(c.product.maHangHoa.discount/100)}')"> + </a>
 										</div>
 									</td>
@@ -252,6 +259,36 @@
 			success: function (data)
 			{
 				window.location.replace("${pageContext.servletContext.contextPath}/cart.htm");
+			},
+			error: function(data)
+			{
+				
+			}
+		})
+	}
+	function editcount(size,id,money)
+	{
+		var count = document.getElementById('quantity-'+size+'-'+id).value;
+		if (count <= '1')
+			count = '1';
+		document.getElementById('quantity-'+size+'-'+id).value = count;
+		var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(count * money);
+		document.getElementById('money-'+size+'-'+id).innerHTML = money;
+		
+		$.ajax
+		({
+			url: "${pageContext.servletContext.contextPath}/editCart.htm",
+			data: {
+				id_product: id,
+				size_product: size,
+				count_product: count
+			},
+			type: "post",
+			success: function (data)
+			{
+				document.getElementById('TamTinh').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+				document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+				
 			},
 			error: function(data)
 			{

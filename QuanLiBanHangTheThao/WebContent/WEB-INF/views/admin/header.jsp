@@ -105,9 +105,9 @@ body ::-webkit-scrollbar {
 			</div>
 		</div>
 		
-		<a href="admin/hoadon/index.htm" id="dh" class="item">
+		<a href="admin/donDatHang/index.htm" id="dh" class="item">
 			<div>
-				<i class="cart arrow down icon"></i> Đơn Hàng
+				<i class="cart arrow down icon"></i> Đơn đặt hàng
 			</div>
 		</a> 
 		<a href="admin/nhanvien/index.htm" id="nv" class="item">
@@ -118,11 +118,6 @@ body ::-webkit-scrollbar {
 		<a href="admin/taikhoan/index.htm" id="tk" class="item">
 			<div>
 				<i class="address card outline icon"></i> Tài khoản
-			</div>
-		</a> 
-		<a href="admin/chinhanh/index.htm" id="cn" class="item">
-			<div>
-				<i class="icon building"></i> Chi Nhánh
 			</div>
 		</a> 
 		<a href="admin/nhap/index.htm" id="pn" class="item">

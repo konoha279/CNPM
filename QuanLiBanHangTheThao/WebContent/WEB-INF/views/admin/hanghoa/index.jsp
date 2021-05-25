@@ -73,6 +73,7 @@
 			</div>
 		</div>
 	</div>
+	<!-- ---------------------------------------------------------- Export ---------------------------------------------------------- -->
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
@@ -108,6 +109,12 @@
                     extend: 'pdfHtml5',
                     exportOptions: {
                         columns: [ 0, 2, 3, 4, 5, 6, 7, 8 ]
+                    }
+                },
+                {
+                	extend: 'print',
+                    exportOptions: {
+                    	columns: [ 0, 2, 3, 4, 5, 6, 7, 8 ]
                     }
                 },
                 'colvis'

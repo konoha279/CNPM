@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.entity.Branch;
 import com.entity.Receipt;
 import com.entity.Staff;
 
@@ -34,15 +33,6 @@ public class PhieuNhapController {
 	@Autowired
 	ServletContext context;
 	
-	@ModelAttribute("Branchs")
-	public List<Branch> getBranchs()
-	{
-		Session session = factory.getCurrentSession();
-		String hql = "FROM Branch";
-		Query query = session.createQuery(hql);
-		List<Branch> list = query.list();
-		return list;
-	}
 
 	@ModelAttribute("dsNhanVien")
 	public List<Staff> getLoai() {

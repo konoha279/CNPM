@@ -147,6 +147,14 @@ public class Account {
 		this.comments = comments;
 	}
 
+	public Collection<Bill> getBills() {
+		return bills;
+	}
+
+	public void setBills(Collection<Bill> bills) {
+		this.bills = bills;
+	}
+
 	
 	
 	

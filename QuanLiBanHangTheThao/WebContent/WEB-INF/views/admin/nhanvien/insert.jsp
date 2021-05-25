@@ -77,7 +77,7 @@
 							</div>
 						</div>
 						<div class="field">
-							<div class="three fields">
+							<div class="two fields">
 								<div class="field">
 									<label>Giới Tính</label>
 									<form:select path="sex">
@@ -85,11 +85,6 @@
 										<form:option value="0">Nữ</form:option>
 									</form:select>
 
-								</div>
-								<div class="field">
-									<label>Chi Nhánh</label>
-									<form:select path="branch.id" items="${dsChiNhanh}"
-										itemValue="id" itemLabel="name" />
 								</div>
 								<div class="field">
 									<label>Tình Trạng</label>

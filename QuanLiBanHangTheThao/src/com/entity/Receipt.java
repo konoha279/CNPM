@@ -31,21 +31,16 @@ public class Receipt {
 	@JoinColumn(name = "MaNV")
 	private Staff staff;
 	
-	@ManyToOne
-	@JoinColumn(name = "MaChiNhanh")
-	private Branch branch;
-	
 	public Receipt() {
 		// TODO Auto-generated constructor stub
 	}
 	
 
-	public Receipt(String id, Date date, Staff staff, Branch branch) {
+	public Receipt(String id, Date date, Staff staff) {
 		super();
 		this.id = id;
 		this.date = date;
 		this.staff = staff;
-		this.branch = branch;
 	}
 
 
@@ -73,13 +68,4 @@ public class Receipt {
 		this.staff = staff;
 	}
 
-	public Branch getBranch() {
-		return branch;
-	}
-
-	public void setBranch(Branch branch) {
-		this.branch = branch;
-	}
-	
-	
 }

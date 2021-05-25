@@ -430,11 +430,6 @@ public class HangHoaController {
 		String hql = "From Size where name ='"+name+"'";
 		Query query = session.createQuery(hql);
 		
-		if (!query.list().isEmpty())
-		{
-			return "Tên size đã có sẵn.".getBytes("UTF-8");
-		}
-		
 		session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {

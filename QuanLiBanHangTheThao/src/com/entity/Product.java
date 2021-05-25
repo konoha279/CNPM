@@ -25,9 +25,9 @@ public class Product {
 	@Column(name = "TenHangHoa")
 	private String name;
 	@Column(name = "DonGia")
-	private int price;
+	private float price;
 	@Column(name = "GiamGia")
-	private int discount;
+	private float discount;
 	@Column(name = "Anh")
 	private String image;
 	@Column(name = "GhiChu")
@@ -53,7 +53,7 @@ public class Product {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Product(String iD, String name, int price, int discount, String image, String notes,
+	public Product(String iD, String name, float price, float discount, String image, String notes,
 			Boolean status, ProductList productlist) {
 		id = iD;
 		this.name = name;
@@ -67,7 +67,7 @@ public class Product {
 	
 	
 
-	public Product(String iD, String name, int price, int discount, String image, String notes,
+	public Product(String iD, String name, float price, float discount, String image, String notes,
 			Boolean status, ProductList productlist, Collection<CTHangHoa> cT_HangHoa) {
 		super();
 		id = iD;
@@ -81,7 +81,7 @@ public class Product {
 		CT_HangHoa = cT_HangHoa;
 	}
 
-	public Product(String id, String name, int price, int discount, String image, String notes, Boolean status,
+	public Product(String id, String name, float price, float discount, String image, String notes, Boolean status,
 			ProductList productlist, Brand brand, Collection<CTHangHoa> cT_HangHoa) {
 		super();
 		this.id = id;
@@ -112,19 +112,19 @@ public class Product {
 		this.name = name;
 	}
 
-	public int getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 
-	public int getDiscount() {
+	public float getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(int discount) {
+	public void setDiscount(float discount) {
 		this.discount = discount;
 	}
 
@@ -218,8 +218,8 @@ public class Product {
 		return size;
 	}
 	
-	public int getMoney()
+	public float getMoney()
 	{
-		return (getPrice() - (getPrice() * (getDiscount() /100)));
+		return (getPrice() - (getPrice() * (getDiscount() /100) ));
 	}
 }

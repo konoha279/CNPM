@@ -23,7 +23,6 @@
 .modal-lg {
     max-width: 60%;
 }
-
 </style>
 </head>
 <body>
@@ -32,7 +31,7 @@
 		<div class="main-content">
 			<div class="ui grid stackable padded">
 				<div class="column">
-				<h1 class="ui header" style="text-align:center ;margin-top: 30px">QUẢN LÝ TÀI KHOẢN</h1>
+				<h1 class="ui header" style="text-align:center ;margin-top: 30px">DANH SÁCH TÀI KHOẢN</h1>
 				
 					<table id="TableAccount" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0">
 						<thead>
@@ -190,10 +189,6 @@
 																			<form:input  readonly="true" class="form-control" path="staff.phoneNumber" value = "${acc.staff.getPhoneNumber()}" />
 																		</div>
 																		<div class="mb-3">
-																			<label class="form-label">Chi nhánh</label>
-																			<form:input  readonly="true" class="form-control" path="staff.branch.name" value = "${acc.staff.getBranch().getName()}" />
-																		</div>
-																		<div class="mb-3">
 																			<form:checkbox readonly="true"  disabled="true"  path="staff.status" checked="${acc.staff.getStatus() == true ? 'checked' : ''}"/>
 																			<label class="form-label">Còn làm</label>
 																		</div>																		
@@ -256,6 +251,8 @@
 							</c:forEach>
 						</tbody>
 					</table>
+						<!-- ----------------------------------------------------- Nút thêm -----------------------------------------------------------  -->				
+					
 						<button type="button" class="ui green button" data-bs-toggle="modal" data-bs-target="#insert">
 							<i class="plus icon"></i>Thêm Tài Khoản
 						</button>
@@ -335,7 +332,7 @@
 												<input type="text" class="form-control" id="guestPhoneNumber" />
 											</div>	
 					         		</div>
-					         		<!-- Nhân viên -->
+					         		<!-- ----------------------------------------------------------------------------------------- Nhân viên ----------------------------------------------------------------------------------------- -->
 					         		<div id= "adding-staff" style="width: 40%">
 										<h3 style="text-align: center;">Thông tin nhân viên</h3>
 											<div class="mb-3">
@@ -384,14 +381,6 @@
 												<input type="text" class="form-control" id="staffPhoneNumber"/>
 											</div>
 											<div class="mb-3">
-												<label class="form-label">Chi nhánh</label>
-												<select class="form-control" id ="branchSelected" name="staff-branch-id">
-													<c:forEach items="${branch}" var="branch">
-							         					<option value="${branch.id}">${branch.name}</option>
-							         				</c:forEach>
-												</select>
-											</div>
-											<div class="mb-3">
 												<input type="checkbox" name="staff-status" id="staffStatus" value="true" />
 												<label class="form-label">Còn làm</label>
 											</div>															
@@ -415,6 +404,8 @@
 <script src="resources/admin/main.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
+
+
 function add() {
 	var user = document.getElementById("addUsername").value;
 	var password = document.getElementById("addPassword").value;
@@ -478,7 +469,6 @@ function add() {
 			}
 		var m_phone = document.getElementById("staffPhoneNumber").value;
 		var m_birthday = document.getElementById("staffBirthday").value;
-		var m_branch = document.getElementById("branchSelected").value;
 		var m_status = (document.getElementById("staffStatus") != null ? "true" : "false");
 		var m_cmnd = document.getElementById("staffCMND").value;
 		var m_address = document.getElementById("staffAddress").value;
@@ -494,7 +484,6 @@ function add() {
 			sex: m_sex,
 			phone: m_phone,
 			birthday: m_birthday,
-			branch: m_branch,
 			status: m_status,
 			cmnd: m_cmnd,
 			address: m_address,
@@ -520,7 +509,6 @@ function add() {
 	
 }
 </script>
-<!-- ---------------------------------------------------------- Sort ---------------------------------------------------------- -->
 
 <!-- ---------------------------------------------------------- Export ---------------------------------------------------------- -->
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -545,19 +533,29 @@ function add() {
                 {
                     extend: 'copyHtml5',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4 ]
+                        columns: [ 0, 1, 2, 3, 4 ],
+                        columns: ':visible'
                     }
                 },
                 {
                     extend: 'excelHtml5',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4 ]
+                        columns: [ 0, 1, 2, 3, 4 ],
+                        columns: ':visible'
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     exportOptions: {
-                        columns: [ 0, 1, 2, 3, 4 ]
+                        columns: [ 0, 1, 2, 3, 4 ],
+                        columns: ':visible'
+                    }
+                },
+                {
+                	extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4 ],
+                        columns: ':visible'
                     }
                 },
                 'colvis'

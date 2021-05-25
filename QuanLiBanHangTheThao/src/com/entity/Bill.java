@@ -1,14 +1,17 @@
 package com.entity;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,7 +26,7 @@ public class Bill {
 	@Column(name = "MaHoaDon")
 	private String id;
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "MM/dd/yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Column(name ="Ngay")
 	private Date date;
 	@ManyToOne
@@ -40,6 +43,10 @@ public class Bill {
 	private Account account;
 	@Column(name = "DiaChiNhanHang")
 	private String address;
+	
+	@OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
+	private Collection<CTBill> ctBills;
+	
 	public Bill() {
 		// TODO Auto-generated constructor stub
 	}
@@ -126,6 +133,14 @@ public class Bill {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public Collection<CTBill> getCtBills() {
+		return ctBills;
+	}
+
+	public void setCtBills(Collection<CTBill> ctBills) {
+		this.ctBills = ctBills;
 	}
 
 	

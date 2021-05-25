@@ -25,23 +25,34 @@ public class CTBill implements Serializable {
 		@JoinColumn(name = "MaSize", referencedColumnName = "MaSize") 
 		})
 	private CTHangHoa cTHangHoa;
-	
+	@Column(name = "DonGia")
+	private float unitPrice;
 	@Column(name = "SoLuong")
 	private int count;
 	@Column(name = "KhuyenMai")
-	private int promotion;
+	private float promotion;
 	
 	public CTBill() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public CTBill(Bill bill, CTHangHoa cTHangHoa, int count, int promotion) {
+	public CTBill(Bill bill, CTHangHoa cTHangHoa, int count, float promotion) {
 		super();
 		this.bill = bill;
 		this.cTHangHoa = cTHangHoa;
 		this.count = count;
 		this.promotion = promotion;
 	}
+	
+	public CTBill(Bill bill, CTHangHoa cTHangHoa, int unitPrice, int count, float promotion) {
+		super();
+		this.bill = bill;
+		this.cTHangHoa = cTHangHoa;
+		this.unitPrice = unitPrice;
+		this.count = count;
+		this.promotion = promotion;
+	}
+
 	public Bill getBill() {
 		return bill;
 	}
@@ -60,12 +71,23 @@ public class CTBill implements Serializable {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int getPromotion() {
+	public float getPromotion() {
 		return promotion;
 	}
-	public void setPromotion(int promotion) {
+	public void setPromotion(float promotion) {
 		this.promotion = promotion;
 	}
-	
+
+	public float getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(float unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+	public double intoMoney()
+	{
+		return (getUnitPrice() - (getUnitPrice()*(getPromotion() / 100)))*getCount();
+	}
 	
 }

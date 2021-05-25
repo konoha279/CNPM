@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.entity.Account;
-import com.entity.Branch;
 import com.entity.Role;
 import com.entity.Staff;
 
@@ -32,14 +31,6 @@ public class NhanVienController {
 	@Autowired
 	SessionFactory factory;
 	
-	@ModelAttribute("dsChiNhanh")
-	public List<Branch> getLoai() {
-		Session session = factory.getCurrentSession();
-		String hql = "FROM Branch";
-		Query query = session.createQuery(hql);
-		List<Branch> list = query.list();
-		return list;
-	}
 	
 	@ModelAttribute("role")
 	public List<Role> getRole()
@@ -58,11 +49,6 @@ public class NhanVienController {
 		return role;
 	}
 	
-	public Branch getBranch(String id)
-	{
-		Session session = factory.getCurrentSession();
-		return (Branch) session.get(Branch.class, id);
-	}
 	
 	@RequestMapping("index")
 	public String index(ModelMap model, HttpSession httpSession) {
@@ -149,9 +135,8 @@ public class NhanVienController {
 			}
 			
 			Role role = getRole(staff.getAccountStaff().getRole().getId());
-			Branch branch = getBranch(staff.getBranch().getId());
 			Account account = new Account(staff.getAccountStaff().getUsername(), staff.getAccountStaff().getPassword(), staff.getAccountStaff().getEmail(), role, true);
-			Staff newStaff = new Staff(staff.getFirstName(), staff.getName(), staff.getCmnd(), staff.getAddress(), staff.getPhoneNumber(), branch, staff.getStatus(), staff.getSex());
+			Staff newStaff = new Staff(staff.getFirstName(), staff.getName(), staff.getCmnd(), staff.getAddress(), staff.getPhoneNumber(), staff.getStatus(), staff.getSex());
 			
 			account.setStaff(newStaff);
 			newStaff.setAccountStaff(account);

@@ -1,5 +1,8 @@
 package com.interceptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.entity.Account;
+import com.entity.Bill;
 
 @Transactional
 public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
@@ -41,7 +45,8 @@ public class AuthorizeInterceptor extends HandlerInterceptorAdapter {
 					request.setAttribute("staff", account.getStaff());
 			}
 			request.setAttribute("account", account);
-
+			List<Bill> bills = new ArrayList<>(account.getBills());
+			request.setAttribute("bills", bills);
 			return true;
 		}
 					

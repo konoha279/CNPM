@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +22,10 @@
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.bootstrap4.min.css">
+	
 	<style type="text/css">
 	body {
 		  padding: 0;
@@ -31,6 +37,13 @@
 	{
 		transition: height 1s, width 1s, padding 1s, opacity 0.5s ease-out;
 	}	
+	
+	div.bill {
+	  /* background-color: lightblue; */
+	  width: 735px;
+	  height: 450px;
+	  overflow: auto;
+	}
 	</style>
 
 </head>
@@ -119,6 +132,9 @@
 				<li class="nav-item">
 					<a class="nav-link" id="change-passwd-tab" data-toggle="tab" href="#change-passwd" role="tab" aria-controls="change-passwd" aria-selected="false">Đổi mật khẩu</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="bill-tab" data-toggle="tab" href="#bill" role="tab" aria-controls="change-passwd" aria-selected="false">Đơn hàng đã mua</a>
+				</li>
 			</ul>
 		</div>
 		<div class="tab-content" id="tab-content">			
@@ -148,6 +164,36 @@
 					</div>
 				</div>				
 			</div>
+			<!-- ----------------------- BILL ----------------------- -->
+			<div class="tab-pane fade bill" id="bill" role="tabpanel" aria-labelledby="bill-tab">
+				<table id="billTable" class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Ngày tạo đơn hàng</th>
+							<th>Địa chỉ nhận hàng</th>		
+							<th>Phí vận chuyện</th>
+							<th>Tổng tiền thanh toán</th>
+							<th>Tương tác</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${bills}" var="b">
+							<tr>
+								<td>${b.date }</td>
+								<td>${b.address } </td>
+								<td><f:formatNumber value="${b.transportationFee }" type="currency" /></td>
+								<td><f:formatNumber value="${b.moneyProduct }" type="currency" /> </td>
+								<td>
+									 <button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${b.id}">
+											<i class="edit icon"></i>Xem chi tiết
+									</button>		
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+			
 		</div>
     </div>
   </div>
@@ -498,11 +544,64 @@ function hide()
 		<div>
 			<div>Số điện thoại:</div> <input type="text" id ="phone_input" value="${staff.phoneNumber}" disabled>
 		</div>
-		<div style="display: flex :;">
-			<div>Làm việc tại: </div> <input type="text" id ="branch" value="${staff.branch.name}" disabled>
+		<div>
 			<input type="checkbox" value = "Còn làm việc" ${staff.status==true?'checked':''} disabled> còn làm việc
 		</div>
 	</form>	
 </script>
+<!-- ---------------------------------------------------------- Export ---------------------------------------------------------- -->	
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+   <script>
+    $(document).ready(function() {
+        $('#billTable').DataTable( {
+        	lengthChange: false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3 ],
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3 ],
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3 ],
+                        columns: ':visible'
+                    }
+                },
+                {
+                	extend: 'print',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3 ],
+                		columns: ':visible'
+                    }
+                },
+                'colvis'
+            ]
+        } );
+        
+    } );
+     </script>	
 </body>
 </html>
