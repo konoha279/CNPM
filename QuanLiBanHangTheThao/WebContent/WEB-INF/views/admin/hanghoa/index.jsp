@@ -40,7 +40,7 @@
 								<tr>
 									<td>${u.ID}</td>
 									<td><img src="images/${u.image}"
-										style="width: 100px; height: 100px" alt="" /></td>
+										style="width: 100px; height: 100px" alt="${u.id }" /></td>
 									<td>${u.name}</td>
 									<td><f:formatNumber type="currency" maxFractionDigits="0"
 											currencySymbol="" value="${u.price}" /> đ</td>

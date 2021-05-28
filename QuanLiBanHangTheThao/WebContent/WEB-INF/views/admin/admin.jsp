@@ -1,9 +1,11 @@
 <%@ page pageEncoding="utf-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f"%>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Tổng quát</title>
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -15,20 +17,14 @@
 	function drawVisualization() {
 		// Some raw data (not necessarily accurate)
 		var data = google.visualization.arrayToDataTable([
-				[ 'Month', 'Chi', 'Thu' ],
-				[ '01/2020', 165, 938 ],
-				[ '02/2020', 135, 1120 ],
-				[ '03/2020', 157, 1167 ],
-				[ '04/2020', 139, 1110 ],
-				[ '05/2020', 136, 691 ],
-				[ '06/2020', 200, 691 ],
-				[ '07/2020', 300, 691 ],
-				[ '08/2020', 272, 691 ],
-				[ '09/2020', 500, 691 ],
+				[ 'Month',  'Tiền thu được' ],
+				<c:forEach items="${billReport}" var="r">
+				[ '${r.date}', ${r.value} ],
+				</c:forEach>
 				]);
 
 		var options = {
-			title : 'Doanh Số 9 Tháng Gần Nhất',
+			title : 'Thống kê thu nhập trong năm nay',
 			vAxis : {
 				title : 'Đồng'
 			},
@@ -62,10 +58,10 @@
 								<i class="icon shopping cart"></i>
 							</div>
 							<div class="header">
-								<div class="ui red header">100</div>
+								<div class="ui red header">${countBill }</div>
 							</div>
 							<div class="meta">Đơn Hàng</div>
-							<div class="description">Đơn Hàng Chưa Xác Nhận</div>
+							<div class="description">Hiện có <span class="ui red header">${countBillUnconf }</span> đơn hàng chưa xác nhận</div>
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
@@ -82,16 +78,17 @@
 								<i class="icon clock"></i>
 							</div>
 							<div class="header">
-								<div class="ui header green">1.000.000.000</div>
+								<div class="ui header green"><f:formatNumber value="${revenue}" type="currency"></f:formatNumber> </div>
 							</div>
 							<div class="meta">Doanh Thu</div>
-							<div class="description">Doanh Thu của 1 tháng gần đây</div>
+							<div class="description" style="display: inline;">Doanh Thu trong tháng này: <span class="ui header green"><f:formatNumber value="${revenue}" type="currency" /> </span></div> 
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
 								<div class="ui green button">Thêm Thông Tin</div>
 							</div>
 						</div>
+						
 					</div>
 				</div>
 				<div
@@ -102,7 +99,7 @@
 								<i class="icon briefcase"></i>
 							</div>
 							<div class="header">
-								<div class="ui teal header">100</div>
+								<div class="ui teal header">${countProduct }</div>
 							</div>
 							<div class="meta">Sản Phẩm</div>
 							<div class="description">Quần Hồng đã được mua nhiều nhất</div>

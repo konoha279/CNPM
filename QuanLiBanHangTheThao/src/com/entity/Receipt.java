@@ -1,17 +1,23 @@
 package com.entity;
 
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -19,7 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Receipt {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MaPN")
 	private String id;
 	@Temporal(TemporalType.DATE)
@@ -31,10 +37,21 @@ public class Receipt {
 	@JoinColumn(name = "MaNV")
 	private Staff staff;
 	
+	@OneToMany(mappedBy = "phieuNhap", fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private Collection<CTPhieuNhap> ctPhieuNhaps;
+	
 	public Receipt() {
 		// TODO Auto-generated constructor stub
 	}
 	
+
+	public Receipt(Date date, Staff staff) {
+		super();
+		this.date = date;
+		this.staff = staff;
+	}
+
 
 	public Receipt(String id, Date date, Staff staff) {
 		super();
@@ -67,5 +84,17 @@ public class Receipt {
 	public void setStaff(Staff staff) {
 		this.staff = staff;
 	}
+
+
+	public Collection<CTPhieuNhap> getCtPhieuNhaps() {
+		return ctPhieuNhaps;
+	}
+
+
+	public void setCtPhieuNhaps(Collection<CTPhieuNhap> ctPhieuNhaps) {
+		this.ctPhieuNhaps = ctPhieuNhaps;
+	}
+	
+	
 
 }

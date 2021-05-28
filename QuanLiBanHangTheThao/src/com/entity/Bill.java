@@ -19,11 +19,11 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "HoaDon")
+@Table(name = "DonDatHang")
 public class Bill {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "MaHoaDon")
+	@Column(name = "MaDonDatHang")
 	private String id;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")

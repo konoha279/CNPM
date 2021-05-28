@@ -164,5 +164,26 @@
 		</div>
 		
 	</footer><!--/Footer-->
+	
+<script type="text/javascript">
+	function addWishList(id)
+	{
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath}/addWishList.htm",
+			data: {
+				id: id			
+			},
+			type: "post",
+			success: function (data)
+				{
+					location.reload();
+				},
+				error: function(data)
+				{
+					alert(data);
+				}
+			})
+	}
+</script>
 </body>
 </html>

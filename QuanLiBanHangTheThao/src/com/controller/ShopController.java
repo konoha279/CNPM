@@ -7,15 +7,19 @@ import com.entity.Bill;
 import com.entity.Brand;
 import com.entity.CTBill;
 import com.entity.CTHangHoa;
+import com.entity.Comment;
 import com.entity.Product;
 import com.entity.ProductList;
 import com.entity.Size;
+import com.entity.WishList;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +89,19 @@ public class ShopController {
 		return cartItems;
 	}
 	
-	
+	@ModelAttribute("myWishList")
+	public List<WishList> withlist(HttpServletRequest request)
+	{
+		Session session = factory.getCurrentSession();
+		List<WishList> list = null;
+		if (checkCookie(request) != null)
+		{
+			Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+			list = new ArrayList<>(account.getWishLists());
+		}
+		
+		return list;
+	}
 	
 	@ModelAttribute("productList")
 	public List<ProductList> getProductLists()
@@ -145,7 +161,12 @@ public class ShopController {
 		
 	}
 	
-
+	@RequestMapping("wishlist")
+	public String wishlist(ModelMap model)
+	{
+		Setup(model);
+		return "/Shop/wishlist";
+	}
 
 	
 	@RequestMapping("index")
@@ -188,7 +209,6 @@ public class ShopController {
 		Session session = factory.getCurrentSession();
 		ProductList productList = (ProductList) session.get(ProductList.class, id);
 		List<Product> listProducts = new ArrayList<>(productList.getProducts());
-		
 //		Loại bỏ sự trùng lặp sản phẩm
 		int size = listProducts.size();
 		for (int i=0; i< size ; i++)
@@ -264,6 +284,9 @@ public class ShopController {
 		model.addAttribute("detailProduct", product);
 		return "/Shop/product-details";
 	}
+	
+	// ---------------------------------------------------------------------------------------------------- Tạo đơn hàng ----------------------------------------------------------------------------------------------------
+
 	
 	@RequestMapping(value = "addCart", method = RequestMethod.POST)
 	public @ResponseBody String addToCart(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession)
@@ -398,6 +421,74 @@ public class ShopController {
 		
 		return String.valueOf(money);
 	}
+	
+	@RequestMapping(value = "addComment",method = RequestMethod.POST)
+	public @ResponseBody byte[] addCmt(HttpServletRequest request) throws UnsupportedEncodingException
+	{
+		String result ="";
+		String idProduct = request.getParameter("id");
+		Product product = new Product();
+		product.setId(idProduct);
+		String content = request.getParameter("content");
+		
+		Account account = checkCookie(request);
+		Date date = new Date();
+		Comment comment = new Comment(content, date, product, account);
+		
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(comment);
+			transaction.commit();
+		} catch (Exception e) {
+			System.out.print(e);
+			transaction.rollback();
+		}
+		finally
+		{
+			session.close();
+		}
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "addWishList",method = RequestMethod.POST)
+	public @ResponseBody byte[] addWishList(HttpServletRequest request) throws UnsupportedEncodingException
+	{	
+		String result ="";
+		Session session = factory.getCurrentSession();
+		String id = request.getParameter("id");
+		Product product = new Product();
+		product.setId(id);
+		
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		List<WishList> list = new ArrayList<>(account.getWishLists());
+		
+		for (WishList wishList : list) {
+			if (wishList.getSanPham().getId().equals(id))
+				return result.getBytes("UTF-8");
+		}
+		
+		WishList wishList = new WishList(account, product);
+		account = checkCookie(request);
+
+		
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(wishList);
+			transaction.commit();
+		} catch (Exception e) {
+			System.out.print(e);
+			transaction.rollback();
+		}
+		finally
+		{
+			session.close();
+		}
+		return result.getBytes("UTF-8");
+	}
+	//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	public Account checkCookie(HttpServletRequest request)
 	{

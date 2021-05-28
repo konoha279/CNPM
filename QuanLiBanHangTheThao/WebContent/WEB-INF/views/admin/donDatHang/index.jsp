@@ -77,7 +77,7 @@
 			<div class="modal-dialog modal-lg">
 			  <div class="modal-content" >
 				<div class="modal-header" >
-				  <h1 class="modal-title"id="staticBackdropLabel">Chi tiết hóa đơn</b></h1>
+				  <h1 class="modal-title"id="staticBackdropLabel">Chi tiết đơn hàng</b></h1>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body" >
@@ -99,7 +99,7 @@
 									<td>${ct.cTHangHoa.size.name } </td>
 									<td> <f:formatNumber value="${ct.unitPrice }" type="currency" /> </td>
 									<td>${ct.count } </td>
-									<td> <f:formatNumber value="${ct.promotion }" type="percent" /> </td>
+									<td> <f:formatNumber value="${ct.promotion/100 }" type="percent" /> </td>
 									<td> <f:formatNumber value="${(ct.unitPrice - (ct.unitPrice * (ct.promotion/100))) * ct.count }" type="currency" />
 								</tr>
 							</c:forEach>															
@@ -135,21 +135,94 @@
 		</div>
 	</c:forEach>
 										
-	
+	<!-- Tạo đơn hàng -->
 	<div class="modal fade" id="insert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h1 class="modal-title" id="staticBackdropLabel">Tạo đơn hàng</h1>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	<div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title" id="staticBackdropLabel">Tạo đơn hàng</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      <div class="modal-body">
-
-													 
+		      
+				<form class="ui form" method="post">
+						<div class="field">
+							<div class="four wide field">
+								<label>Tài khoản khách hàng: </label> 
+								<input type="text" list="Guest" id="productSelected">
+									<datalist id ="Guest">
+										<c:forEach items="${listGuest}" var="l">
+											<option value="${l.accountGuest.username }"/>
+										</c:forEach>
+									</datalist>
+								
+							</div>
+							<div class="fields">
+								<div class="four wide field">
+									<label>Sản phẩm</label>
+									<select id="changeProduct">
+										<option value ="">Chọn sản phẩm</option>
+										<c:forEach items="${listProduct}" var="l">
+											<option value="${l.id }">${l.name }</option>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="four wide field">
+									<label>Kích thước</label>
+									<select id="selectSize">
+										<option value=""> </option>
+									</select>
+								</div>
+								<div class="four wide field">
+									<label>Số Lượng</label> 
+									<input type="number" value="1" id="count" min="1"/>
+								</div>
+								<div class="field" style="margin-top: 24px">
+									<button type="button" onclick="addCart()" class="ui green button">
+											<i class="plus icon"></i>Thêm
+										</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					
+			<div class="ui grid stackable padded">
+				<div class="column">
+				<h3>Chi tiết:</h3>
+					<table class="ui blue table">
+						<thead>
+							<tr>
+								<th>Mã Hàng Hóa</th>
+								<th>Tên Hàng Hóa</th>
+								<th>Kích Thước</th>
+								<th>Số Lượng</th>
+								<th>Thành tiền</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody id="tableDetailAdd">
+							<c:forEach items="${listCreateCart }" var="c">
+								<tr>
+									<td>${c.product.maHangHoa.id }</td>
+									<td>${c.product.maHangHoa.name }</td>
+									<td>${c.product.size.name }</td>
+									<td>
+										<input onchange="editcount('${c.product.maHangHoa.id }','${c.product.size.id }','${c.product.maHangHoa.getMoney() }')" class="btn" max="${c.product.soLuong }" id="quantity${c.product.maHangHoa.id }${c.product.size.id }" type="number" min="0" value="${c.count }" />
+									</td>
+									<td id ="money-${c.product.maHangHoa.id }-${c.product.size.id }"> <f:formatNumber value="${c.product.maHangHoa.getMoney() * c.count }"  type="currency" /> </td>
+									<td>
+										<button type="button" onclick="remove('${c.product.maHangHoa.id }','${c.product.size.id }')" class="btn btn-outline-danger">Xóa</button>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</div>						 
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-		        <button type="button" onclick="add()" class="btn btn-primary">Tạo</button>
+		        <button type="button" onclick="pay()" class="btn btn-primary">Tạo</button>
 		      </div>
 		    </div>
 		  </div>
@@ -169,18 +242,53 @@
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
     <script type="text/javascript">
-	    function confirm(id)
+    
+    // --------------------------------------- chỉnh sửa nội dung của option size -------------------------------------------
+	    document.getElementById("changeProduct").onchange = changeListener;
+	    
+	    function changeListener(){
+	    var value = this.value
+	      
+	    <c:forEach items="${listProduct}" var="l">
+	    	if (value == "${l.id}")
+	    	{
+	    		var $el = $("#selectSize");
+	    		$el.empty(); // remove old options
+	    		$.each(${l.id}, function(key,value) {
+	    		  $el.append($("<option></option>")
+	    		     .attr("value", key).text(value));
+	    		});
+	    	}
+	    </c:forEach>	      
+	    }
+    	
+    	<c:forEach items="${listProduct}" var="l">
+    		var ${l.id} ={
+    				<c:forEach items="${l.getCT_HangHoa2()}" var="ct">
+    					"${ct.size.id}": "${ct.size.name}",
+    				</c:forEach>
+    		};
+    	</c:forEach>
+        // -------------------------------------------------------------------------------------------------------------
+
+	    function pay()
 		{
+        	var username = document.getElementById('productSelected').value;
+        	if (username == "")
+        	{
+        		alert("Chưa chọn tài khoản khách hàng.");
+        		return;
+        	}
 			$.ajax({
-				url: "${pageContext.servletContext.contextPath}/admin/donDatHang/confirm.htm",
+				url: "${pageContext.servletContext.contextPath}/admin/donDatHang/pay.htm",
 				data: {
-					ID: id
+					username: username
 				},
 				type: "post",
 				success: function (data)
 					{
 						alert(data);
-						location.reload();
+						window.location.replace("${pageContext.servletContext.contextPath}/admin/donDatHang/index.htm");
 					},
 					error: function(data)
 					{
@@ -209,6 +317,96 @@
 				})
 		}
     
+	    function addCart()
+		{
+	    	var m_id = document.getElementById("changeProduct");
+	    	m_id = m_id.value;
+	    	if (m_id == "")
+    		{
+    			alert("Bạn phải chọn sản phẩm!");
+    			return;
+    		}
+			var sizeList = document.getElementById('selectSize');
+			var m_size = sizeList.value;
+			var m_count = document.getElementById('count').value;
+			if (m_size == null)
+				m_size = "5";
+			$.ajax({
+				url: "${pageContext.servletContext.contextPath}/admin/donDatHang/addCart.htm",
+				data: {
+					id: m_id,
+					size: m_size,
+					count: m_count				
+				},
+				type: "post",
+				success: function (data)
+					{
+						document.getElementById('tableDetailAdd').innerHTML = data;
+					},
+					error: function(data)
+					{
+						alert(data);
+					}
+				})
+		}
+	    
+	    function remove(id,size)
+		{
+			
+			$.ajax
+			({
+				url: "${pageContext.servletContext.contextPath}/admin/donDatHang/removeItem.htm",
+				data: {
+					id_product: id,
+					size_product: size
+				},
+				type: "post",
+				success: function (data)
+				{
+					document.getElementById('tableDetailAdd').innerHTML = data;
+				},
+				error: function(data)
+				{
+					
+				}
+			})
+		}
+	   
+		function editcount(size,id,money)
+		{
+			var count = document.getElementById('quantity'+size+id).value;
+			if (count <= '1')
+				count = '1';
+			if ((count - '0') > document.getElementById('quantity'+size+id).max)
+				count = document.getElementById('quantity'+size+id).max;
+			document.getElementById('quantity'+size+id).value = count;
+			var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(count * money);
+			document.getElementById('money-'+size+'-'+id).innerHTML = money;
+			
+			$.ajax
+			({
+				url: "${pageContext.servletContext.contextPath}/admin/donDatHang/editCart.htm",
+				data: {
+					id_product: id,
+					size_product: size,
+					count_product: count
+				},
+				type: "post",
+				success: function (data)
+				{
+					
+					
+				},
+				error: function(data)
+				{
+					
+				}
+			})
+		}
+	
+		
+			
+			
     </script>
     <script>
     $(document).ready(function() {

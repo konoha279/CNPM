@@ -3,6 +3,9 @@ package com.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -266,6 +269,8 @@ public class HangHoaController {
 	public String detail(ModelMap model, @PathVariable("maHangHoa") String maHangHoa) {
 		Session session = factory.getCurrentSession();
 		Product hangHoa = (Product) session.get(Product.class, maHangHoa);
+		int size = hangHoa.getCT_HangHoa().size();
+		hangHoa.setCT_HangHoa(new HashSet<CTHangHoa>(hangHoa.getCT_HangHoa()));
 		model.addAttribute("hangHoa", hangHoa);
 		return "admin/hanghoa/detail";
 	}
@@ -290,6 +295,7 @@ public class HangHoaController {
 			result = "Xóa thành công.";
 		} catch (Exception e) {
 			transaction.rollback();
+			System.out.print(e);
 			result = "Xóa thất bại";
 			// TODO: handle exception
 		}

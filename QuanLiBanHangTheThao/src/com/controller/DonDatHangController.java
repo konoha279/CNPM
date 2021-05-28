@@ -1,11 +1,17 @@
 package com.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.hibernate.Query;
@@ -20,9 +26,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bean.Cart;
 import com.entity.Account;
 import com.entity.Bill;
 import com.entity.CTBill;
+import com.entity.CTHangHoa;
+import com.entity.Guest;
+import com.entity.Product;
+import com.entity.Staff;
 
 @Transactional
 @Controller
@@ -46,6 +57,16 @@ public class DonDatHangController {
 	
 	@RequestMapping("index")
 	public String index(ModelMap model) {
+		String hql = "From Guest";
+		Session session = factory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		List<Guest> list = query.list();
+		model.addAttribute("listGuest", list);
+		hql = "From Product";
+		query = session.createQuery(hql);
+		List<Product> list2 = query.list();
+		model.addAttribute("listProduct", list2);
+		
 		return "admin/donDatHang/index";
 	}
 	
@@ -54,14 +75,20 @@ public class DonDatHangController {
 		return "admin/donDatHang/insert";
 	}
 	
-	@RequestMapping("detail")
-	public String detail(ModelMap model) {
-		return "admin/donDatHang/detail";
-	}
 	
 	@RequestMapping("insertdetail")
 	public String insertdetail(ModelMap model) {
 		return "admin/donDatHang/insertdetail";
+	}
+	
+	@ModelAttribute("listCreateCart")
+	public List<Cart> cartItems(HttpSession httpSession)
+	{
+		List<Cart> cartItems = (List<Cart>) httpSession.getAttribute("listCreateCart");
+		if (cartItems == null)
+			cartItems = new ArrayList<Cart>();
+		httpSession.setAttribute("listCreateCart", cartItems);
+		return cartItems;
 	}
 	
 	@RequestMapping(value = "confirm", method = RequestMethod.POST)
@@ -307,6 +334,216 @@ public class DonDatHangController {
 		}
 		return result.getBytes("UTF-8");
 	}
+	
+	// ---------------------------------------------------------------------------------------------------- Tạo đơn hàng trong admin ----------------------------------------------------------------------------------------------------
+
+	String convertToMoney(float money)
+	{
+		String moneyStr= "";
+		boolean check = true;
+		DecimalFormat formatter = new DecimalFormat("###,###,###");
+		moneyStr = String.valueOf(formatter.format(money)) + " ₫";
+		return moneyStr;
+	}
+
+	@RequestMapping(value = "addCart", method = RequestMethod.POST)
+	public @ResponseBody byte[] addToCart(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) throws UnsupportedEncodingException
+	{
+		String result ="";
+		List<Cart> cartItems = (List<Cart>) httpSession.getAttribute("listCreateCart");
+		if (cartItems == null)
+			cartItems = new ArrayList<Cart>();
+		Session session = factory.getCurrentSession();
+		String size = request.getParameter("size");
+		String id = request.getParameter("id");
+		int Count = Integer.valueOf(request.getParameter("count"));
+		if (Count != 0)
+		{
+			if (size.isEmpty())
+				size = "5";
+			
+			for (Cart cart : cartItems) {
+				if (cart.getProduct().getMaHangHoa().getId().equals(id) && cart.getProduct().getSize().getId().equals(size))
+				{
+					if ((cart.getCount() + Count) <= cart.getProduct().getSoLuong())
+						cart.setCount(cart.getCount() + Count);
+					for (Cart cart2 : cartItems) {
+						result += "								<tr>\r\n"
+								+ "									<td>" +cart2.getProduct().getMaHangHoa().getId() +"</td>\r\n"
+								+ "									<td>" +cart2.getProduct().getMaHangHoa().getName()+ "</td>\r\n"
+								+ "									<td>"+cart2.getProduct().getSize().getName()+"</td>\r\n"
+								+ "									<td>\r\n"
+								+ "										<input onchange=\"editcount('"+ cart2.getProduct().getMaHangHoa().getId()+"','"+ cart2.getProduct().getSize().getId() +"','"+cart2.getProduct().getMaHangHoa().getMoney()+"')\" class=\"btn\" max=\""+cart2.getProduct().getSoLuong() +"\" id=\"quantity"+cart2.getProduct().getMaHangHoa().getId()+cart2.getProduct().getSize().getId()+"\" type=\"number\" min=\"0\" value=\""+cart2.getCount()+"\" />\r\n"
+								+ "									</td>\r\n"
+								+ "									<td id =\"money-"+cart2.getProduct().getMaHangHoa().getId()+"-"+cart2.getProduct().getSize().getId()+"\">"+ convertToMoney(cart2.getProduct().getMaHangHoa().getMoney() * cart2.getCount()) +" </td>\r\n"
+								+ "									<td>\r\n"
+								+ "										<button onclick=\"remove('"+cart2.getProduct().getMaHangHoa().getId()+"','"+cart2.getProduct().getSize().getId()+"')\" class=\"btn btn-outline-danger\">Xóa</button>\r\n"
+								+ "									</td>\r\n"
+								+ "								</tr>\n";
+					}
+					return result.getBytes("UTF-8");
+				}
+			}
+			String hql = "From CTHangHoa where MaHangHoa.id= '"+id+"' and size.id='"+size+"'";
+			Query query = session.createQuery(hql);
+			
+			CTHangHoa hangHoa = (CTHangHoa) query.list().get(0);
+			if (Count >= hangHoa.getSoLuong())
+				Count = hangHoa.getSoLuong();
+			Cart cart = new Cart(hangHoa, Count);
+			cartItems.add(cart);
+			httpSession.setAttribute("myCartItems", cartItems);
+		}
+		
+		for (Cart cart2 : cartItems) {
+			result += "								<tr>\r\n"
+					+ "									<td>" +cart2.getProduct().getMaHangHoa().getId() +"</td>\r\n"
+					+ "									<td>" +cart2.getProduct().getMaHangHoa().getName()+ "</td>\r\n"
+					+ "									<td>"+cart2.getProduct().getSize().getName()+"</td>\r\n"
+					+ "									<td>\r\n"
+					+ "										<input onchange=\"editcount('"+ cart2.getProduct().getMaHangHoa().getId()+"','"+ cart2.getProduct().getSize().getId() +"','"+cart2.getProduct().getMaHangHoa().getMoney()+"')\" class=\"btn\" max=\""+cart2.getProduct().getSoLuong() +"\" id=\"quantity"+cart2.getProduct().getMaHangHoa().getId()+cart2.getProduct().getSize().getId()+"\" type=\"number\" min=\"0\" value=\""+cart2.getCount()+"\" />\r\n"
+					+ "									</td>\r\n"
+					+ "									<td id =\"money-"+cart2.getProduct().getMaHangHoa().getId()+"-"+cart2.getProduct().getSize().getId()+"\">"+ convertToMoney(cart2.getProduct().getMaHangHoa().getMoney() * cart2.getCount()) +"</td>\r\n"
+					+ "									<td>\r\n"
+					+ "										<button onclick=\"remove('"+cart2.getProduct().getMaHangHoa().getId()+"','"+cart2.getProduct().getSize().getId()+"')\" class=\"btn btn-outline-danger\">Xóa</button>\r\n"
+					+ "									</td>\r\n"
+					+ "								</tr>\n";
+		}
+		
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "editCart",method = RequestMethod.POST)
+	public @ResponseBody String editCart(HttpSession httpSession, HttpServletRequest request)
+	{
+		int money =0;
+		String productId = request.getParameter("id_product");
+		String sizeId = request.getParameter("size_product");
+		int count = Integer.valueOf(request.getParameter("count_product"));
+		List<Cart> cartItems = (List<Cart>) httpSession.getAttribute("listCreateCart");
+		for (int i=0; i<cartItems.size();i++)
+		{
+			CTHangHoa ctHangHoa = cartItems.get(i).getProduct();
+			if (ctHangHoa.getMaHangHoa().getId().equals(productId) && ctHangHoa.getSize().getId().equals(sizeId))
+			{
+				cartItems.get(i).setCount(count);
+			}
+			money += ctHangHoa.getMaHangHoa().getMoney() * cartItems.get(i).getCount();
+		}
+		return String.valueOf(money);
+	}
+	
+	@RequestMapping(value = "removeItem",method = RequestMethod.POST)
+	public @ResponseBody byte[] removeItem(HttpSession httpSession, HttpServletRequest request) throws UnsupportedEncodingException
+	{
+		String productId = request.getParameter("id_product");
+		String sizeId = request.getParameter("size_product");
+		List<Cart> cartItems = (List<Cart>) httpSession.getAttribute("listCreateCart");
+		for (int i=0; i<cartItems.size();i++)
+		{
+			CTHangHoa ctHangHoa = cartItems.get(i).getProduct();
+			if (ctHangHoa.getMaHangHoa().getId().equals(productId) && ctHangHoa.getSize().getId().equals(sizeId))
+			{
+				cartItems.remove(i);
+				break;
+			}
+		}
+		httpSession.setAttribute("myCartItems", cartItems);
+		String result ="";
+		for (Cart cart2 : cartItems) {
+			result += "								<tr>\r\n"
+					+ "									<td>" +cart2.getProduct().getMaHangHoa().getId() +"</td>\r\n"
+					+ "									<td>" +cart2.getProduct().getMaHangHoa().getName()+ "</td>\r\n"
+					+ "									<td>"+cart2.getProduct().getSize().getName()+"</td>\r\n"
+					+ "									<td>\r\n"
+					+ "										<input onchange=\"editcount('"+ cart2.getProduct().getMaHangHoa().getId()+"','"+ cart2.getProduct().getSize().getId() +"','"+cart2.getProduct().getMaHangHoa().getMoney()+"')\" class=\"btn\" max=\""+cart2.getProduct().getSoLuong() +"\" id=\"quantity"+cart2.getProduct().getMaHangHoa().getId()+cart2.getProduct().getSize().getId()+"\" type=\"number\" min=\"0\" value=\""+cart2.getCount()+"\" />\r\n"
+					+ "									</td>\r\n"
+					+ "									<td id =\"money-"+cart2.getProduct().getMaHangHoa().getId()+"-"+cart2.getProduct().getSize().getId()+"\">"+ convertToMoney(cart2.getProduct().getMaHangHoa().getMoney() * cart2.getCount()) +"</td>\r\n"
+					+ "									<td>\r\n"
+					+ "										<button onclick=\"removeItem('"+cart2.getProduct().getMaHangHoa().getId()+"','"+cart2.getProduct().getSize().getId()+"')\" class=\"btn btn-outline-danger\">Xóa</button>\r\n"
+					+ "									</td>\r\n"
+					+ "								</tr>\n";
+		}
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "pay",method = RequestMethod.POST)
+	public @ResponseBody byte[] pay(HttpSession httpSession, HttpServletRequest request) throws UnsupportedEncodingException
+	{
+		String result = "ERROR";
+		int money =0;
+		List<Cart> cartItems = (List<Cart>) httpSession.getAttribute("listCreateCart");
+		for (int i=0; i<cartItems.size();i++)
+		{
+			CTHangHoa ctHangHoa = cartItems.get(i).getProduct();
+			
+			money += ctHangHoa.getMaHangHoa().getMoney() * cartItems.get(i).getCount();
+		}
+		Date date = new Date();
+		Session session = factory.openSession();
+		
+		Account accountGuest = new Account();
+		String temp = request.getParameter("username");
+		if (temp.isEmpty())
+			return result.getBytes("UTF-8");
+		accountGuest.setUsername(temp);
+		
+		Bill bill = new Bill();
+		bill.setAddress("Mua tại quầy");
+		bill.setDate(date);
+		bill.setStatus(true);
+		bill.setMoneyProduct(money);
+		bill.setTransportationFee(0);
+		bill.setAccount(accountGuest);
+		
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		Staff staff = new Staff();
+		staff.setId(account.getStaff().getId());
+		bill.setStaff(staff);
+		Transaction transaction = session.beginTransaction();
+
+		try {
+			session.save(bill);
+			transaction.commit();
+			session.close();
+			session = factory.openSession();
+			transaction = session.beginTransaction();
+			for (Cart cart : cartItems) {
+				
+				CTBill ctBill = new CTBill();
+				ctBill.setBill(bill);
+				ctBill.setcTHangHoa(cart.getProduct());
+				ctBill.setCount(cart.getCount());
+				ctBill.setPromotion(cart.getProduct().getMaHangHoa().getDiscount());			
+				ctBill.setUnitPrice(cart.getProduct().getMaHangHoa().getPrice());
+				session.save(ctBill);
+				
+				
+				CTHangHoa ctHangHoa = new CTHangHoa(cart.getProduct().getMaHangHoa(), cart.getProduct().getSize());
+				ctHangHoa.setSoLuong(cart.getProduct().getSoLuong() - cart.getCount());
+				session.update(ctHangHoa);
+
+			}
+			transaction.commit();
+			cartItems = new ArrayList<Cart>();
+			httpSession.setAttribute("listCreateCart", cartItems);
+			result = "Tạo thành công";
+		} catch (Exception e) {
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	Account checkCookie(HttpServletRequest request)
 	{

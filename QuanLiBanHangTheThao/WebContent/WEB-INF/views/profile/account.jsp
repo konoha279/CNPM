@@ -21,12 +21,12 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.bootstrap4.min.css">
 	
-	<style type="text/css">
+<style type="text/css">
 	body {
 		  padding: 0;
 		  margin: 0;
@@ -40,11 +40,14 @@
 	
 	div.bill {
 	  /* background-color: lightblue; */
-	  width: 735px;
-	  height: 450px;
+	  width: auto;
+	  height: 460px;
 	  overflow: auto;
 	}
-	</style>
+	.modal-lg {
+        max-width: 70% !important;
+	}
+</style>
 
 </head>
 <body>
@@ -110,7 +113,7 @@
 	
 	<div class="container-fluid">
   <div class="row justify-content-center">
-    <div class="col-5 main"  >
+    <div class="col-8 main"  >
     	<!-- ----------------------- Tab menu ----------------------- -->
     	<div style="display: inline;">
 			<ul class="nav justify-content-end">
@@ -139,6 +142,7 @@
 		</div>
 		<div class="tab-content" id="tab-content">			
 			<!-- ----------------------- Tab content ----------------------- -->
+			
 			<!-- ----------------------- Profile ----------------------- -->
 			<div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 				<div id="content">
@@ -165,38 +169,84 @@
 				</div>				
 			</div>
 			<!-- ----------------------- BILL ----------------------- -->
-			<div class="tab-pane fade bill" id="bill" role="tabpanel" aria-labelledby="bill-tab">
-				<table id="billTable" class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th>Ngày tạo đơn hàng</th>
-							<th>Địa chỉ nhận hàng</th>		
-							<th>Phí vận chuyện</th>
-							<th>Tổng tiền thanh toán</th>
-							<th>Tương tác</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${bills}" var="b">
+			<div class="tab-pane fade bill" id="bill" role="tabpanel" aria-labelledby="bill-tab" style="width: 100%;">
+				<h1>Danh sách đơn hàng đã mua</h1>
+				<div id="content" style="padding-left: 30px;padding-right: 30px;">
+					<table id="billTable" class="table table-striped dt-responsive nowrap" style="width: 100%;">
+						<thead>
 							<tr>
-								<td>${b.date }</td>
-								<td>${b.address } </td>
-								<td><f:formatNumber value="${b.transportationFee }" type="currency" /></td>
-								<td><f:formatNumber value="${b.moneyProduct }" type="currency" /> </td>
-								<td>
-									 <button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${b.id}">
-											<i class="edit icon"></i>Xem chi tiết
-									</button>		
-								</td>
+								<th>Ngày tạo đơn hàng</th>
+								<th>Địa chỉ nhận hàng</th>		
+								<th>Phí vận chuyện</th>
+								<th>Tổng tiền</th>
+								<th>Tương tác</th>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<c:forEach items="${bills}" var="b">
+								<tr>
+									<td>${b.date }</td>
+									<td>${b.address } </td>
+									<td><f:formatNumber value="${b.transportationFee }" type="currency" /></td>
+									<td><f:formatNumber value="${b.moneyProduct }" type="currency" /> </td>
+									<td>
+										 <button type="button" class="btn btn-outline-secondary"  data-bs-toggle="modal" data-bs-target="#detail${b.id}">
+												<i class="edit icon"></i>Xem chi tiết
+										</button>		
+									</td>
+								</tr>							
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
 			</div>
-			
+			<c:forEach items="${bills }" var = "b">
+		  		<div class="modal fade" id="detail${b.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				 <div class="modal-dialog modal-lg">
+				  <div class="modal-content" >
+					<div class="modal-header" >
+					  <h1 class="modal-title"id="staticBackdropLabel">Chi tiết đơn hàng</b></h1>
+					  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" >
+						<table id="TableCTBill${b.id }" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;" >													
+							<thead>
+								<tr>
+									<th>Tên sản phẩm</th>
+									<th>Kích thước</th>
+									<th>Đơn giá</th>
+									<th>Số lượng</th>
+									<th>Khuyến mãi</th>
+									<th>Tổng tiền </th>
+								</tr>													
+							</thead>
+							<tbody>
+								<c:forEach items="${b.ctBills }" var="ct">
+									<tr>
+										<td>${ct.cTHangHoa.maHangHoa.name }</td>
+										<td><c:if test="${ct.cTHangHoa.size.id != '5' }">${ct.cTHangHoa.size.name }</c:if> </td>
+										<td> <f:formatNumber value="${ct.unitPrice }" type="currency" /> </td>
+										<td>${ct.count } </td>
+										<td> <f:formatNumber value="${ct.promotion }" type="percent" /> </td>
+										<td> <f:formatNumber value="${(ct.unitPrice - (ct.unitPrice * (ct.promotion/100))) * ct.count }" type="currency" />
+									</tr>
+								</c:forEach>															
+							</tbody>
+						</table>
+					</div>
+			      <div class="modal-footer">
+			       	<button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		  </c:forEach>
 		</div>
     </div>
   </div>
+  
+ 
+  
 </div>
 <script src="resources/profile/background.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -549,6 +599,7 @@ function hide()
 		</div>
 	</form>	
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 <!-- ---------------------------------------------------------- Export ---------------------------------------------------------- -->	
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>

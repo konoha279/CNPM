@@ -135,7 +135,7 @@ body ::-webkit-scrollbar {
 				<i class="fa fa-font-awesome"></i> Thương hiệu
 			</div>
 		</a>
-		<a href="admin/comment.htm" id="ncc" class="item">
+		<a href="admin/comment.htm" id="comment" class="item">
 			<div>
 				<i class="fa fa-commenting-o"></i> Bình luận sản phẩm
 			</div>
@@ -190,8 +190,8 @@ body ::-webkit-scrollbar {
 			{
 				document.getElementById('nv').style.display = "none";
 				document.getElementById('tk').style.display = "none";
-				document.getElementById('cn').style.display = "none";
 				document.getElementById('ds').style.display = "none";
+				document.getElementById('comment').style.display = "none";
 			}
 		}
 		function showitem() {

@@ -44,6 +44,9 @@ public class Account {
 	  @OneToMany(mappedBy = "account")
 	private Collection<Bill> bills;  
 	  
+	  @OneToMany(mappedBy = "account")
+	private Collection<WishList> wishLists;
+	  
 	public Account() {
 		// TODO Auto-generated constructor stub
 	}
@@ -153,6 +156,14 @@ public class Account {
 
 	public void setBills(Collection<Bill> bills) {
 		this.bills = bills;
+	}
+
+	public Collection<WishList> getWishLists() {
+		return wishLists;
+	}
+
+	public void setWishLists(Collection<WishList> wishLists) {
+		this.wishLists = wishLists;
 	}
 
 	

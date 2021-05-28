@@ -2,6 +2,7 @@ package com.entity;
 
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -161,7 +162,13 @@ public class Product {
 	}
 
 	public Collection<CTHangHoa> getCT_HangHoa() {
+		
 		return CT_HangHoa;
+	}
+	
+	public Collection<CTHangHoa> getCT_HangHoa2() {
+		Collection<CTHangHoa> ctHangHoas = new HashSet<CTHangHoa>(this.getCT_HangHoa());
+		return ctHangHoas;
 	}
 
 	public void setCT_HangHoa(Collection<CTHangHoa> cT_HangHoa) {

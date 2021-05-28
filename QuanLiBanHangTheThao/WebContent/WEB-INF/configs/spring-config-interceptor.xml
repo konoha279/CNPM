@@ -34,6 +34,7 @@
 			<mvc:mapping path="/admin/nhanvien/**"/>
 			<mvc:mapping path="/admin/chinhanh/**"/>
 			<mvc:mapping path="/admin/doanhso**"/>
+			<mvc:mapping path="/admin/comment**"/>
 			<bean class= "com.interceptor.adminInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>

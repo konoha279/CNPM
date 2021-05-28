@@ -64,7 +64,7 @@
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="profile/account.htm" ><i class="fa fa-user"></i> Tài khoản</a></li>
-								<li><a href=""><i class="fa fa-star"></i> Danh sách yêu thích</a></li>
+								<li><a href="wishlist.htm"><i class="fa fa-star"></i> Danh sách yêu thích <c:if  test="${cookie.containsKey('username')}">(${myWishList.size() })</c:if> </a></li>
 								<!-- <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li> -->
 								<li id="CartOnHeader"><a href="cart.htm"><i class="fa fa-shopping-cart"></i> Giỏ hàng (${myCartItems.size()})</a></li>
 								<c:choose>

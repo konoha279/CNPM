@@ -11,12 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CTHD")
+@Table(name = "CTDDH")
 public class CTBill implements Serializable {
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "MaHoaDon")
+	@JoinColumn(name = "MaDonDatHang")
 	private Bill bill;
 	@Id
 	@ManyToOne()

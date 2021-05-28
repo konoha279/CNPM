@@ -35,14 +35,14 @@
 		<c:when test="${!cookie.containsKey('username')}">
 			<section id="cart_items">
 				<div class="container">
-					<h1> Bạn cần phải <a href="login.htm">đăng nhập</a> để tiếp tục</h1>
+					<h1> Bạn cần phải <a href="login.htm">đăng nhập</a> để tiếp tục. Nếu bạn chưa có tài khoản thì có thể đăng ký <a href="registry.htm">tại đây</a>.</h1>
 				</div>
 			</section> <!--/#cart_items-->
 		</c:when>
 		<c:when test="${empty myCartItems}">
 			<section id="cart_items">
 				<div class="container">
-					<h1> Bạn chưa mua hàng</h1>
+					<h1> Bạn chưa chọn mua hàng</h1>
 					
 				</div>
 			</section> <!--/#cart_items-->
@@ -271,6 +271,8 @@
 		var count = document.getElementById('quantity-'+size+'-'+id).value;
 		if (count <= '1')
 			count = '1';
+		if (count > document.getElementById('quantity-'+size+'-'+id).max)
+			count = document.getElementById('quantity-'+size+'-'+id).max;
 		document.getElementById('quantity-'+size+'-'+id).value = count;
 		var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(count * money);
 		document.getElementById('money-'+size+'-'+id).innerHTML = money;
