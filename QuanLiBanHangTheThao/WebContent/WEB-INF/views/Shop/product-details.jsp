@@ -279,6 +279,9 @@
 											Mua ngay
 										</button>
 									</c:if>
+									<button onclick="addWishList('${detailProduct.id }')" type="button" class="btn btn-fefault cart">
+											Thêm vào danh sách yêu thích
+										</button>
 								</span>
 								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
 							</div><!--/product-information-->
