@@ -316,6 +316,25 @@
 					}
 				})
 		}
+	    function confirm(id)
+		{
+			$.ajax({
+				url: "${pageContext.servletContext.contextPath}/admin/donDatHang/confirm.htm",
+				data: {
+					ID: id
+				},
+				type: "post",
+				success: function (data)
+					{
+						alert(data);
+						location.reload();
+					},
+					error: function(data)
+					{
+						alert(data);
+					}
+				})
+		}
     
 	    function addCart()
 		{

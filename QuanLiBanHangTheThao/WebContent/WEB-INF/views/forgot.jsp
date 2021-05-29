@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 	<base href="${pageContext.servletContext.contextPath}/">
-	<title>Lú mật khẩu</title>
+	<title>Quên mật khẩu</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	

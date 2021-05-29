@@ -27,6 +27,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="resources/Shop/images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="resources/Shop/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="resources/Shop/images/ico/apple-touch-icon-57-precomposed.png">
+    
 </head><!--/head-->
 
 <body>
@@ -155,15 +156,6 @@
 								</ul>
 							</div>
 						</div><!--/brands_products-->
-						
-						<div class="price-range"><!--price-range-->
-							<h2>Price Range</h2>
-							<div class="well">
-								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
-								 <b>$ 0</b> <b class="pull-right">$ 600</b>
-							</div>
-						</div><!--/price-range-->
-						
 					</div>
 				</div>
 				
@@ -340,11 +332,13 @@
 									</c:if>
 									<div id="listComment">
 										<c:forEach items="${detailProduct.comments}" var="cmt">
+										<div style="padding-top: 10px;border-bottom: 1px dotted black;">
 											<ul>
 												<li><a href=""><i class="fa fa-user"></i>${cmt.getName() }</a></li>
 												<li><a href=""><i class="fa fa-calendar-o"></i>${cmt.time }</a></li>
 											</ul>
-											<p style="padding: 10px">${cmt.content }</p>
+											<p>${cmt.content }</p>
+										</div>
 										</c:forEach>
 									</div>
 									<h3><b>Viết bình luận của bạn</b></h3>

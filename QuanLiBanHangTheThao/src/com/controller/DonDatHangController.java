@@ -5,8 +5,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -139,7 +141,7 @@ public class DonDatHangController {
 					+ "</head>\r\n"
 					+ "<body>\r\n"
 					+ "<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 1000px;\">\r\n"
-					+ "		<h1 style=\"text-align: right;\">Xin chào, Phạm Minh Trí</h1>\r\n"
+					+ "		<h1 style=\"text-align: right;\">Xin chào, "+ tempBill.getAccount().getGuest().getFullname() +"</h1>\r\n"
 					+ "		<h3 style=\"text-align: center; font-size: 35px\">Đơn hàng của bạn đã được xác nhận</h3>\r\n"
 					+ "		<p>	Cảm ơn bạn đã tin tưởng mua hàng. Hãy đợi một vài ngày bạn sẽ nhận được món đồ mong muốn mà bạn đã mua từ chúng tôi. </p>\r\n"
 					+ "		\r\n"
@@ -166,16 +168,20 @@ public class DonDatHangController {
 					+ "				</thead>			\r\n"
 					+ "				<tbody>\r\n";
 			double allMoney = 0;
+//			List<CTBill> bills = new ArrayList<>(tempBill.getCtBills());
+//			bills = (List<CTBill>) new HashSet<CTBill>(bills);
 			List<CTBill> bills = new ArrayList<>(tempBill.getCtBills());
+			HashSet<CTBill> hashSet = new HashSet<CTBill>(bills);
+			bills = new ArrayList<CTBill>(hashSet);
 			for (int i=0; i< bills.size();i++)
 			{
 				content+= "					<tr>\r\n"
 						+ "						<td>"+ bills.get(i).getcTHangHoa().getMaHangHoa().getName() +"</td>\r\n"
 						+ "						<td>"+ (bills.get(i).getcTHangHoa().getSize().getId().equals("5") == false ? bills.get(i).getcTHangHoa().getSize().getName() : "" ) +"</td>\r\n"
-						+ "						<td>"+ bills.get(i).getUnitPrice() +"đ</td>\r\n"
+						+ "						<td>"+ convertToMoney(bills.get(i).getUnitPrice()) +"</td>\r\n"
 						+ "						<td>"+ bills.get(i).getCount() +"</td>\r\n"
 						+ "						<td>"+ bills.get(i).getPromotion() +"%</td>\r\n"
-						+ "						<td>"+ bills.get(i).intoMoney() +"đ</td>\r\n"
+						+ "						<td>"+ convertToMoney(bills.get(i).intoMoney()) +"</td>\r\n"
 						+ "					</tr>\r\n"
 						+ "\r\n";
 				allMoney += bills.get(i).intoMoney();
@@ -186,7 +192,7 @@ public class DonDatHangController {
 					+ "						<td></td>\r\n"
 					+ "						<td></td>\r\n"
 					+ "						<td></td>\r\n"
-					+ "						<td><b>"+allMoney+"đ</b></td>\r\n"
+					+ "						<td><b>"+convertToMoney(allMoney)+"</b></td>\r\n"
 					+ "					</tr>"
 					+ "				</tbody>\r\n"
 					+ "			</table>\r\n"
@@ -257,7 +263,7 @@ public class DonDatHangController {
 				+ "</head>\r\n"
 				+ "<body>\r\n"
 				+ "<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 1000px;\">\r\n"
-				+ "		<h1 style=\"text-align: right;\">Xin chào, Phạm Minh Trí</h1>\r\n"
+				+ "		<h1 style=\"text-align: right;\">Xin chào, "+ tempBill.getAccount().getGuest().getFullname() +"</h1>\r\n"
 				+ "		<h3 style=\"text-align: center; font-size: 35px\">Đơn hàng của bạn đã hủy</h3>\r\n"
 				+ "		<p>	Cảm ơn bạn đã tin tưởng mua hàng. Nhưng rất tiếc đơn hàng của bạn đã bị hủy. </p>\r\n"
 				+ "		\r\n"
@@ -284,16 +290,20 @@ public class DonDatHangController {
 				+ "				</thead>			\r\n"
 				+ "				<tbody>\r\n";
 		double allMoney = 0;
+//		List<CTBill> bills = new ArrayList<>(tempBill.getCtBills());
+//		bills = (List<CTBill>) new HashSet<CTBill>(bills);
 		List<CTBill> bills = new ArrayList<>(tempBill.getCtBills());
+		HashSet<CTBill> hashSet = new HashSet<CTBill>(bills);
+		bills = new ArrayList<CTBill>(hashSet);
 		for (int i=0; i< bills.size();i++)
 		{
 			content+= "					<tr>\r\n"
 					+ "						<td>"+ bills.get(i).getcTHangHoa().getMaHangHoa().getName() +"</td>\r\n"
 					+ "						<td>"+ (bills.get(i).getcTHangHoa().getSize().getId().equals("5") == false ? bills.get(i).getcTHangHoa().getSize().getName() : "" ) +"</td>\r\n"
-					+ "						<td>"+ bills.get(i).getUnitPrice() +"đ</td>\r\n"
+					+ "						<td>"+ convertToMoney(bills.get(i).getUnitPrice()) +"</td>\r\n"
 					+ "						<td>"+ bills.get(i).getCount() +"</td>\r\n"
 					+ "						<td>"+ bills.get(i).getPromotion() +"%</td>\r\n"
-					+ "						<td>"+ bills.get(i).intoMoney() +"đ</td>\r\n"
+					+ "						<td>"+ convertToMoney(bills.get(i).intoMoney()) +"</td>\r\n"
 					+ "					</tr>\r\n"
 					+ "\r\n";
 			allMoney += bills.get(i).intoMoney();
@@ -304,7 +314,7 @@ public class DonDatHangController {
 				+ "						<td></td>\r\n"
 				+ "						<td></td>\r\n"
 				+ "						<td></td>\r\n"
-				+ "						<td><b>"+allMoney+"đ</b></td>\r\n"
+				+ "						<td><b>"+convertToMoney(allMoney)+"</b></td>\r\n"
 				+ "					</tr>"
 				+ "				</tbody>\r\n"
 				+ "			</table>\r\n"
@@ -338,6 +348,15 @@ public class DonDatHangController {
 	// ---------------------------------------------------------------------------------------------------- Tạo đơn hàng trong admin ----------------------------------------------------------------------------------------------------
 
 	String convertToMoney(float money)
+	{
+		String moneyStr= "";
+		boolean check = true;
+		DecimalFormat formatter = new DecimalFormat("###,###,###");
+		moneyStr = String.valueOf(formatter.format(money)) + " ₫";
+		return moneyStr;
+	}
+	
+	String convertToMoney(double money)
 	{
 		String moneyStr= "";
 		boolean check = true;
@@ -484,7 +503,7 @@ public class DonDatHangController {
 		Session session = factory.openSession();
 		
 		Account accountGuest = new Account();
-		String temp = request.getParameter("username");
+		String temp = request.getParameter("username"); //tài khoản khách hàng
 		if (temp.isEmpty())
 			return result.getBytes("UTF-8");
 		accountGuest.setUsername(temp);
@@ -497,6 +516,10 @@ public class DonDatHangController {
 		bill.setTransportationFee(0);
 		bill.setAccount(accountGuest);
 		
+		//Lấy email và họ tên khách hàng
+		String email = ((Account) session.get(Account.class, temp)).getEmail();
+		String fullName = ((Account) session.get(Account.class, temp)).getGuest().getFullname();
+		
 		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
 		Staff staff = new Staff();
 		staff.setId(account.getStaff().getId());
@@ -505,6 +528,7 @@ public class DonDatHangController {
 
 		try {
 			session.save(bill);
+			String tempId = bill.getId();
 			transaction.commit();
 			session.close();
 			session = factory.openSession();
@@ -528,6 +552,101 @@ public class DonDatHangController {
 			transaction.commit();
 			cartItems = new ArrayList<Cart>();
 			httpSession.setAttribute("listCreateCart", cartItems);
+			
+			bill = (Bill) session.get(Bill.class, tempId);
+			String content = "<!DOCTYPE html>\r\n"
+					+ "<html>\r\n"
+					+ "<head>\r\n"
+					+ "	<style>\r\n"
+					+ "table, td, th {\r\n"
+					+ "  border: 1px solid black;\r\n"
+					+ "}\r\n"
+					+ "\r\n"
+					+ "table {\r\n"
+					+ "  font-family: Arial, Helvetica, sans-serif;\r\n"
+					+ "  border-collapse: collapse;\r\n"
+					+ "  width: 100%;\r\n"
+					+ "}\r\n"
+					+ "\r\n"
+					+ "table, td, th {\r\n"
+					+ "  border: 1px solid #ffcce6;\r\n"
+					+ "  padding: 8px;\r\n"
+					+ "}\r\n"
+					+ "\r\n"
+					+ "table tr:nth-child(even){background-color: #f2f2f2;}\r\n"
+					+ "\r\n"
+					+ "table tr:hover {background-color: #ffcce6;}\r\n"
+					+ "\r\n"
+					+ "table th {\r\n"
+					+ "  padding-top: 12px;\r\n"
+					+ "  padding-bottom: 12px;\r\n"
+					+ "  text-align: left;\r\n"
+					+ "  background-color: #ff1a8c;\r\n"
+					+ "  color: white;\r\n"
+					+ "}\r\n"
+					+ "</style>\r\n"
+					+ "</head>\r\n"
+					+ "<body>\r\n"
+					+ "<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 1000px;\">\r\n"
+					+ "		<h1 style=\"text-align: right;\">Xin chào, "+fullName+"</h1>\r\n"
+					+ "		<h3 style=\"text-align: center; font-size: 35px\">Thông tin đơn hàng của bạn</h3>\r\n"
+					+ "		<p>	Cảm ơn bạn đã tin tưởng mua hàng tại chúng tôi. Rất mong đợi được gặp lại bạn.</p>\r\n"
+					+ "		\r\n"
+					+ "		<h2>Chi tiết: </h2>\r\n"
+					+ "		<div>\r\n"
+					+ "			<table class=\"table table-striped table-bordered\" style=\"width: 100%;\">	\r\n"
+					+ "			<colgroup>\r\n"
+					+ "				<col span=\"1\" style=\"width: 30%\">\r\n"
+					+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+					+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+					+ "				<col span=\"1\" style=\"width: 10%\">\r\n"
+					+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+					+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+					+ "			</colgroup>												\r\n"
+					+ "				<thead>\r\n"
+					+ "					<tr>\r\n"
+					+ "						<th>Tên sản phẩm</th>\r\n"
+					+ "						<th>Kích thước</th>\r\n"
+					+ "						<th>Đơn giá</th>\r\n"
+					+ "						<th>Số lượng</th>\r\n"
+					+ "						<th>Khuyến mãi</th>\r\n"
+					+ "						<th>Thành tiền </th>\r\n"
+					+ "					</tr>													\r\n"
+					+ "				</thead>			\r\n"
+					+ "				<tbody>\r\n";
+			double allMoney = 0;
+			List<CTBill> bills = new ArrayList<>(bill.getCtBills());
+			HashSet<CTBill> hashSet = new HashSet<CTBill>(bills);
+			bills = new ArrayList<CTBill>(hashSet);
+			for (int i=0; i< bills.size();i++)
+			{
+				content+= "					<tr>\r\n"
+						+ "						<td>"+ bills.get(i).getcTHangHoa().getMaHangHoa().getName() +"</td>\r\n"
+						+ "						<td>"+ (bills.get(i).getcTHangHoa().getSize().getId().equals("5") == false ? bills.get(i).getcTHangHoa().getSize().getName() : "" ) +"</td>\r\n"
+						+ "						<td>"+ convertToMoney(bills.get(i).getUnitPrice()) +"</td>\r\n"
+						+ "						<td>"+ bills.get(i).getCount() +"</td>\r\n"
+						+ "						<td>"+ bills.get(i).getPromotion() +"%</td>\r\n"
+						+ "						<td>"+ convertToMoney(bills.get(i).intoMoney()) +"</td>\r\n"
+						+ "					</tr>\r\n"
+						+ "\r\n";
+				allMoney += bills.get(i).intoMoney();
+			}
+			content+= "					<tr>\r\n"
+					+ "						<td><b>Tổng tiền</b></td>\r\n"
+					+ "						<td></td>\r\n"
+					+ "						<td></td>\r\n"
+					+ "						<td></td>\r\n"
+					+ "						<td></td>\r\n"
+					+ "						<td><b>"+convertToMoney(allMoney)+"</b></td>\r\n"
+					+ "					</tr>"
+					+ "				</tbody>\r\n"
+					+ "			</table>\r\n"
+					+ "		</div>\r\n"
+					+ "		<p style=\"font-size: 18px;  font-family: 'Times New Roman'\">Nếu có gì đó sai sót hoặc nhầm lẫn hãy báo với chúng tôi bằng cách trả lời mail này. </p>\r\n"
+					+ "	</div>"
+					+ "</body>\r\n"
+					+ "</html>";
+			mailer.send("n18dcat092@student.ptithcm.edu.vn", email, "Mua hàng tại quầy", content);
 			result = "Tạo thành công";
 		} catch (Exception e) {
 			System.out.print(e);

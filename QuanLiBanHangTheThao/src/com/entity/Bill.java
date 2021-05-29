@@ -40,7 +40,7 @@ public class Bill {
 	private int transportationFee;
 	@ManyToOne
 	@JoinColumn(name = "Username")
-	private Account account;
+	private Account account;  //Tài khoản mua hàng
 	@Column(name = "DiaChiNhanHang")
 	private String address;
 	
