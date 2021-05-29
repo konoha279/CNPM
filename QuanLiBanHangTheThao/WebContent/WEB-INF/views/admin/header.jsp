@@ -19,6 +19,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
 	integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ="
 	crossorigin="anonymous" />
+<link href="resources/admin/header.css" rel="stylesheet" >
+
 </head>
 
 <script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
@@ -161,19 +163,17 @@ body ::-webkit-scrollbar {
 			</a> <a href="#" class="header item"> Semantic UI </a>
 		</div>
 
-		<div class="right menu">
-			<a href="#" class="item"> <i class="bell icon"></i></a>
-			<div class="ui dropdown item">
-				<i class="user cirlce icon"></i>
-					<ul class="menu">
-						<li><a href="#" class="item"> <i class="info circle icon"></i>
-							Profile
-						</a></li> 
-						<li><a href="#" class="item"> <i class="wrench icon"></i> Settings</a></li> 
-						<li><a href="#" class="item"> <i class="sign-out icon"></i> Logout</a></li>
-					</ul>
-			</div>
-		</div>
+		<ul class="right menu">
+			<li><a href="#" style="text-decoration: none;"> <i class="bell icon"></i>Thông báo</a></li>
+			<li class = "ui dropdownMenu">
+				<a class = "dropBtn" style="color: white; white;margin-right: 30px;"><i class="user cirlce icon"></i> Mở rộng </a>
+				<div class="dropdownMenu-content">
+					<a href="${pageContext.servletContext.contextPath}" > <i class="fa fa-home"></i>Trang cửa hàng</a>
+					<a href="${pageContext.servletContext.contextPath}/profile/account.htm" > <i class="info circle icon"></i>Hồ sơ</a>
+					<a href="${pageContext.servletContext.contextPath}/logout.htm" > <i class="sign-out icon"></i> Đăng xuất</a>
+				</div>
+			</li>
+		</ul>
 	</nav>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
