@@ -422,6 +422,9 @@ public class ShopController {
 		return String.valueOf(money);
 	}
 	
+	// ---------------------------------------------------------------------------------------------------- Thêm bình luận ----------------------------------------------------------------------------------------------------
+
+	
 	@RequestMapping(value = "addComment",method = RequestMethod.POST)
 	public @ResponseBody byte[] addCmt(HttpServletRequest request) throws UnsupportedEncodingException
 	{
@@ -451,6 +454,9 @@ public class ShopController {
 		return result.getBytes("UTF-8");
 	}
 	
+	// ---------------------------------------------------------------------------------------------------- Thêm vào danh sách yêu thích ----------------------------------------------------------------------------------------------------
+
+	
 	@RequestMapping(value = "addWishList",method = RequestMethod.POST)
 	public @ResponseBody byte[] addWishList(HttpServletRequest request) throws UnsupportedEncodingException
 	{	
@@ -477,6 +483,37 @@ public class ShopController {
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.save(wishList);
+			transaction.commit();
+		} catch (Exception e) {
+			System.out.print(e);
+			transaction.rollback();
+		}
+		finally
+		{
+			session.close();
+		}
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "removeWishList",method = RequestMethod.POST)
+	public @ResponseBody byte[] removeWishList(HttpServletRequest request) throws UnsupportedEncodingException
+	{	
+		String result ="";
+		Session session = factory.getCurrentSession();
+		String id = request.getParameter("id");		
+		String username = checkCookie(request).getUsername();
+		String hql = "From WishList where account.username = '"+username+"' AND sanPham.id = '" + id + "'";
+		Query query = session.createQuery(hql);
+		WishList wishList = (WishList) query.list().get(0);
+		String idWishList = wishList.getId();
+		
+		session = factory.openSession();
+		wishList = new WishList();
+		wishList.setId(idWishList);
+		
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.delete(wishList);
 			transaction.commit();
 		} catch (Exception e) {
 			System.out.print(e);

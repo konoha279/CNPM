@@ -95,9 +95,27 @@
 	
 
 	<jsp:include page="footer.jsp"></jsp:include>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	
 	<script type="text/javascript">
-	
+		function remove(id) {
+		  	$.ajax
+		  	({
+		  		url: "${pageContext.servletContext.contextPath}/removeWishList.htm",
+				data: {
+					id: id
+				},
+				type: "post",
+				success: function (data)
+				{
+					location.reload();
+				},
+				error: function(data)
+				{
+					
+				}
+		  	})
+		}
 	</script>
 	<script id="thankyou" type="text/html">
 <div style="text-align: center;">
