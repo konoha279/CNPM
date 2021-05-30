@@ -105,8 +105,16 @@ public class DonDatHangController {
 		tempBill.setStatus(true);
 		Account account2 = (Account) session.get(Account.class, tempBill.getAccount().getUsername());
 		Transaction transaction = session.beginTransaction();
+		
 		try {
 			session.update(tempBill);
+			String fullName ="";
+			if (tempBill.getAccount().getStaff() == null)
+			{
+				fullName = tempBill.getAccount().getGuest().getFullname();
+			}
+			else 
+				fullName = tempBill.getAccount().getStaff().getFullName();
 			String content = "<!DOCTYPE html>\r\n"
 					+ "<html>\r\n"
 					+ "<head>\r\n"
@@ -141,7 +149,7 @@ public class DonDatHangController {
 					+ "</head>\r\n"
 					+ "<body>\r\n"
 					+ "<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 1000px;\">\r\n"
-					+ "		<h1 style=\"text-align: right;\">Xin chào, "+ tempBill.getAccount().getGuest().getFullname() +"</h1>\r\n"
+					+ "		<h1 style=\"text-align: right;\">Xin chào, "+ fullName +"</h1>\r\n"
 					+ "		<h3 style=\"text-align: center; font-size: 35px\">Đơn hàng của bạn đã được xác nhận</h3>\r\n"
 					+ "		<p>	Cảm ơn bạn đã tin tưởng mua hàng. Hãy đợi một vài ngày bạn sẽ nhận được món đồ mong muốn mà bạn đã mua từ chúng tôi. </p>\r\n"
 					+ "		\r\n"
@@ -228,7 +236,13 @@ public class DonDatHangController {
 			return "Đừng cố thử những thứ vô nghĩa ☺.".getBytes("UTF-8");
 		}
 		String email = tempBill.getAccount().getEmail();
-
+		String fullName = "";
+		if (tempBill.getAccount().getStaff() == null)
+		{
+			fullName = tempBill.getAccount().getGuest().getFullname();
+		}
+		else 
+			fullName = tempBill.getAccount().getStaff().getFullName();
 		String content = "<!DOCTYPE html>\r\n"
 				+ "<html>\r\n"
 				+ "<head>\r\n"
@@ -263,7 +277,7 @@ public class DonDatHangController {
 				+ "</head>\r\n"
 				+ "<body>\r\n"
 				+ "<div style=\"border: 5px solid #ff6666;margin: 20px;padding: 20px; width: 1000px;\">\r\n"
-				+ "		<h1 style=\"text-align: right;\">Xin chào, "+ tempBill.getAccount().getGuest().getFullname() +"</h1>\r\n"
+				+ "		<h1 style=\"text-align: right;\">Xin chào, "+fullName+"</h1>\r\n"
 				+ "		<h3 style=\"text-align: center; font-size: 35px\">Đơn hàng của bạn đã hủy</h3>\r\n"
 				+ "		<p>	Cảm ơn bạn đã tin tưởng mua hàng. Nhưng rất tiếc đơn hàng của bạn đã bị hủy. </p>\r\n"
 				+ "		\r\n"
