@@ -342,6 +342,10 @@ public class DonDatHangController {
 		Transaction transaction = session.beginTransaction();
 		try {
 			for (CTBill ctBill : bills) {
+				CTHangHoa ctHangHoa = new CTHangHoa();
+				ctHangHoa = ctBill.getcTHangHoa();
+				ctHangHoa.setSoLuong(ctHangHoa.getSoLuong() + ctBill.getCount());
+				session.update(ctHangHoa);
 				session.delete(ctBill);
 			}
 			session.delete(tempBill);

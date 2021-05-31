@@ -4,8 +4,6 @@ public class LinkedList {
 	public String name;
 	public String link;
 	
-	
-	
 	public LinkedList() {
 	}
 
@@ -25,6 +23,4 @@ public class LinkedList {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	
-	
 }
