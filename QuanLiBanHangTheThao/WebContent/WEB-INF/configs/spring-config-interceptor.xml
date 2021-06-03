@@ -17,7 +17,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/profile/**"/>
-			<bean class= "com.interceptor.AuthorizeInterceptor" />
+			<bean class= "com.interceptor.BaseInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 	

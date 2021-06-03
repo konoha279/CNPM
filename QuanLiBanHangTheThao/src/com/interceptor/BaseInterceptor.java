@@ -1,5 +1,8 @@
 package com.interceptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,9 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.entity.Account;
+import com.entity.Bill;
 
 @Transactional
-public class adminInterceptor extends HandlerInterceptorAdapter { //Phân quyền nhân viên và quản lí
+public class BaseInterceptor extends HandlerInterceptorAdapter { //Dùng cho việc kiểm tra login
 
 	@Autowired
 	SessionFactory factory;
@@ -25,20 +29,27 @@ public class adminInterceptor extends HandlerInterceptorAdapter { //Phân quyề
 		Account account = checkCookie(request);
 		if (account == null)
 		{
-			response.sendError(404);
+			response.sendRedirect(request.getContextPath() + "/login.htm");
 			return false;
 		}
 		else
 		{
 			Session session = factory.getCurrentSession();			
 			account = (Account) session.get(Account.class, account.getUsername());
-			if (account.getRole().getId().equals("2"))
+
+			if (account != null)
 			{
-				response.sendError(403);
-				return false;
+				if (account.getRole().getId().equals("0"))
+					request.setAttribute("guest", account.getGuest());
+				else
+					request.setAttribute("staff", account.getStaff());
 			}
+			request.setAttribute("account", account);
+			List<Bill> bills = new ArrayList<>(account.getBills());
+			request.setAttribute("bills", bills);
+			return true;
 		}
-		return true;					
+					
 	}
 	
 	Account checkCookie(HttpServletRequest request)
@@ -65,5 +76,6 @@ public class adminInterceptor extends HandlerInterceptorAdapter { //Phân quyề
 			// TODO: handle exception
 			return null;
 		}
+		
 	}
 }

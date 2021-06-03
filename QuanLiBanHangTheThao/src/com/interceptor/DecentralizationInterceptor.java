@@ -13,7 +13,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.entity.Account;
 
 @Transactional
-public class DecentralizationInterceptor extends HandlerInterceptorAdapter {
+public class DecentralizationInterceptor extends HandlerInterceptorAdapter { //Phân quyền khách hàng với nhân viên (quản lí)
 	@Autowired
 	SessionFactory factory;
 	

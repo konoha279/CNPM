@@ -170,7 +170,7 @@ public class LoginController {
 			model.addAttribute("Msg", "Mật khẩu không khớp!");
 			return "registry";
 		}
-		Role role = (Role) session.get(Role.class, 0);
+		Role role = (Role) session.get(Role.class, "0");
 		Account accountGuest = new Account(User, Passwd, Email, role, true);
 		accountGuest.setPassword(encrypt(accountGuest.getPassword()));
 		
