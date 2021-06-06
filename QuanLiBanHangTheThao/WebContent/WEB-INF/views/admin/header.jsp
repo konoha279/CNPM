@@ -142,6 +142,11 @@ body ::-webkit-scrollbar {
 				<i class="fa fa-commenting-o"></i> Bình luận sản phẩm
 			</div>
 		</a>
+		<a href="admin/summary-employees.htm" id="summary-nv" class="item">
+			<div>
+				<i class="user icon"></i> Thống kê nhân viên
+			</div>
+		</a>
 		<div class="item">
 			<form action="#">
 				<div class="ui mini action input">

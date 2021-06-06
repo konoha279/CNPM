@@ -1,6 +1,9 @@
 package com.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,18 +17,19 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bean.ObjectReport;
-import com.entity.Bill;
-import com.entity.Comment;
-import com.entity.Product;
+import com.entity.*;
+
 
 @Transactional
 @Controller
@@ -119,7 +123,36 @@ public class AdminController {
 	}
 	
 	@RequestMapping("doanhso")
-	public String doanhthu(ModelMap model) {
+	public String doanhthu(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
+			@RequestParam( value = "toiNgay",defaultValue = "") String to) {
+		
+		
+		if(to.isEmpty() || to == null) {
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+		    LocalDateTime now = LocalDateTime.now();  
+		    to = dtf.format(now);  
+		}
+		if(from.isEmpty() || from == null) {
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+		    LocalDateTime now = LocalDateTime.now();  
+		    now = now.minusMonths(1);
+		    from = dtf.format(now);  
+		}
+		
+		
+		List<Bill> bills = getBills_byDate(from, to);
+		List<SummaryBillCountByDate> summaryBillCountByDate = new ArrayList();
+		
+		for(Bill b : bills) {
+			SummaryBillCountByDate c = new SummaryBillCountByDate(b);
+			summaryBillCountByDate.add(c);
+		}
+		
+		model.addAttribute("dsHoaDon", bills);
+		model.addAttribute("summaryBillCountByDate", summaryBillCountByDate);
+		model.addAttribute("tuNgay",from);
+		model.addAttribute("toiNgay",to);
+		
 		return "admin/doanhso";
 	}
 	
@@ -172,6 +205,7 @@ public class AdminController {
 		return result.getBytes("UTF-8");
 	}
 	
+	
 	@RequestMapping(value = "comment/delete", method = RequestMethod.POST)
 	public @ResponseBody byte[] delComment(HttpServletRequest request) throws UnsupportedEncodingException
 	{
@@ -199,5 +233,82 @@ public class AdminController {
 			session.close();
 		}
 		return result.getBytes("UTF-8");
+	}
+	
+	
+	@RequestMapping(value="summary-employees",method = RequestMethod.GET)
+	public String summaryEmployees(ModelMap model)
+	{
+		
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+	    LocalDateTime now = LocalDateTime.now();  
+	    String to = dtf.format(now);
+	    now = now.minusMonths(1);
+	    String from = dtf.format(now);  
+	    
+		
+		List<Bill> bills = getBills_byDate(from, to);
+		
+		List<SummaryNv> summaryNVList = new ArrayList();
+		
+		
+		for(Bill bill : bills) {
+
+			int totalProducts = 0;
+			long totalMoney = bill.getMoneyProduct();
+			for(CTBill b : bill.getCtBills()) {
+				totalProducts += b.getCount();
+			}
+			
+			int exist_employ_index = SummaryNv.isExist(summaryNVList, bill.getStaff().getId());
+			System.out.println("id: " +bill.getStaff().getId());
+			System.out.println(exist_employ_index);
+			if(exist_employ_index == -1) {
+				SummaryNv nv = new SummaryNv(totalProducts,totalMoney,bill.getStaff().getFirstName() + " " + bill.getStaff().getName(),bill.getStaff().getId());
+				summaryNVList.add(nv);
+			}
+			else {
+				summaryNVList.get(exist_employ_index).setTotalMoney(summaryNVList.get(exist_employ_index).getTotalMoney() + totalMoney);
+				summaryNVList.get(exist_employ_index).setTotalProducts(summaryNVList.get(exist_employ_index).getTotalProducts() + totalProducts);
+				
+			}
+			
+		}
+		
+		model.addAttribute("summary", summaryNVList);
+		
+
+		return "admin/summary-nv";
+	}
+	
+	
+	//////////////////////////////
+	
+	private List<Bill> getBills_byDate(String from, String to){
+
+		SimpleDateFormat formatter1 = new  SimpleDateFormat("yyyy-MM-dd");  
+		
+		Date fromDate; 
+		Date toDate;
+		try {
+			fromDate = formatter1.parse(from);  
+			toDate = formatter1.parse(to);  
+		}
+		catch(Exception e) {
+			return new ArrayList<Bill>();
+		}
+		
+		
+		Session session = factory.getCurrentSession();
+		String hql = "From Bill b where b.date >= :from and b.date <= :to ";
+		Query query = session.createQuery(hql);
+		
+		query.setDate("from", fromDate);
+		query.setDate("to", toDate);
+		
+		List<Bill> bills = query.list();
+		
+		return bills;
 	}
 }

@@ -16,44 +16,15 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Tổng tiền'],
-          <c:forEach items="${dsHoaDon}" var="r">
-			[ '${r.date}', ${r.moneyProduct} ],
+          ['Name', 'Tổng tiền'],
+          <c:forEach items="${summary}" var="r">
+			[ '${r.name}', ${r.totalMoney} ],
 			</c:forEach>
         ]);
 
         var options = {
           chart: {
-            title: 'Tổng tiền theo ngày',
-            //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          }
-        };
-
-        var chart = new google.charts.Bar(document.getElementById("money_by_date_chart"));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-        
-        
-      }
-
-    </script>
-    
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Tổng Sản phẩm' , { role: 'style' }],
-          <c:forEach items="${summaryBillCountByDate}" var="r">
-			[ '${r.date}', ${r.totalProducts}, 'color: red' ],
-			</c:forEach>
-        ]);
-
-        var options = {
-          chart: {
-            title: 'Tổng Sản phẩm bán được ngày',
-            colors: ['red'],
+            title: 'Tổng tiền từng nhân viên',
             //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
           }
         };
@@ -67,30 +38,19 @@
 
     </script>
     
+   
   </head>
 
 </head>
 <body>
 	<jsp:include page="header.jsp" />
+	
+
 	<div class="pusher">
 		<div class="main-content">
 			<div class="ui grid stackable padded">
 				<div class="column">
-					<form class="ui form" action="admin/doanhso.htm" method="post">
-						<div class="field">
-							<div class="fields">
-								<div class="eight  wide field">
-									<label>Từ Ngày</label> <input name="tuNgay" type="date" value="${tuNgay}" />
-								</div>
-								<div class="eight  wide field">
-									<label>Tới Ngày</label> <input name="toiNgay" type="date" value="${toiNgay}"  />
-								</div>
-								<div class="four wide field" style="margin-top: 25px">
-									<button class="ui button">Xem Doanh Thu</button>
-								</div>
-							</div>
-						</div>
-					</form>
+					<h2 style="margin-bottom:50px">Thống kê tình hình làm ăn của Nhân viên trong 30 ngày gần nhất</h2>
 				</div>
 			</div>
 <%-- 			<div class="ui grid stackable padded">
@@ -106,7 +66,7 @@
 					</c:if>
 				</div>
 			</div> --%>
-			    <div id="money_by_date_chart" style="width: 90%; height: 300px; padding-left:50px"></div>
+			   
 			     <div id="total_sell_product_by_date_chart" style="width: 90%; height: 300px; padding-left:50px"></div>
 			
 			<div class="ui grid stackable padded">
@@ -114,18 +74,20 @@
 					<table class="ui blue table">
 						<thead>
 							<tr>
-								<th>Mã Hóa Đơn</th>
-								<th>Ngày Bán</th>
-								<th>Tổng Tiền</th>
+								<th>Mã Nhân viên</th>
+								<th>Tên Nhân viên</th>
+								<th>Tổng sản phẩm bán được</th>
+								<th>Doanh số</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="u" items="${dsHoaDon}">
+							<c:forEach var="u" items="${summary}">
 								<tr>
 									<td>${u.id}</td>
-									<td>${u.date}</td>
+									<td>${u.name}</td>
+									<td>${u.totalProducts}</td>
 									<td><f:formatNumber type="currency" maxFractionDigits="0"
-											currencySymbol="" value="${u.moneyProduct}" /> đ</td>
+											currencySymbol="" value="${u.totalMoney}" /> đ</td>
 								</tr>
 							</c:forEach>
 						</tbody>
