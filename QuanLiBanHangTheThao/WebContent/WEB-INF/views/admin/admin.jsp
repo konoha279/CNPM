@@ -65,7 +65,7 @@
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
-								<div class="ui red button">Thêm Thông Tin</div>
+								<button class="ui red button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/donDatHang/index.htm';">Thêm Thông Tin</button>
 							</div>
 						</div>
 					</div>
@@ -85,7 +85,7 @@
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
-								<div class="ui green button">Thêm Thông Tin</div>
+								<button class="ui green button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/doanhso.htm';">Thêm Thông Tin</button>
 							</div>
 						</div>
 						
@@ -126,7 +126,7 @@
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
-								<div class="ui purple button">More Info</div>
+								<button class="ui purple button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/summary-employees.htm';">Thêm thông tin</button>
 							</div>
 						</div>
 					</div>

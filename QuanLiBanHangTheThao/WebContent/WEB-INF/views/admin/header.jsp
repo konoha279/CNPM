@@ -197,6 +197,7 @@ body ::-webkit-scrollbar {
 				document.getElementById('tk').style.display = "none";
 				document.getElementById('ds').style.display = "none";
 				document.getElementById('comment').style.display = "none";
+				document.getElementById('summary-nv').style.display = "none";
 			}
 		}
 		function showitem() {
