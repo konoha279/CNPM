@@ -52,7 +52,8 @@
 							<tr>
 								<th>Thời gian</th>
 								<th>Tổng tiền</th>
-								<th>Số lượng sản phẩm bán được</th>
+								<th style="text-align: center;">Số lượng đơn đặt hàng</th>
+								<th style="text-align: center;">Số lượng sản phẩm bán được</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -62,7 +63,8 @@
 									<td>${r.date}</td>
 									
 									<td><f:formatNumber type="currency" maxFractionDigits="0" currencySymbol="" value="${r.value[1]}" /> đ</td>
-									<td>${r.value[0]}</td>
+									<td style="text-align: center;">${r.value[0]}</td>
+									<td style="text-align: center;">${r.bills.size()} đơn</td>
 									<td> <button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${r.id}">
 												<i class="edit icon"></i>Xem chi tiết
 										</button>	
