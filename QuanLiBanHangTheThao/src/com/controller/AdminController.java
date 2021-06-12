@@ -4,7 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -61,6 +65,13 @@ public class AdminController {
 			{
 				bills.remove(i);
 				i--;
+				continue;
+			}
+			if (!bills.get(i).isStatus())
+			{
+				bills.remove(i);
+				i--;
+				continue;
 			}
 		}
 		
@@ -77,7 +88,9 @@ public class AdminController {
 				}
 			}
 			String dateStr = i + "/" + yearNow;
-			objectReports.add(new ObjectReport(dateStr, temp));
+			ArrayList<Integer> moneys = new ArrayList<>();
+			moneys.add(temp);
+			objectReports.add(new ObjectReport(dateStr, moneys));
 		}
 		return objectReports;
 	}
@@ -124,30 +137,63 @@ public class AdminController {
 	public String doanhthu(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
 			@RequestParam( value = "toiNgay",defaultValue = "") String to) {
 		
-		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+		LocalDateTime now = LocalDateTime.now();  
 		if(to.isEmpty() || to == null) {
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-		    LocalDateTime now = LocalDateTime.now();  
+		    
 		    to = dtf.format(now);  
 		}
 		if(from.isEmpty() || from == null) {
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-		    LocalDateTime now = LocalDateTime.now();  
 		    now = now.minusMonths(1);
 		    from = dtf.format(now);  
 		}
 		
-		
 		List<Bill> bills = getBills_byDate(from, to);
-		List<SummaryBillCountByDate> summaryBillCountByDate = new ArrayList();
+		List<ObjectReport> objectReports = new ArrayList<ObjectReport>();
+		List<Bill> reportBills = new ArrayList<Bill>();
 		
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+		int tmp_money = 0, total_proudct =0;
+		String date = dateFormat.format(bills.get(0).getDate()) ;
+		int id=0;
 		for(Bill b : bills) {
-			SummaryBillCountByDate c = new SummaryBillCountByDate(b);
-			summaryBillCountByDate.add(c);
+			if (!b.isStatus())
+			{
+				bills.remove(b);
+				continue;
+			}
+			String tmpDate = dateFormat.format(b.getDate());
+			if (!tmpDate.equals(date) || b.equals(bills.get(bills.size() -1)))
+			{
+				ArrayList<Integer> integersCount = new ArrayList<>();
+				integersCount.add(total_proudct);
+				integersCount.add(tmp_money);
+				ObjectReport report = new ObjectReport(id, tmpDate, integersCount, reportBills);
+				objectReports.add(report);
+				
+				id++;
+				
+				reportBills = new ArrayList<Bill>();
+				reportBills.add(b);
+				
+				date = tmpDate;
+				tmp_money = b.getMoneyProduct();
+				total_proudct = 0;
+				for(CTBill ct : b.getCtBills()) {
+					total_proudct += ct.getCount();
+				}
+			}
+			else
+			{
+				reportBills.add(b);
+				tmp_money += b.getMoneyProduct();
+				for(CTBill ct : b.getCtBills()) {
+					total_proudct += ct.getCount();
+				}
+			}
 		}
 		
-		model.addAttribute("dsHoaDon", bills);
-		model.addAttribute("summaryBillCountByDate", summaryBillCountByDate);
+		model.addAttribute("objectReports", objectReports);
 		model.addAttribute("tuNgay",from);
 		model.addAttribute("toiNgay",to);
 		
@@ -307,4 +353,5 @@ public class AdminController {
 		}
 		return result.getBytes("UTF-8");
 	}
+
 }

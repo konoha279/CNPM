@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Giỏ hàng</title>
+    <title>Danh sách yêu thích</title>
     <link href="resources/Shop/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/Shop/css/font-awesome.min.css" rel="stylesheet">
     <link href="resources/Shop/css/prettyPhoto.css" rel="stylesheet">

@@ -146,8 +146,8 @@
 								<ul>				
 									<li>Tạm tính <span id="TamTinh"><f:formatNumber value="${Money}" type="currency"/> </span></li>
 								<%-- 	<li>Phí dịch vụ <span id="KhuyenMai"><f:formatNumber value="0" type="currency"/></span></li> --%>
-									<li>Phí vận chuyển <span id="PhiVanChuyen"><f:formatNumber value="0" type="currency"/></span></span></li>
-									<li>Thành tiền <span id="ThanhTien"><f:formatNumber value="${Money}" type="currency"/></span></li>
+									<li>Phí vận chuyển <span id="PhiVanChuyen"><f:formatNumber value="${Ship }" type="currency"/></span></span></li>
+									<li>Thành tiền <span id="ThanhTien"><f:formatNumber value="${Money + Ship}" type="currency"/></span></li>
 								</ul>
 									
 							</div>
@@ -289,7 +289,7 @@
 			success: function (data)
 			{
 				document.getElementById('TamTinh').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
-				document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+				document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data + ${Ship});
 				
 			},
 			error: function(data)
@@ -320,7 +320,7 @@
 				success: function (data)
 				{
 					document.getElementById('TamTinh').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
-					document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+					document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(parseInt(data) + ${Ship});
 					
 				},
 				error: function(data)
@@ -351,7 +351,7 @@
 				success: function (data)
 				{
 					document.getElementById('TamTinh').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
-					document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
+					document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format( parseInt(data) + ${Ship});
 				},
 				error: function(data)
 				{

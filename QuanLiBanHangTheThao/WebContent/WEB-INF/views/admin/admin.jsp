@@ -19,7 +19,7 @@
 		var data = google.visualization.arrayToDataTable([
 				[ 'Month',  'Tiền thu được' ],
 				<c:forEach items="${billReport}" var="r">
-				[ '${r.date}', ${r.value} ],
+				[ '${r.date}', ${r.value[0]} ],
 				</c:forEach>
 				]);
 
@@ -29,7 +29,7 @@
 				title : 'Đồng'
 			},
 			hAxis : {
-				title : 'Month'
+				title : 'Tháng'
 			},
 			seriesType : 'bars',
 			series : {
@@ -39,8 +39,7 @@
 			}
 		};
 
-		var chart = new google.visualization.ComboChart(document
-				.getElementById('chart_div'));
+		var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
 		chart.draw(data, options);
 	}
 </script>

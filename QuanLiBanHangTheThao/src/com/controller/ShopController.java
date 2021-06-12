@@ -46,8 +46,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Transactional
 @Controller
 public class ShopController {
+	private static final int SHIP = 30000;
+	
 	@Autowired
 	SessionFactory factory;
+	@Autowired
+	Mailer mailer;
 	
 	@ModelAttribute("Products")
 	public List<Product> getProducts()
@@ -168,6 +172,24 @@ public class ShopController {
 		return "/Shop/wishlist";
 	}
 
+	@RequestMapping(value = "contact", method = RequestMethod.GET)
+	public String contact()
+	{
+		return "/Shop/contact";
+	}
+	
+	@RequestMapping(value = "contact", method = RequestMethod.POST)
+	public @ResponseBody String contactPost(HttpServletRequest request)
+	{
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String subject = request.getParameter("subject");
+		String message = request.getParameter("message");
+		
+		mailer.send(email, "n18dcat092@student.ptithcm.edu.vn", subject, "<strong> Họ và tên người gửi: " + name + "</strong>" +"<br>"+ message);
+		
+		return "";
+	}
 	
 	@RequestMapping("index")
 	public String index(ModelMap model)
@@ -199,6 +221,7 @@ public class ShopController {
 		}
 		
 		model.addAttribute("Money", AllMoney);
+		model.addAttribute("Ship",	SHIP);
 		return "/Shop/cart";
 	}
 	
@@ -383,6 +406,7 @@ public class ShopController {
 		bill.setTransportationFee(0);
 		bill.setAccount(checkCookie(request));
 		bill.setStaff(null);
+		bill.setTransportationFee(SHIP);
 		
 		Session session = factory.openSession(); 
 		Transaction transaction = session.beginTransaction();

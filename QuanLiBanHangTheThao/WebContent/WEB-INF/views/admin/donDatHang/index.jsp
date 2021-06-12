@@ -33,11 +33,12 @@
 								<th>Mã Số Đơn Đặt Hàng</th>
 								<th>Ngày tạo đơn hàng</th>
 								<th>Tài khoản mua</th>
-								<th>Tổng tiền thanh toán</th>		
-								<th>Phí vận chuyện</th>
 								<th>Tình Trạng</th>
 								<th>Nhân Viên tạo đơn (xác nhận)</th>
 								<th>Địa chỉ nhận hàng</th>
+								<th>Tổng tiền mua hàng</th>		
+								<th>Phí vận chuyện</th>
+								<th>Thành tiền</th>	
 								<th>Tương tác</th>
 							</tr>
 						</thead>
@@ -47,11 +48,12 @@
 									<td>${b.id }</td>
 									<td>${b.date }</td>
 									<td>${b.account.username }</td>
-									<td><f:formatNumber value="${b.moneyProduct }" type="currency" /> </td>
-									<td><f:formatNumber value="${b.transportationFee }" type="currency" /></td>
 									<td>${b.status == true ? 'Đã xác nhận' : 'Chưa xác nhận' }</td>
 									<td><c:if test="${empty b.staff == false }">${b.staff.getFullName() }</c:if> </td>
 									<td>${b.address }</td>
+									<td><f:formatNumber value="${b.moneyProduct }" type="currency" /> </td>
+									<td><f:formatNumber value="${b.transportationFee }" type="currency" /></td>
+									<td><f:formatNumber value="${b.moneyProduct + b.transportationFee }" type="currency" /></td>
 									<td>
 										<button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${b.id}">
 												<i class="edit icon"></i>Xem chi tiết

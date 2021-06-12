@@ -19,10 +19,10 @@ jQuery(function ($) {
 
     var map;
 
-    map = new GMaps({
+    map = GMaps({
         el: '#gmap',
-        lat: 43.1580159,
-        lng: -77.6030777,
+        lat: 10.847989829012237,
+        lng: 106.78647201819169,
         scrollwheel: false,
         zoom: 14,
         zoomControl: false,
@@ -30,13 +30,15 @@ jQuery(function ($) {
         streetViewControl: false,
         mapTypeControl: false,
         overviewMapControl: false,
-        clickable: false
+        clickable: false,
+        mapId: '340d605ea0b7e247',
     });
+    
 
     var image = 'images/map-icon.png';
     map.addMarker({
-        lat: 43.1580159,
-        lng: -77.6030777,
+        lat: 10.847989829012237,
+        lng: 106.78647201819169,
         //icon: image,
         animation: google.maps.Animation.DROP,
         verticalAlign: 'bottom',
