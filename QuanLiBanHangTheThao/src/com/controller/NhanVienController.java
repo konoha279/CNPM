@@ -1,7 +1,11 @@
 package com.controller;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.entity.Account;
 import com.entity.Role;
@@ -135,7 +140,7 @@ public class NhanVienController {
 			}
 			
 			Role role = getRole(staff.getAccountStaff().getRole().getId());
-			Account account = new Account(staff.getAccountStaff().getUsername(), staff.getAccountStaff().getPassword(), staff.getAccountStaff().getEmail(), role, true);
+			Account account = new Account(staff.getAccountStaff().getUsername(), encrypt(staff.getAccountStaff().getPassword()), staff.getAccountStaff().getEmail(), role, true);
 			Staff newStaff = new Staff(staff.getFirstName(), staff.getName(), staff.getCmnd(), staff.getAddress(), staff.getPhoneNumber(), staff.getStatus(), staff.getSex());
 			
 			account.setStaff(newStaff);
@@ -169,11 +174,12 @@ public class NhanVienController {
 		Staff staff = (Staff) session.get(Staff.class, id);
 		model.addAttribute("id", id);
 		model.addAttribute("staff", staff);
+		model.addAttribute("role", staff.getAccountStaff().getRole().getId());
 		return "admin/nhanvien/update";
 	}
 	
 	@RequestMapping(value="update",method=RequestMethod.POST)
-	public String update(ModelMap model,@ModelAttribute("staff")Staff staff,BindingResult errors)
+	public String update(ModelMap model,@ModelAttribute("staff")Staff staff,BindingResult errors, @RequestParam( value = "role" ,defaultValue = "") String roleID)
 	{
 		if (staff.getName().trim().length() == 0) {
 			errors.rejectValue("name", "name", "Vui lòng nhập tên nhân viên");
@@ -201,14 +207,23 @@ public class NhanVienController {
 		if (errors.hasErrors()) {
 			model.addAttribute("message", "Vui lòng sửa các lỗi sau");
 		} else {
+			Role role = new Role();
+			role.setId(staff.getAccountStaff().getRole().getId());
 			Session session = factory.getCurrentSession();
 			Staff datStaff = (Staff) session.get(Staff.class, staff.getId());
-			
 			staff.setAccountStaff(datStaff.getAccountStaff());
+			
+			Account tmpAccount = new Account();
+			tmpAccount.setUsername(datStaff.getAccountStaff().getUsername());
+			tmpAccount.setPassword(datStaff.getAccountStaff().getPassword());;
+			tmpAccount.setEmail(datStaff.getAccountStaff().getEmail());
+			tmpAccount.setActive(datStaff.getAccountStaff().getActive());
+			tmpAccount.setRole(role);
 			
 			session = factory.openSession();
 			Transaction t = session.beginTransaction();
 			try {
+				session.update(tmpAccount);	
 				session.update(staff);	
 				t.commit();
 				model.addAttribute("message","Cập Nhật Thành Công!");
@@ -224,4 +239,35 @@ public class NhanVienController {
 		}	
 		return "redirect:/admin/nhanvien/index.htm?page=1";
 	}	
+	
+	public String encrypt(String input)
+    {
+        try {
+            // getInstance() method is called with algorithm SHA-1
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+  
+            // digest() method is called
+            // to calculate message digest of the input string
+            // returned as array of byte
+            byte[] messageDigest = md.digest(input.getBytes());
+  
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+  
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+  
+            // Add preceding 0s to make it 32 bit
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            // return the HashText
+            return hashtext;
+        }
+  
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

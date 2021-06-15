@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 <style type="text/css">
 .modal-lg {
-    max-width: 60%;
+    max-width: 40% !important;
 }
 
 </style>
@@ -51,7 +51,7 @@
 										  
 										<!-- Modal -->
 										<div class="modal fade" id="edit${b.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-											<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-dialog modal-dialog-centered modal-lg">
 											  <div class="modal-content" >
 												<div class="modal-header" >
 												  <h1 class="modal-title"id="staticBackdropLabel">Chỉnh sửa thương hiệu "<b>${b.name}</b>"</h1>
@@ -70,7 +70,7 @@
 										      </div>
 										      <div class="modal-footer">
 										        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-										        <button type="button" class="btn btn-primary" onclick="edit('${b.id}')">Save changes</button>
+										        <button type="button" class="btn btn-primary" onclick="edit('${b.id}')">Lưu thay đổi</button>
 										      </div>
 										    </div>
 										  </div>
@@ -117,7 +117,7 @@
 
 						
 					<div class="modal fade" id="insert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-dialog modal-dialog-centered modal-lg">
 					    <div class="modal-content">
 					      <div class="modal-header">
 					        <h1 class="modal-title" id="staticBackdropLabel">Tạo Thương hiệu</h1>

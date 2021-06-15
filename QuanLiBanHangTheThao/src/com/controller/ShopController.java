@@ -13,7 +13,11 @@ import com.entity.ProductList;
 import com.entity.Size;
 import com.entity.WishList;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +40,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,6 +78,8 @@ public class ShopController {
 		}
 		return list;
 	}
+	
+	
 	
 	@ModelAttribute("listBrand")
 	public List<Brand> listBrand()
@@ -164,6 +172,74 @@ public class ShopController {
 		model.addAttribute("Currency", currencyList);
 		
 	}
+	
+	/*-------------------------------------------- PAGE ---------------------------------------------------*/
+	//get time last modified
+	String getLasttime(File file)
+	{
+		DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");  
+		long time = file.lastModified(); 
+		Date date = new Date(time);
+		return dateFormat.format(date);
+	}
+	
+	@RequestMapping(value = "gioithieu", method = RequestMethod.GET)
+	public String gioithieu(HttpServletRequest request)
+	{
+		String content = "";
+		File x = new File("gioithieu.dat");
+		try {
+			if (x.exists())
+			{
+				Scanner scan = new Scanner(x);
+				
+				while(scan.hasNextLine()) {
+		    		  content += scan.nextLine()+"\r\n";
+		    	}
+				scan.close();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Error");
+		}
+		request.setAttribute("lastTime", getLasttime(x));	
+		request.setAttribute("content", content);		
+		return "/Shop/gioithieu";
+	}
+	
+	
+	
+	@RequestMapping(value = "chinhsach", method = RequestMethod.GET)
+	public String chinhsach(HttpServletRequest request)
+	{
+		String content = "";
+		File x = new File("chinhsach.dat");
+		
+		try {
+			if (x.exists())
+			{
+				Scanner scan = new Scanner(x);
+				
+				
+				
+				
+				while(scan.hasNextLine()) {
+		    		  content += scan.nextLine()+"\r\n";
+		    	}
+				scan.close();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Error");
+		}
+		request.setAttribute("lastTime", getLasttime(x));	
+		request.setAttribute("content", content);		
+		return "/Shop/chinhsach";
+	}
+
+	/*--------------------------------------------------------------------------------------------------------*/
 	
 	@RequestMapping("wishlist")
 	public String wishlist(ModelMap model)
@@ -261,6 +337,31 @@ public class ShopController {
 		return "/Shop/shop";
 	}
 	
+	@RequestMapping(value = "search")
+	public String search(HttpServletRequest request, ModelMap model)
+	{
+		Session session = factory.getCurrentSession();
+		String keyword = request.getParameter("keyword");
+		keyword = keyword.toLowerCase();
+		String hql = "From Product";
+		Query query = session.createQuery(hql);
+		List<Product> products = query.list();
+		List<Product> listProducts = new ArrayList<>();
+		
+		for (Product product : products) {
+			if (product.getId().toLowerCase().contains(keyword) || product.getName().toLowerCase().contains(keyword))
+			{
+				if (!listProducts.contains(product))
+				{
+					listProducts.add(product);
+				}
+			}
+		}
+		model.addAttribute("listProducts", listProducts);
+		return "/Shop/shop";
+	}
+	
+	
 	@RequestMapping(value = "brand{id}", method = RequestMethod.GET)
 	public String shopBrand(ModelMap model,@PathVariable("id") String id)
 	{
@@ -304,6 +405,8 @@ public class ShopController {
 		Setup(model);
 		Session session = factory.getCurrentSession();
 		Product product = (Product) session.get(Product.class, id);
+		product.setCT_HangHoa(new HashSet<CTHangHoa>(product.getCT_HangHoa()));
+		product.setComments(new HashSet<Comment>(product.getComments()));
 		model.addAttribute("detailProduct", product);
 		return "/Shop/product-details";
 	}

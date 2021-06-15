@@ -13,12 +13,12 @@
 			<div class="container">
 				<div class="row">
 				
-					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pd5"> 
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pd5" style="margin-right: 80px;"> 
 						<div class="box-footerservice">
-							<div class="">
+							<div class="" >
 								<div class="pull-left icon-service"></div>
-								<h3 class="footerservice-title">Miễn phí vận chuyển</h3>
-								<div class="footerservice-content"> Nội thành TP.HCM &gt;= 300.000 VND</div>
+								<h3 class="footerservice-title" style="width: 262px;">Giao hàng nhanh chóng</h3>
+								<div class="footerservice-content"> Giao hàng ngay trong nội thành TP.HCM</div>
 							</div>
 						</div>
 					</div>
@@ -40,7 +40,7 @@
 							<div class="">
 								<div class="pull-left icon-service"></div>
 								<h3 class="footerservice-title">Đặt hàng trực tuyến</h3>
-								<div class="footerservice-content">0342437678</div>
+								<div class="footerservice-content">Số điện thoại: 0342437678</div>
 							</div>
 						</div>
 					</div>
@@ -52,34 +52,34 @@
 		<div class="footer-widget">
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-2">
-						<div class="single-widget">
+					<div class="col-sm-2" style="width: 200px; margin-right: 60px;">
+						<div class="single-widget" >
 							<h2>Giờ mở cửa</h2>
 							<ul class="nav nav-pills nav-stacked">
 								<li>7:30 - 22:00 các ngày trong tuần. Bao gồm cả ngày lễ và chủ nhật</li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-2" style="width: 230px; margin-right: 30px;">
 						<div class="single-widget">
 							<h2>Chính sách</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="#">Chính sách bảo mật</a></li>
-								<li><a href="#">Chính sách giao hàng</a></li>
-								<li><a href="#">Chính sách đổi trả sản phẩm</a></li>
+								<li><a href="chinhsach.htm">Chính sách bảo mật</a></li>
+								<li><a href="chinhsach.htm">Chính sách giao hàng</a></li>
+								<li><a href="chinhsach.htm">Chính sách đổi trả sản phẩm</a></li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-2" style="width: 200px; margin-right: 60px;">
 						<div class="single-widget">
 							<h2>Về Chúng Tôi</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="#">Giới thiệu</a></li>
+								<li><a href="gioithieu.htm">Giới thiệu</a></li>
 								<li><a href="contact.htm">Liên lạc</a></li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-3 col-sm-offset-1">
+					<div class="col-sm-3 col-sm-offset-1" >
 						<div class="single-widget">
 							<h2>Đăng ký nhận tin tức</h2>
 							<form action="#" class="searchform">

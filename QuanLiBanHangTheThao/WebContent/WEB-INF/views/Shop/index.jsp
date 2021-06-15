@@ -48,42 +48,21 @@
 						
 						<div class="carousel-inner">
 							<div class="item active">
-								<div class="col-sm-6">
-									<h1><span>P</span>-SHOPPER</h1>
-									<h2>SALE cực mạnh</h2>
-									<p>Áo bóng đá đẹp, áo đá bóng và áo đá banh CLB Tottenham Hotspur BD040. </p>
-									<a href="https://bom.to/TFwCfPRtmoVTz"><button type="button" class="btn btn-default get">Get it now</button></a>
-								</div>
-								<div class="col-sm-6">
-									<img src="https://salt.tikicdn.com/cache/w444/media/catalog/producttmp/23/9d/16/64857db3b1864f96fe2b1f43f6ee101b.jpg" class="girl img-responsive" alt="" />
-								</div>
-							</div>
-							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>100% Responsive Design</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="resources/Shop/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-									<img src="resources/Shop/images/home/pricing.png"  class="pricing" alt="" />
+								<div class="">
+									<img style="height: 440px;width: 950px;" src="resources/Shop/images/home/thethao.jpg" class="" alt="" />
 								</div>
 							</div>
 							
 							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>Free Ecommerce Template</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="resources/Shop/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-									<img src="resources/Shop/images/home/pricing.png" class="pricing" alt="" />
+								<div class="">
+									<img style="height: 440px;width: 950px;" src="resources/Shop/images/home/thethao2.jpg" class="" alt="" />
 								</div>
 							</div>
-							
+							<div class="item">
+								<div class="">
+									<img style="height: 440px;width: 950px;" src="resources/Shop/images/home/thethao3.jpg" class="" alt="" />
+								</div>
+							</div>
 						</div>
 						
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
@@ -126,14 +105,6 @@
 								</ul>
 							</div>
 						</div><!--/brands_products-->
-						
-						<%-- <div class="price-range"><!--price-range-->
-							<h2>Price Range</h2>
-							<div class="well text-center">
-								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="10000000" data-slider-step="8" data-slider-value="[0,10000000]" id="sl2" ><br />
-								 <b class="pull-left"><f:formatNumber value="0" type="currency"/></b> <b class="pull-right"><f:formatNumber value="10000000" type="currency"/></b>
-							</div>
-						</div><!--/price-range--> --%>
 					
 					</div>
 				</div>

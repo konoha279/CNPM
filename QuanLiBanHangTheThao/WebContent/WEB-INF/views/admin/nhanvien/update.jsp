@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Cập nhật nhân viên</title>
 </head>
 <body>
 	<jsp:include page="../header.jsp" />
@@ -36,11 +36,29 @@
 								</div>
 							</div>
 						</div>
-						<div class="field">
-							<label>Chứng minh nhân dân </label>
-							<form:input path="cmnd" />
-							<div style="color: red">
-								<form:errors path="cmnd" />
+						<div class="two fields">
+							<div class="field">
+								<label>Chứng minh nhân dân </label>
+								<form:input path="cmnd" />
+								<div style="color: red">
+									<form:errors path="cmnd" />
+								</div>
+							</div>
+							<div class="field">
+								<label>Chức vụ</label>
+								<form:select path="accountStaff.role.id">
+									<c:choose>
+										<c:when test="${role == '1' }">
+											<form:option selected= 'selected' value="1">Quản lí</form:option>
+											<form:option  value="2">Nhân viên</form:option>
+										</c:when>
+										<c:otherwise>
+											<form:option value="1">Quản lí</form:option>
+											<form:option selected= 'selected' value="2">Nhân viên</form:option>
+										</c:otherwise>
+									</c:choose>
+								</form:select>
+
 							</div>
 						</div>
 						<div class="two fields">

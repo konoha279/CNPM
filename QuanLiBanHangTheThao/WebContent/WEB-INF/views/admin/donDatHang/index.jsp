@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.bootstrap4.min.css">
 
 <style type="text/css">
-.modal-lg {
+.modal-lg2 {
         max-width: 70% !important;
 
 }
@@ -76,7 +76,7 @@
 	<c:forEach items="${listBill}" var="b">
 		<!-- Modal -->
 		<div class="modal fade" id="detail${b.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
+			<div class="modal-dialog modal-lg2">
 			  <div class="modal-content" >
 				<div class="modal-header" >
 				  <h1 class="modal-title"id="staticBackdropLabel">Chi tiết đơn hàng</b></h1>
@@ -139,7 +139,7 @@
 										
 	<!-- Tạo đơn hàng -->
 	<div class="modal fade" id="insert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-lg2">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h1 class="modal-title" id="staticBackdropLabel">Tạo đơn hàng</h1>

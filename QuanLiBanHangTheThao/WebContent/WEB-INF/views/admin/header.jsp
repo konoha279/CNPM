@@ -20,13 +20,17 @@
 	integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ="
 	crossorigin="anonymous" />
 <link href="resources/admin/header.css" rel="stylesheet" >
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-
+ 
 <style type="text/css">
+.modal-lg-Menu {
+        max-width: 40% !important;
+
+}
 @import
 	url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap")
 	;
@@ -92,16 +96,16 @@ body ::-webkit-scrollbar {
 				<i class="icon home"></i> Tổng Quát
 			</div>
 		</a> 
-		<div onmouseover="showitem()" onmouseout="hideitem()">
+		<div onmouseover="showitem('P')" onmouseout="hideitem('P')">
 			<a  href="admin/hanghoa/index.htm" id="sp" class="item">
 				<div>
 					<i class="boxes icon"></i> Sản Phẩm
 				</div>
 			</a> 
-			<div id="hide-content" style="display: none">
+			<div id="hide-contentP" style="display: none">
 				<a href="admin/hanghoa/size.htm" id="ncc" class="item">
 					<div>
-						Size
+						<i class="fa fa-plus"></i> Size
 					</div>
 				</a>
 			</div>
@@ -127,11 +131,27 @@ body ::-webkit-scrollbar {
 				<i class="icon truck icon"></i> Phiếu Nhập
 			</div>
 		</a>  
-		<a href="admin/doanhso.htm" id="ds" class="item">
-			<div>
-				<i class="icon chart line"></i> Doanh Số
+		
+		<div onmouseover="showitem('TK')" onmouseout="hideitem('TK')" id="thongke">
+			<a class="item">
+				<div>
+					<i class="icon chart bar"></i> Thống kê
+				</div>
+			</a>
+			<div id="hide-contentTK" style="display: none">
+				<a data-toggle="modal" data-target="#TKDT" class="item">
+					<div>
+						<i class="fa fa-plus"></i> Thống kê doanh thu
+					</div>
+				</a>
+				<a data-toggle="modal" data-target="#TKNV" class="item">
+					<div>
+						<i class="fa fa-plus"></i> Thống kê nhân viên
+					</div>
+				</a>
 			</div>
-		</a>  
+		</div>
+		
 		<a href="admin/thuonghieu/index.htm" id="ncc" class="item">
 			<div>
 				<i class="fa fa-font-awesome"></i> Thương hiệu
@@ -142,21 +162,26 @@ body ::-webkit-scrollbar {
 				<i class="fa fa-commenting-o"></i> Bình luận sản phẩm
 			</div>
 		</a>
-		<a href="admin/summary-employees.htm" id="summary-nv" class="item">
-			<div>
-				<i class="user icon"></i> Thống kê nhân viên
-			</div>
-		</a>
-		<div class="item">
-			<form action="#">
-				<div class="ui mini action input">
-					<input type="text" placeholder="Search..." />
-					<button class="ui mini icon button">
-						<i class=" search icon"></i>
-					</button>
+		
+		<div onmouseover="showitem('PAGE')" onmouseout="hideitem('PAGE')" id="page">
+			<a href="" class="item">
+				<div>
+					<i class="fa fa-file-o"></i> Trang
 				</div>
-			</form>
-		</div>
+			</a>
+			<div id="hide-contentPAGE" style="display: none">
+				<a href="admin/page/gioithieu.htm" class="item">
+					<div>
+						<i class="fa fa-plus"></i> Trang giới thiệu
+					</div>
+				</a>
+				<a href="admin/page/chinhsach.htm" class="item">
+					<div>
+						<i class="fa fa-plus"></i> Trang chính sách
+					</div>
+				</a>
+			</div>
+		</div>					
 	</div>
 	<!-- sidebar -->
 	<!-- top nav -->
@@ -180,43 +205,96 @@ body ::-webkit-scrollbar {
 			</li>
 		</ul>
 	</nav>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
-		integrity="sha256-t8GepnyPmw9t+foMh3mKNvcorqNHamSKtKRxxpUEgFI="
-		crossorigin="anonymous"></script>
-	<script type="text/javascript">
-		window.onload = function()
+	
+	<!-- Modal -->
+	<div class="modal fade" id="TKDT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-lg-Menu">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Vui lòng chọn hình thức thống kê</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+      		<div class="d-flex justify-content-around">
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/doanhthu.htm'" class="btn btn-outline-primary">Thống kê theo ngày</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/doanhthu-thang.htm'" class="btn btn-outline-secondary">Thống kê theo tháng</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/doanhthu-nam.htm'" class="btn btn-outline-success">Thống kê theo năm</button>
+      		</div>     		
+	      </div>
+	      <div class="modal-footer">
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="TKNV" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-lg-Menu">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Vui lòng chọn hình thức thống kê</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+      		<div class="d-flex justify-content-around">
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNV.htm'" class="btn btn-outline-primary">Thống kê theo ngày</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNV-thang.htm'" class="btn btn-outline-secondary">Thống kê theo tháng</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNV-nam.htm'" class="btn btn-outline-success">Thống kê theo năm</button>
+      		</div>     		
+	      </div>
+	      <div class="modal-footer">
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	
+	
+	
+	
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+	integrity="sha256-t8GepnyPmw9t+foMh3mKNvcorqNHamSKtKRxxpUEgFI="
+	crossorigin="anonymous"></script>
+<script type="text/javascript">
+	window.onload = function()
+	{
+		if ("${admin}" != "admin")
 		{
-			if ("${admin}" != "admin")
-			{
-				document.getElementById('nv').style.display = "none";
-				document.getElementById('tk').style.display = "none";
-				document.getElementById('ds').style.display = "none";
-				document.getElementById('comment').style.display = "none";
-				document.getElementById('summary-nv').style.display = "none";
-			}
+			document.getElementById('nv').style.display = "none";
+			document.getElementById('tk').style.display = "none";
+			document.getElementById('thongke').style.display = "none";
+			document.getElementById('comment').style.display = "none";
+			document.getElementById('page').style.display = "none";
 		}
-		function showitem() {
-			document.getElementById('hide-content').style.display = "";
-			
-		}
-		function hideitem()
-		{
-			document.getElementById('hide-content').style.display = "none";
-		}
-		function showOptios() {
-			
-		}
+	}
+	function showitem(id) {
+		document.getElementById('hide-content'+id).style.display = "";
 		
-		function hideOption()
-		{
-			
-		}
-	</script>
+	}
+	function hideitem(id)
+	{
+		document.getElementById('hide-content'+id).style.display = "none";
+	}
+	function showOptios() {
+		
+	}
+	
+	function hideOption()
+	{
+		
+	}
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
 </body>
 </html>

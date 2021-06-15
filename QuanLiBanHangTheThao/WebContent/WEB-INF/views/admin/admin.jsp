@@ -74,12 +74,12 @@
 					<div class="ui fluid card">
 						<div class="content">
 							<div class="ui right floated header green">
-								<i class="icon clock"></i>
+								<i class="icon briefcase"></i>
 							</div>
 							<div class="header">
-								<div class="ui header green"><f:formatNumber value="${revenue}" type="currency"></f:formatNumber> </div>
+								<div class="ui header green"><f:formatNumber value="${befMoney}" type="currency"></f:formatNumber> </div>
 							</div>
-							<div class="meta">Doanh Thu</div>
+							<div class="meta">Doanh Thu trong tháng trước</div>
 							<div class="description" style="display: inline;">Doanh Thu trong tháng này: <span class="ui header green"><f:formatNumber value="${revenue}" type="currency" /> </span></div> 
 						</div>
 						<div class="extra content">
@@ -95,17 +95,17 @@
 					<div class="ui fluid card">
 						<div class="content">
 							<div class="ui right floated header teal">
-								<i class="icon briefcase"></i>
+								<i class="icon clock"></i>
 							</div>
 							<div class="header">
-								<div class="ui teal header">${countProduct }</div>
+								<div class="ui teal header"><a href="${pageContext.servletContext.contextPath}/admin/hanghoa/detail/${befProduct }.htm">${befProduct }</a></div>
 							</div>
-							<div class="meta">Sản Phẩm</div>
-							<div class="description">Quần Hồng đã được mua nhiều nhất</div>
+							<div class="meta">Sản Phẩm được mua nhiều nhất ở tháng trước</div>
+							<div class="description">Sản phẩm <a href="${pageContext.servletContext.contextPath}/admin/hanghoa/detail/${Product }.htm"><Strong>${Product }</Strong></a> được mua nhiều nhất trong tháng này.</div>
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
-								<div class="ui teal button">More Info</div>
+								<button class="ui teal button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/hanghoa/index.htm';">Thêm Thông Tin</button>
 							</div>
 						</div>
 					</div>
@@ -118,14 +118,14 @@
 								<i class="icon trophy"></i>
 							</div>
 							<div class="header">
-								<div class="ui purple header">5.300.000</div>
+								<div class="ui purple header">${befStaff }</div>
 							</div>
-							<div class="meta">đồng</div>
-							<div class="description">Nhân Viên Doanh Số Cao Nhất</div>
+							<div class="meta">Nhân viên có doanh thu cao nhất tháng trước</div>
+							<div class="description">Nhân viên cao nhất hiện tại: <strong>${nowStaff }</strong></div>
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
-								<button class="ui purple button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/summary-employees.htm';">Thêm thông tin</button>
+								<button class="ui purple button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNV-thang.htm';">Thêm thông tin</button>
 							</div>
 						</div>
 					</div>

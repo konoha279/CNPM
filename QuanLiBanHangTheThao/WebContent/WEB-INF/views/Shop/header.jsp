@@ -108,9 +108,9 @@
 						</div>
 					</div>
 					<div class="col-sm-3">
-						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
-						</div>
+						<form class="search_box pull-right" action="search.htm" method="post">
+							<input type="text" name = "keyword" placeholder="Tìm kiếm"/>
+						</form>
 					</div>
 				</div>
 			</div>

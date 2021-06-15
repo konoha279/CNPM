@@ -30,8 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bean.BillReports;
 import com.bean.ObjectReport;
+import com.bean.StaffReport;
+import com.bean.StaffReport.MainReport;
 import com.entity.*;
+
 
 @Transactional
 @Controller
@@ -42,9 +46,9 @@ public class AdminController {
 	SessionFactory factory;
 	
 	@ModelAttribute("billReport")//thống kê năm nay
-	public List<ObjectReport> list(HttpServletRequest request)
+	public List<BillReports> list(HttpServletRequest request)
 	{
-		List<ObjectReport> objectReports = new ArrayList<ObjectReport>();
+		List<BillReports> objectReports = new ArrayList<BillReports>();
 		
 		Session session = factory.getCurrentSession();
 		String hql = "From Bill";
@@ -90,7 +94,8 @@ public class AdminController {
 			String dateStr = i + "/" + yearNow;
 			ArrayList<Integer> moneys = new ArrayList<>();
 			moneys.add(temp);
-			objectReports.add(new ObjectReport(dateStr, moneys));
+			BillReports billReports = new BillReports(0, dateStr, null, moneys);
+			objectReports.add(billReports);
 		}
 		return objectReports;
 	}
@@ -130,151 +135,158 @@ public class AdminController {
 		List<Product> listProducts = query.list();
 		model.addAttribute("countProduct",listProducts.size());
 		
-		return "admin/admin";
-	}
-	
-	@RequestMapping("doanhso")
-	public String doanhthu(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
-			@RequestParam( value = "toiNgay",defaultValue = "") String to) {
+		Date firstMonth = new Date();
+		Date nowDate = new Date();
+		firstMonth.setDate(1);
+		hql = "From Bill b where b.date >= :from and b.date <= :to ";
+		query = session.createQuery(hql);
+		query.setDate("from", firstMonth);
+		query.setDate("to", nowDate);
+		List<Bill> bills = query.list();
 		
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-		LocalDateTime now = LocalDateTime.now();  
-		if(to.isEmpty() || to == null) {
-		    
-		    to = dtf.format(now);  
-		}
-		if(from.isEmpty() || from == null) {
-		    now = now.minusMonths(1);
-		    from = dtf.format(now);  
-		}
-		
-		List<Bill> bills = getBills_byDate(from, to);
-		List<ObjectReport> objectReports = new ArrayList<ObjectReport>();
-		List<Bill> reportBills = new ArrayList<Bill>();
-		
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
-		int tmp_money = 0, total_proudct =0;
-		String date = dateFormat.format(bills.get(0).getDate()) ;
-		int id=0;
-		for(Bill b : bills) {
-			if (!b.isStatus())
+		//loại bỏ những đơn hàng chưa xác nhận
+		for (int i=0; i<bills.size();i++)
+		{
+			if (!bills.get(i).isStatus())
 			{
-				bills.remove(b);
-				continue;
+				bills.remove(i);
+				i--;
 			}
-			String tmpDate = dateFormat.format(b.getDate());
-			if (!tmpDate.equals(date) || b.equals(bills.get(bills.size() -1)))
-			{
-				ArrayList<Integer> integersCount = new ArrayList<>();
-				integersCount.add(total_proudct);
-				integersCount.add(tmp_money);
-				ObjectReport report = new ObjectReport(id, tmpDate, integersCount, reportBills);
-				objectReports.add(report);
-				
-				id++;
-				
-				reportBills = new ArrayList<Bill>();
-				reportBills.add(b);
-				
-				date = tmpDate;
-				tmp_money = b.getMoneyProduct();
-				total_proudct = 0;
-				for(CTBill ct : b.getCtBills()) {
-					total_proudct += ct.getCount();
+		}
+		
+		//     lấy sản phẩm mua nhiều nhất kể từ đầu tháng
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		for (Bill bill : bills) 
+		{
+			for (CTBill ctBill: bill.getCtBills()) {
+				String tmpID = ctBill.getcTHangHoa().getMaHangHoa().getId();
+				if (map.containsKey(tmpID))
+				{
+					map.put(tmpID, map.get(tmpID)+1 );
 				}
+				else
+				{
+					map.put(tmpID, 1);
+				}
+			}
+		}
+		Map.Entry<String, Integer> maxMap = null;
+		for (Map.Entry<String, Integer> tmpMap : map.entrySet()) 
+		{
+			if (maxMap == null || tmpMap.getValue().compareTo(maxMap.getValue()) > 0) 
+			{
+				maxMap = tmpMap;
+		    }
+		}
+		
+		model.addAttribute("Product", maxMap.getKey());
+		
+		//         lấy nhân viên
+		map.clear();
+		for (Bill bill : bills) {
+			String tmpID = bill.getStaff().getId();
+			if (map.containsKey(tmpID))
+			{
+				map.put(tmpID, map.get(tmpID) + bill.getMoneyProduct() );
 			}
 			else
 			{
-				reportBills.add(b);
-				tmp_money += b.getMoneyProduct();
-				for(CTBill ct : b.getCtBills()) {
-					total_proudct += ct.getCount();
+				map.put(tmpID, bill.getMoneyProduct());
+			}
+		}
+		
+		maxMap = null;
+		for (Map.Entry<String, Integer> tmpMap : map.entrySet()) 
+		{
+			if (maxMap == null || tmpMap.getValue().compareTo(maxMap.getValue()) > 0) 
+			{
+				maxMap = tmpMap;
+		    }
+		}
+		Staff staff = (Staff) session.get(Staff.class, maxMap.getKey());
+		model.addAttribute("nowStaff", staff.getFullName());
+		
+		
+		//tháng trước		
+		firstMonth = new Date();
+		Date lastMonth = new Date();
+		firstMonth.setDate(1);
+		firstMonth.setMonth(firstMonth.getMonth() -1);
+		lastMonth.setDate(0);
+		
+		hql = "From Bill b where b.date >= :from and b.date <= :to ";
+		query = session.createQuery(hql);
+		query.setDate("from", firstMonth);
+		query.setDate("to", lastMonth);
+		bills = query.list();
+		
+		//loại bỏ những đơn hàng chưa xác nhận
+		for (int i=0; i<bills.size();i++)
+		{
+			if (!bills.get(i).isStatus())
+			{
+				bills.remove(i);
+				i--;
+			}
+		}
+		
+		map.clear();
+		for (Bill bill : bills) 
+		{
+			for (CTBill ctBill: bill.getCtBills()) {
+				String tmpID = ctBill.getcTHangHoa().getMaHangHoa().getId();
+				if (map.containsKey(tmpID))
+				{
+					map.put(tmpID, map.get(tmpID)+1 );
+				}
+				else
+				{
+					map.put(tmpID, 1);
 				}
 			}
 		}
-		
-		model.addAttribute("objectReports", objectReports);
-		model.addAttribute("tuNgay",from);
-		model.addAttribute("toiNgay",to);
-		
-		return "admin/doanhso";
-	}
-	
-	@RequestMapping(value="summary-employees",method = RequestMethod.GET)
-	public String summaryEmployees(ModelMap model)
-	{
-		
-		
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-	    LocalDateTime now = LocalDateTime.now();  
-	    String to = dtf.format(now);
-	    now = now.minusMonths(1);
-	    String from = dtf.format(now);  
-	    
-		
-		List<Bill> bills = getBills_byDate(from, to);
-		
-		List<SummaryNv> summaryNVList = new ArrayList();
-		
-		
-		for(Bill bill : bills) {
-
-			int totalProducts = 0;
-			long totalMoney = bill.getMoneyProduct();
-			for(CTBill b : bill.getCtBills()) {
-				totalProducts += b.getCount();
-			}
-			
-			int exist_employ_index = SummaryNv.isExist(summaryNVList, bill.getStaff().getId());
-			System.out.println("id: " +bill.getStaff().getId());
-			System.out.println(exist_employ_index);
-			if(exist_employ_index == -1) {
-				SummaryNv nv = new SummaryNv(totalProducts,totalMoney,bill.getStaff().getFirstName() + " " + bill.getStaff().getName(),bill.getStaff().getId());
-				summaryNVList.add(nv);
-			}
-			else {
-				summaryNVList.get(exist_employ_index).setTotalMoney(summaryNVList.get(exist_employ_index).getTotalMoney() + totalMoney);
-				summaryNVList.get(exist_employ_index).setTotalProducts(summaryNVList.get(exist_employ_index).getTotalProducts() + totalProducts);
-				
-			}
-			
+		maxMap = null;
+		for (Map.Entry<String, Integer> tmpMap : map.entrySet()) 
+		{
+			if (maxMap == null || tmpMap.getValue().compareTo(maxMap.getValue()) > 0) 
+			{
+				maxMap = tmpMap;
+		    }
 		}
 		
-		model.addAttribute("summary", summaryNVList);
+		model.addAttribute("befProduct", maxMap.getKey());
 		
-
-		return "admin/summary-nv";
+		map.clear();
+		int befMoney=0;
+		for (Bill bill : bills) {
+			String tmpID = bill.getStaff().getId();
+			if (map.containsKey(tmpID))
+			{
+				map.put(tmpID, map.get(tmpID) + bill.getMoneyProduct() );
+				befMoney += bill.getMoneyProduct();
+			}
+			else
+			{
+				map.put(tmpID, bill.getMoneyProduct());
+				befMoney += bill.getMoneyProduct();
+			}
+		}
+		
+		maxMap = null;
+		for (Map.Entry<String, Integer> tmpMap : map.entrySet()) 
+		{
+			if (maxMap == null || tmpMap.getValue().compareTo(maxMap.getValue()) > 0) 
+			{
+				maxMap = tmpMap;
+		    }
+		}
+		staff = (Staff) session.get(Staff.class, maxMap.getKey());
+		model.addAttribute("befStaff", staff.getFullName());
+		model.addAttribute("befMoney", befMoney);
+		return "admin/admin";
 	}
 	
 	
-	//////////////////////////////
-	
-	private List<Bill> getBills_byDate(String from, String to){
-
-		SimpleDateFormat formatter1 = new  SimpleDateFormat("yyyy-MM-dd");  
-		
-		Date fromDate; 
-		Date toDate;
-		try {
-			fromDate = formatter1.parse(from);  
-			toDate = formatter1.parse(to);  
-		}
-		catch(Exception e) {
-			return new ArrayList<Bill>();
-		}
-		
-		
-		Session session = factory.getCurrentSession();
-		String hql = "From Bill b where b.date >= :from and b.date <= :to ";
-		Query query = session.createQuery(hql);
-		
-		query.setDate("from", fromDate);
-		query.setDate("to", toDate);
-		
-		List<Bill> bills = query.list();
-		
-		return bills;
-	}
 	
 	@ModelAttribute("ListComment")
 	public List<Comment> listComment(ModelMap model)

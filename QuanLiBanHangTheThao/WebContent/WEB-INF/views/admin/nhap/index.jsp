@@ -88,7 +88,7 @@
 					</table>
 				</div>
 		      <div class="modal-footer">
-		       	<button type="button"  class="btn btn-danger" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" } id="delButton${p.id }" data-bs-toggle="modal" data-bs-target="#del${p.id}">Xóa đơn hàng</button>
+		       	<%-- <button type="button"  class="btn btn-danger" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" } id="delButton${p.id }" data-bs-toggle="modal" data-bs-target="#del${p.id}">Xóa</button> --%>
 		       	<button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 		      </div>
 		    </div>
@@ -99,7 +99,7 @@
 			<div class="modal-dialog">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <h5 class="modal-title" id="staticBackdropLabel">Xóa đơn hàng</b></h5>
+				  <h5 class="modal-title" id="staticBackdropLabel">Xóa</b></h5>
 				  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
