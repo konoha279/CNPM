@@ -108,6 +108,11 @@ body ::-webkit-scrollbar {
 						<i class="fa fa-plus"></i> Size
 					</div>
 				</a>
+				<a href="admin/hanghoa/DMSP.htm" id="dmsp" class="item">
+					<div>
+						<i class="fa fa-plus"></i> Danh mục sản phẩm
+					</div>
+				</a>
 			</div>
 		</div>
 		

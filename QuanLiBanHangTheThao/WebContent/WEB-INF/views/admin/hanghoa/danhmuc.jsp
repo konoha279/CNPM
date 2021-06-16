@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Danh sách size trong cửa hàng</title>
+<title>Danh mục sản phẩm</title>
 <base href="${pageContext.servletContext.contextPath}/">
 
 <style type="text/css">
@@ -26,7 +26,7 @@
 		<div class="main-content">
 			<div class="ui grid stackable padded">
 				<div class="column">
-				<h1 class="ui header" style="text-align:center ;margin-top: 30px">DANH SÁCH SIZE</h1>
+				<h1 class="ui header" style="text-align:center ;margin-top: 30px">DANH MỤC SẢN PHẨM</h1>
 					<table id="TableSize" class="table table-striped table-bordered dt-responsive nowrap">
 						<colgroup>
 							<col span="1" style="width: 5%">
@@ -36,62 +36,56 @@
 						</colgroup>
 						<thead>
 							<tr>
-								<th style="text-align: center;">ID</th>
-								<th style="text-align: center;">Tên size</th>
-								<th style="text-align: center;"> Ghi chú </th>
+								<th style="text-align: center;">Mã danh mục</th>
+								<th style="text-align: center;">Tên Danh mục</th>
 								<th style="text-align: center;">Tương tác</th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${size}" var="size">
+							<c:forEach items="${dsLoai}" var="l">
 								<tr>
-									<td>${size.id}</td>
-									<td>${size.name}</td>	
-									<td>${size.notes}</td>
+									<td>${l.id}</td>
+									<td>${l.name}</td>	
 									<td>
-										<button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit${size.id}">
+										<button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit${l.id}">
 												<i class="edit icon"></i>Chỉnh sửa
 										</button>	
-										<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteSize${size.id}" >
+										<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteDanhMuc${l.id}" >
 												<i class="fa fa-ban"></i> Xóa
 										</button>	
 										<!-- ----------------------------------------------- Chỉnh sửa ----------------------------------------------- -->
-										<div class="modal fade" id="edit${size.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal fade" id="edit${l.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 										  <div class="modal-dialog modal-dialog-centered modal-lg">
 										    <div class="modal-content">
 										      <div class="modal-header">
-										        <h5 class="modal-title" id="staticBackdropLabel">Chỉnh sửa size "${size.name}"</h5>
+										        <h5 class="modal-title" id="staticBackdropLabel">Chỉnh sửa danh mục <strong>${l.name}</strong> </h5>
 										        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										      </div>
 										      <div class="modal-body">
 										       	<div class="container">
 													<div class="form-group">
 														<label  class="form-label">Mã size</label>
-														<input class="form-control" type="text" value="${size.id}" readonly="readonly"/>
+														<input class="form-control" type="text" value="${l.id}" readonly="readonly"/>
 													</div>
 													<div class="form-group">
 														<label  class="form-label">Tên size</label>
-														<input class="form-control" type="text" value="${size.name}" id="editName${size.id}" min="0"/>
-													</div>
-													<div class="form-group">
-														<label  class="form-label">Ghi chú</label>
-														<textarea class="form-control ckeditor" name="editNotes${size.id}" id="editNotes${size.id}" rows="10" style="align-self: center; resize: none;" >${size.notes}</textarea>													
+														<input class="form-control" type="text" value="${l.name}" id="editName${l.id}" min="0"/>
 													</div>
 												</div>
 										      </div>
 										      <div class="modal-footer">
 										        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-										        <button type="button" class="btn btn-primary" onclick="editSize('${size.id}')">Lưu</button>
+										        <button type="button" class="btn btn-primary" onclick="editDM('${l.id}')">Lưu</button>
 										      </div>
 										    </div>
 										  </div>
 										</div>
 										<!-- ----------------------------------------------- Xóa ----------------------------------------------- -->
-										<div class="modal fade" id="deleteSize${size.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+										<div class="modal fade" id="deleteDanhMuc${l.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 										  <div class="modal-dialog modal-dialog-centered modal-lg">
 										    <div class="modal-content">
 										      <div class="modal-header">
-										        <h5 class="modal-title" id="staticBackdropLabel">Xóa size "${size.name}</h5>
+										        <h5 class="modal-title" id="staticBackdropLabel">Xóa size "${l.name}</h5>
 										        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										      </div>
 										      <div class="modal-body">
@@ -101,7 +95,7 @@
 										      </div>
 										      <div class="modal-footer">
 										        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chưa chắc</button>
-										        <button type="button" class="btn btn-primary" onclick="deleteSize('${size.id}')">Chắc luôn</button>
+										        <button type="button" class="btn btn-primary" onclick="deleteDM('${l.id}')">Chắc luôn</button>
 										      </div>
 										    </div>
 										  </div>
@@ -124,13 +118,13 @@
 					      </div>
 					      <div class="modal-body">
 					       	<div class="container">
-								<div class="form-group">
-									<label  class="form-label">Tên size</label>
-									<input class="form-control" type="text" value="" id="addName" min="0"/>
+					       		<div class="form-group">
+									<label  class="form-label">Mã danh mục</label>
+									<input class="form-control" type="text" value="" id="addID" min="0"/>
 								</div>
 								<div class="form-group">
-									<label  class="form-label">Ghi chú</label>
-									<textarea class="form-control ckeditor" name="addNotes" id="addNotes" rows="10" style="align-self: center; resize: none;" ></textarea>													
+									<label  class="form-label">Tên danh mục</label>
+									<input class="form-control" type="text" value="" id="addName" min="0"/>
 								</div>
 							</div>
 					      </div>
@@ -149,13 +143,13 @@
 <script type="text/javascript">	
 	function addSize()
 	{
-		var nameSize = document.getElementById('addName').value;
-		var content = CKEDITOR.instances['addNotes'].getData();
+		var id = document.getElementById('addID').value;
+		var name = document.getElementById('addName').value;
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath}/admin/hanghoa/addSize.htm",
+			url: "${pageContext.servletContext.contextPath}/admin/hanghoa/addDM.htm",
 			data: {
-				name: nameSize,
-				notes: content,
+				id: id,
+				name: name
 			},
 			type: "post",
 			success: function (data)
@@ -172,17 +166,15 @@
 				}
 			})
 	}
-	function editSize(id)
+	function editDM(id)
 	{
-		var nameSize = document.getElementById('editName'+id).value;
-		var content = CKEDITOR.instances['editNotes'+id].getData();
+		var name = document.getElementById('editName'+id).value;
 		
 		
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath}/admin/hanghoa/editSize.htm",
+			url: "${pageContext.servletContext.contextPath}/admin/hanghoa/editDM.htm",
 			data: {
-				name: nameSize,
-				notes: content,
+				name: name,
 				ID: id
 			},
 			type: "post",
@@ -203,10 +195,10 @@
 	}
 	
 	
-	function deleteSize(id)
+	function deleteDM(id)
 	{
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath}/admin/hanghoa/delSize.htm",
+			url: "${pageContext.servletContext.contextPath}/admin/hanghoa/delDM.htm",
 			data: {
 				ID: id
 			},

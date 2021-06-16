@@ -81,16 +81,21 @@
 						</div>
 						<div class="field">
 							<label>Mô tả</label>
-							<form:textarea class="ckeditor" path="notes"></form:textarea>
+							<form:textarea id="ckeditor" class="ckeditor" path="notes"></form:textarea>
 						</div>
 						<div>
 							<button class="ui button" type="submit">Thêm</button>
-							<a onclick="history.back()"><div class="ui button">Trở Lại</div></a> ${message}
+							<a href="admin/hanghoa/index.htm"><div class="ui button">Trở Lại</div></a> ${message}
 						</div>
 					</form:form>
 				</div>
 			</div>
 		</div>
 	</div>
+<script>
+    CKEDITOR.replace('ckeditor', {
+      height: 400
+    });
+  </script>			
 </body>
 </html>

@@ -77,7 +77,7 @@
 						</div>
 						<div class="field">
 							<label>Ghi Chú</label>
-							<form:textarea class="ckeditor"  path="notes"></form:textarea>
+							<form:textarea class="ckeditor" id="ckeditor" path="notes"></form:textarea>
 						</div>
 						<div>
 							<button class="ui button" type="submit">Cập Nhật</button>
@@ -88,5 +88,10 @@
 			</div>
 		</div>
 	</div>
+<script>
+    CKEDITOR.replace('ckeditor', {
+      height: 400
+    });
+  </script>		
 </body>
 </html>

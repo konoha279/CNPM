@@ -91,6 +91,11 @@ public class HangHoaController {
 	public String indexSize(ModelMap model, HttpSession httpSession) {
 		return "admin/hanghoa/size";
 	}
+	
+	@RequestMapping("DMSP")
+	public String DMSP(ModelMap model, HttpSession httpSession) {
+		return "admin/hanghoa/danhmuc";
+	}
 
 	@RequestMapping("index")
 	public String index(ModelMap model, HttpSession httpSession) {
@@ -432,11 +437,8 @@ public class HangHoaController {
 		String name = request.getParameter("name");
 		String notes = request.getParameter("notes");
 		Size size = new Size(id, name, notes);
-		Session session = factory.getCurrentSession();
-		String hql = "From Size where name ='"+name+"'";
-		Query query = session.createQuery(hql);
 		
-		session = factory.openSession();
+		Session session = factory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(size);
@@ -524,4 +526,110 @@ public class HangHoaController {
 		return result.getBytes("UTF-8");
 	}
 	
+	@RequestMapping(value ="addDM", method = RequestMethod.POST)
+	public @ResponseBody byte[] addDM(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
+	{
+		String result ="Error";
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		Session session = factory.getCurrentSession();
+		
+		
+		String hql = "From ProductList where name ='"+name+"'";
+		Query query = session.createQuery(hql);
+		
+		if (!query.list().isEmpty())
+		{
+			return "Tên danh mục đã tồn tại.".getBytes("UTF-8");
+		}
+		
+		hql = "From ProductList where id ='"+id+"'";
+		query = session.createQuery(hql);
+		
+		if (!query.list().isEmpty())
+		{
+			return "Mã danh mục đã tồn tại.".getBytes("UTF-8");
+		}
+		
+		ProductList productList = new ProductList(id, name);
+		
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(productList);
+			transaction.commit();
+			result = "Thêm thành công.";
+		} catch (Exception e) {
+			result = String.valueOf(e);
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value ="delDM", method = RequestMethod.POST)
+	public @ResponseBody byte[] delDM(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
+	{
+		String result ="Error";
+		String id = request.getParameter("ID");
+		Session session = factory.getCurrentSession();
+		ProductList productList = (ProductList) session.get(ProductList.class, id);
+		if (!productList.getProducts().isEmpty())
+		{
+			return "Không thể xóa danh mục vì đã có sản phẩm.".getBytes("UTF-8");
+		}
+		productList = new ProductList();
+		productList.setId(id);
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.delete(productList);
+			transaction.commit();
+			result = "Xóa thành công.";
+		} catch (Exception e) {
+			result = String.valueOf(e);
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value ="editDM", method = RequestMethod.POST)
+	public @ResponseBody byte[] editDM(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
+	{
+		String result ="Error";
+		String id = request.getParameter("ID");
+		String name = request.getParameter("name");
+		ProductList productList = new ProductList(id, name);
+		
+		Session session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.update(productList);
+			transaction.commit();
+			result = "Sửa thành công.";
+		} catch (Exception e) {
+			result = "Sửa thất bại.";
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
+		return result.getBytes("UTF-8");
+	}
 }
