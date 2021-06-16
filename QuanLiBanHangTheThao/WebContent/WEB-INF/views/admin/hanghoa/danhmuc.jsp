@@ -106,14 +106,14 @@
 						</tbody>
 					</table>
 					<button type="button" class="ui green button" data-bs-toggle="modal" data-bs-target="#insert">
-						<i class="plus icon"></i>Thêm Size
+						<i class="plus icon"></i>Thêm Danh mục sản phẩm
 					</button>
 					
 					<div class="modal fade" id="insert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 					  <div class="modal-dialog modal-dialog-centered modal-lg">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="staticBackdropLabel">Thêm size</h5>
+					        <h5 class="modal-title" id="staticBackdropLabel">Thêm Danh mục sản phẩm</h5>
 					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					      </div>
 					      <div class="modal-body">

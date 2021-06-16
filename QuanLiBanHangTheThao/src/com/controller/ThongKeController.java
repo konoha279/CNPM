@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bean.BillReports;
+import com.bean.ReceiptReport;
 import com.bean.StaffReport;
 import com.bean.StaffReport.MainReport;
 import com.entity.Bill;
 import com.entity.CTBill;
+import com.entity.Receipt;
 import com.entity.Staff;
 
 @Transactional
@@ -704,5 +706,263 @@ public class ThongKeController {
 		List<Bill> bills = query.list();
 		
 		return bills;
+	}
+	
+	// ------------------------------------------------------ Thống kê phiếu nhập ----------------------------------------------
+	@RequestMapping("thongKeNhapHang")
+	public String thongkeNH(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
+			@RequestParam( value = "toiNgay",defaultValue = "") String to)
+	{
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+		LocalDateTime now = LocalDateTime.now();  
+		if(to.isEmpty() || to == null) {
+		    
+		    to = dtf.format(now);  
+		}
+		if(from.isEmpty() || from == null) {
+		    now = now.minusMonths(1);
+		    from = dtf.format(now);  
+		} 
+		Date fromDate = null; 
+		Date toDate = null;
+		
+		SimpleDateFormat formatter1 = new  SimpleDateFormat("yyyy-MM-dd");  
+		try {
+			fromDate = formatter1.parse(from);  
+			toDate = formatter1.parse(to);  
+			
+		}
+		catch(Exception e) {
+		}
+		
+		Session session = factory.getCurrentSession();
+		String hql = "From Receipt r where r.date >= :from and r.date <= :to ";
+		Query query = session.createQuery(hql);
+		query.setDate("from", fromDate);
+		query.setDate("to", toDate);
+		
+		List<Receipt> receipts = query.list();
+		List<ReceiptReport> receiptReports = new ArrayList<ReceiptReport>();
+		
+		Calendar cFrom = Calendar.getInstance();
+		Calendar cTo = Calendar.getInstance();
+		Date tmp_Date;
+		try {
+			tmp_Date = new SimpleDateFormat("yyyy-MM-dd").parse(from);
+			cFrom.setTime(tmp_Date);
+			
+			tmp_Date = new SimpleDateFormat("yyyy-MM-dd").parse(to);
+			cTo.setTime(tmp_Date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int id=0;
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
+		while(cFrom.compareTo(cTo) <= 0)
+		{
+			ReceiptReport report = new ReceiptReport();
+			report.setDate(dateFormat.format(cFrom.getTime()));
+			List<Receipt> tmpReceipts = new ArrayList<Receipt>();
+			int tmp =0; //tmp1: Số lượng loại hàng nhập
+			
+			for(int i=0; i<receipts.size();i++)
+			{
+				Calendar cTmp = Calendar.getInstance();
+				cTmp.setTime(receipts.get(i).getDate());
+				if (cFrom.compareTo(cTmp) == 0)
+				{
+					tmpReceipts.add(receipts.get(i));
+					tmp += receipts.get(i).getCtPhieuNhaps().size();
+					receipts.remove(i);
+					i--;
+				}
+			}
+			
+			report.setId(id);
+			report.setReceipts(tmpReceipts);
+			report.setCountProduct(tmp);
+			
+			receiptReports.add(report);
+			id++;
+			cFrom.add(Calendar.DATE, 1);
+		}
+		model.addAttribute("tuNgay",from);
+		model.addAttribute("toiNgay",to);
+		model.addAttribute("receiptReports", receiptReports);
+		return "admin/thongke/thongKeNhapHang";
+	}
+	
+	@RequestMapping("thongKeNhapHang-thang")
+	public String thongkeNHThang(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
+			@RequestParam( value = "toiNgay",defaultValue = "") String to)
+	{
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM");  
+		LocalDateTime now = LocalDateTime.now();  
+		if(to.isEmpty() || to == null) {
+		    
+		    to = dtf.format(now);  
+		}
+		if(from.isEmpty() || from == null) {
+		    now = now.minusMonths(1);
+		    from = dtf.format(now);  
+		} 
+		Date fromDate = null; 
+		Date toDate = null;
+		
+		SimpleDateFormat formatter1 = new  SimpleDateFormat("yyyy-MM");  
+		try {
+			fromDate = formatter1.parse(from);  
+			toDate = formatter1.parse(to);  
+			toDate.setMonth(toDate.getMonth()+1);
+			toDate.setDate(toDate.getDate()-1);
+		}
+		catch(Exception e) {
+		}
+		
+		Session session = factory.getCurrentSession();
+		String hql = "From Receipt r where r.date >= :from and r.date <= :to ";
+		Query query = session.createQuery(hql);
+		query.setDate("from", fromDate);
+		query.setDate("to", toDate);
+		
+		List<Receipt> receipts = query.list();
+		List<ReceiptReport> receiptReports = new ArrayList<ReceiptReport>();
+		
+		Calendar cFrom = Calendar.getInstance();
+		Calendar cTo = Calendar.getInstance();
+		Date tmp_Date;
+		try {
+			tmp_Date = new SimpleDateFormat("yyyy-MM").parse(from);
+			cFrom.setTime(tmp_Date);
+			
+			tmp_Date = new SimpleDateFormat("yyyy-MM").parse(to);
+			cTo.setTime(tmp_Date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int id=0;
+		DateFormat dateFormat = new SimpleDateFormat("MM/yyyy");  
+		while(cFrom.compareTo(cTo) <= 0)
+		{
+			ReceiptReport report = new ReceiptReport();
+			report.setDate(dateFormat.format(cFrom.getTime()));
+			List<Receipt> tmpReceipts = new ArrayList<Receipt>();
+			int tmp =0; //tmp1: Số lượng loại hàng nhập
+			
+			for(int i=0; i<receipts.size();i++)
+			{
+				Calendar cTmp = Calendar.getInstance();
+				cTmp.setTime(receipts.get(i).getDate());
+				cTmp.set(Calendar.DATE, cFrom.get(Calendar.DATE));
+				if (cFrom.compareTo(cTmp) == 0)
+				{
+					tmpReceipts.add(receipts.get(i));
+					tmp += receipts.get(i).getCtPhieuNhaps().size();
+					receipts.remove(i);
+					i--;
+				}
+			}
+			
+			report.setId(id);
+			report.setReceipts(tmpReceipts);
+			report.setCountProduct(tmp);
+			
+			receiptReports.add(report);
+			id++;
+			cFrom.add(Calendar.MONTH, 1);
+		}
+		model.addAttribute("tuNgay",from);
+		model.addAttribute("toiNgay",to);
+		model.addAttribute("receiptReports", receiptReports);
+		return "admin/thongke/thongKeNhapHang-thang";
+	}
+	
+	@RequestMapping("thongKeNhapHang-nam")
+	public String thongkeNHNam(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
+			@RequestParam( value = "toiNgay",defaultValue = "") String to)
+	{
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy");  
+		LocalDateTime now = LocalDateTime.now();  
+		if(to.isEmpty() || to == null) {
+		    
+		    to = dtf.format(now);  
+		}
+		if(from.isEmpty() || from == null) {
+		    now = now.minusMonths(1);
+		    from = dtf.format(now);  
+		} 
+		Date fromDate = null; 
+		Date toDate = null;
+		
+		SimpleDateFormat formatter1 = new  SimpleDateFormat("yyyy");  
+		try {
+			fromDate = formatter1.parse(from);  
+			toDate = formatter1.parse(to);  
+			toDate.setYear(toDate.getYear()+1);
+			toDate.setDate(toDate.getDate()-1);
+		}
+		catch(Exception e) {
+		}
+		
+		Session session = factory.getCurrentSession();
+		String hql = "From Receipt r where r.date >= :from and r.date <= :to ";
+		Query query = session.createQuery(hql);
+		query.setDate("from", fromDate);
+		query.setDate("to", toDate);
+		
+		List<Receipt> receipts = query.list();
+		List<ReceiptReport> receiptReports = new ArrayList<ReceiptReport>();
+		
+		Calendar cFrom = Calendar.getInstance();
+		Calendar cTo = Calendar.getInstance();
+		Date tmp_Date;
+		try {
+			tmp_Date = new SimpleDateFormat("yyyy").parse(from);
+			cFrom.setTime(tmp_Date);
+			
+			tmp_Date = new SimpleDateFormat("yyyy").parse(to);
+			cTo.setTime(tmp_Date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int id=0;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy");  
+		while(cFrom.compareTo(cTo) <= 0)
+		{
+			ReceiptReport report = new ReceiptReport();
+			report.setDate(dateFormat.format(cFrom.getTime()));
+			List<Receipt> tmpReceipts = new ArrayList<Receipt>();
+			int tmp =0; //tmp1: Số lượng loại hàng nhập
+			
+			for(int i=0; i<receipts.size();i++)
+			{
+				Calendar cTmp = Calendar.getInstance();
+				cTmp.setTime(receipts.get(i).getDate());
+				cTmp.set(Calendar.DATE, cFrom.get(Calendar.DATE));
+				cTmp.set(Calendar.MONTH, cFrom.get(Calendar.MONTH));
+				if (cFrom.compareTo(cTmp) == 0)
+				{
+					tmpReceipts.add(receipts.get(i));
+					tmp += receipts.get(i).getCtPhieuNhaps().size();
+					receipts.remove(i);
+					i--;
+				}
+			}
+			
+			report.setId(id);
+			report.setReceipts(tmpReceipts);
+			report.setCountProduct(tmp);
+			
+			receiptReports.add(report);
+			id++;
+			cFrom.add(Calendar.YEAR, 1);
+		}
+		model.addAttribute("tuNgay",from);
+		model.addAttribute("toiNgay",to);
+		model.addAttribute("receiptReports", receiptReports);
+		return "admin/thongke/thongKeNhapHang-nam";
 	}
 }
