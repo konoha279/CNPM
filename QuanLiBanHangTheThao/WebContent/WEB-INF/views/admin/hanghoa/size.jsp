@@ -130,7 +130,7 @@
 								</div>
 								<div class="form-group">
 									<label  class="form-label">Ghi chú</label>
-									<textarea class="form-control ckeditor" name="addNotes" id="addNotes" rows="10" style="align-self: center; resize: none;" ></textarea>													
+									<textarea class="form-control" name="addNotes" id="addNotes" rows="10" style="align-self: center; resize: none;" ></textarea>													
 								</div>
 							</div>
 					      </div>
@@ -150,7 +150,8 @@
 	function addSize()
 	{
 		var nameSize = document.getElementById('addName').value;
-		var content = CKEDITOR.instances['addNotes'].getData();
+		//var content = CKEDITOR.instances['addNotes'].getData();
+		var content = document.getElementById('addNotes').value;
 		$.ajax({
 			url: "${pageContext.servletContext.contextPath}/admin/hanghoa/addSize.htm",
 			data: {

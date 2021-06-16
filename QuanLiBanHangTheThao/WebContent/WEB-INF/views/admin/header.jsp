@@ -154,6 +154,11 @@ body ::-webkit-scrollbar {
 						<i class="fa fa-plus"></i> Thống kê nhân viên
 					</div>
 				</a>
+				<a data-toggle="modal" data-target="#TKNH" class="item">
+					<div>
+						<i class="fa fa-plus"></i> Thống kê Nhập hàng
+					</div>
+				</a>
 			</div>
 		</div>
 		
@@ -211,7 +216,7 @@ body ::-webkit-scrollbar {
 		</ul>
 	</nav>
 	
-	<!-- Modal -->
+	<!-- Doanh thu -->
 	<div class="modal fade" id="TKDT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered modal-lg-Menu">
 	    <div class="modal-content">
@@ -234,6 +239,7 @@ body ::-webkit-scrollbar {
 	  </div>
 	</div>
 	
+	<!-- Nhân viên -->
 	<div class="modal fade" id="TKNV" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered modal-lg-Menu">
 	    <div class="modal-content">
@@ -257,7 +263,28 @@ body ::-webkit-scrollbar {
 	</div>
 	
 	
-	
+	<!-- Nhập hàng -->
+	<div class="modal fade" id="TKNH" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered modal-lg-Menu">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Vui lòng chọn hình thức thống kê</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+      		<div class="d-flex justify-content-around">
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapHang.htm'" class="btn btn-outline-primary">Thống kê theo ngày</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapHang-thang.htm'" class="btn btn-outline-secondary">Thống kê theo tháng</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapHang-nam.htm'" class="btn btn-outline-success">Thống kê theo năm</button>
+      		</div>     		
+	      </div>
+	      <div class="modal-footer">
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	
 	
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

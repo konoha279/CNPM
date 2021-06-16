@@ -39,7 +39,7 @@
 								<tr>
 									<td>${u.id}</td>
 									<td>${u.date}</td>
-									<td>(${u.staff.id}) ${u.staff.fullName}</td>
+									<td><Strong>(${u.staff.id})</Strong> ${u.staff.fullName}</td>
 									<td>
 										<button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${u.id}">
 												<i class="edit icon"></i>Xem chi tiết

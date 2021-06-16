@@ -100,11 +100,6 @@
 		</div>
 	</div>
 <script type="text/javascript">
-	window.onload = function()
-	{
-		//document.getElementById('dateInput').valueAsDate  = new Date();
-	}
-
 	function addProduct()
 	{
 		var id = document.getElementById('productSelected').value;
