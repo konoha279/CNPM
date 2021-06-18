@@ -203,6 +203,7 @@ public class ShopController {
 			e.printStackTrace();
 			System.out.println("Error");
 		}
+		request.setAttribute("where", "GT");
 		request.setAttribute("lastTime", getLasttime(x));	
 		request.setAttribute("content", content);		
 		return "/Shop/gioithieu";
@@ -220,10 +221,6 @@ public class ShopController {
 			if (x.exists())
 			{
 				Scanner scan = new Scanner(x);
-				
-				
-				
-				
 				while(scan.hasNextLine()) {
 		    		  content += scan.nextLine()+"\r\n";
 		    	}
@@ -234,6 +231,7 @@ public class ShopController {
 			e.printStackTrace();
 			System.out.println("Error");
 		}
+		request.setAttribute("where", "CS");
 		request.setAttribute("lastTime", getLasttime(x));	
 		request.setAttribute("content", content);		
 		return "/Shop/chinhsach";
@@ -242,15 +240,17 @@ public class ShopController {
 	/*--------------------------------------------------------------------------------------------------------*/
 	
 	@RequestMapping("wishlist")
-	public String wishlist(ModelMap model)
+	public String wishlist(ModelMap model, HttpServletRequest request)
 	{
 		Setup(model);
+		request.setAttribute("where", "DSYT");
 		return "/Shop/wishlist";
 	}
 
 	@RequestMapping(value = "contact", method = RequestMethod.GET)
-	public String contact()
+	public String contact(HttpServletRequest request)
 	{
+		request.setAttribute("where", "LH");
 		return "/Shop/contact";
 	}
 	
@@ -268,9 +268,10 @@ public class ShopController {
 	}
 	
 	@RequestMapping("index")
-	public String index(ModelMap model)
+	public String index(ModelMap model, HttpServletRequest request)
 	{
 		Setup(model);
+		request.setAttribute("where", "TC");
 		return "/Shop/index";
 	}
 
@@ -295,7 +296,7 @@ public class ShopController {
 			float temp = cart.getProduct().getMaHangHoa().getMoney() ;
 			AllMoney += temp * cart.getCount();
 		}
-		
+		model.addAttribute("where", "GH");
 		model.addAttribute("Money", AllMoney);
 		model.addAttribute("Ship",	SHIP);
 		return "/Shop/cart";
@@ -332,7 +333,7 @@ public class ShopController {
 				i--;
 			}
 		}
-		
+		model.addAttribute("where", "DM");
 		model.addAttribute("listProducts", listProducts);
 		return "/Shop/shop";
 	}
@@ -357,8 +358,9 @@ public class ShopController {
 				}
 			}
 		}
+		model.addAttribute("keySearch", keyword);
 		model.addAttribute("listProducts", listProducts);
-		return "/Shop/shop";
+		return "/Shop/search";
 	}
 	
 	
@@ -394,7 +396,7 @@ public class ShopController {
 				i--;
 			}
 		}
-		
+		model.addAttribute("where", "DM");
 		model.addAttribute("listProducts", listProducts);
 		return "/Shop/shop";
 	}

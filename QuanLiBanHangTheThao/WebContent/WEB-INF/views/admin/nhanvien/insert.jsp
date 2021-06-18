@@ -37,15 +37,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="two fields">
-							<div class="field">
-								<label>Chứng minh nhân dân </label>
-								<form:input path="cmnd" />
-								<div style="color: red">
-									<form:errors path="cmnd" />
-								</div>
+						<div class="field">
+							<label>Chứng minh nhân dân </label>
+							<form:input path="cmnd" />
+							<div style="color: red">
+								<form:errors path="cmnd" />
 							</div>
-							
 						</div>
 						
 						<div class="two fields">

@@ -174,7 +174,7 @@ body ::-webkit-scrollbar {
 		</a>
 		
 		<div onmouseover="showitem('PAGE')" onmouseout="hideitem('PAGE')" id="page">
-			<a href="" class="item">
+			<a class="item">
 				<div>
 					<i class="fa fa-file-o"></i> Trang
 				</div>

@@ -47,8 +47,16 @@
 					</form>
 				</div>
 			</div>
-			    <div id="money_by_date_chart" style="width: 90%; height: 300px; padding-left:50px"></div>
+			
+		    <div>
+			    <h3 style="text-align: center;">Thống kê thu nhập</h3>
+			    <div id="money_by_date_chart" style="width: 90%; height: 300px; padding-left:50px; margin-top: 20px"></div>
+		    </div>
+		    <div style="margin-top: 20px">
+		    	<h3 style="text-align: center;">Thống kê sản phẩm và đơn hàng</h3>
 			    <div id="total_sell_product_by_date_chart" style="width: 90%; height: 300px; padding-left:50px"></div>
+		    </div>
+			
 			<h2>Chi Tiết</h2>
 			<div class="ui grid stackable padded">
 				<div class="column">
@@ -199,14 +207,16 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Tổng tiền'],
+          ['Tháng', 'Tổng tiền'],
           <c:forEach items="${objectReports}" var="r">
 			[ '${r.date}', ${r.value[1]} ],
 			</c:forEach>
         ]);
 
         var options = {
-       		title : 'Thống kê thu nhập trong năm nay',
+       		bar: {
+                groupWidth: '20%'
+            },
    			vAxis : {
    				title : 'Đồng'
    			},
@@ -219,6 +229,7 @@
    					type : 'line'
    				}
    			}
+   			
         };
 
         var chart = new google.charts.Bar(document.getElementById("money_by_date_chart"));
@@ -236,7 +247,7 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Tổng Sản phẩm', 'Số đơn hàng' , { role: 'style' }],
+          ['Tháng', 'Tổng Sản phẩm', 'Số đơn hàng' , { role: 'style' }],
           <c:forEach items="${objectReports}" var="r">
 			[ '${r.date}', ${r.value[0]}, ${r.bills.size()}, 'color: red' ],
 			</c:forEach>
@@ -244,8 +255,10 @@
 
         var options = {
           chart: {
-            title: 'Tổng Sản phẩm bán được ngày',
             colors: ['red'],
+            bar: {
+                groupWidth: "60%"
+            }
             //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
           }
         };

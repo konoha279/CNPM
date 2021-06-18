@@ -64,7 +64,7 @@
 								</ul>
 							</div>
 						</div><!--/brands_products-->
-						
+						<img alt=""  class="banner" src="resources/Shop/images/banner.png">
 						
 					</div>
 				</div>

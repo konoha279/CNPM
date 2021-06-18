@@ -135,7 +135,7 @@ a#scrollUp i {
 }
 
 .header-middle .container .row {
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 2px solid #f5f5f5;
     margin-left: 0;
     margin-right: 0;
     padding-bottom: 20px;
@@ -248,23 +248,23 @@ a#scrollUp i {
 .mainmenu ul li a.active,
 .shop-menu ul li a.active {
     background: none;
-    color: #fdb45e;
+    color: #fc8803;
 }
 
 .search_box input {
     background: #F0F0E9;
     border: medium none;
-    color: #B2B2B2;
+    color: #000000;
     font-family: 'roboto';
     font-size: 12px;
     font-weight: 300;
     height: 35px;
     outline: medium none;
     padding-left: 10px;
-    width: 155px;
+    width: 200px;
     background-image: url(../images/home/searchicon.png);
     background-repeat: no-repeat;
-    background-position: 130px;
+    background-position: 175px;
 }
 
 
@@ -639,7 +639,7 @@ ul.sub-menu {
 }
 
 .category-products {
-    border: 1px solid #F7F7F0;
+    /* border: 1px solid #F7F7F0; */
     margin-bottom: 35px;
     padding-bottom: 20px;
     padding-top: 15px;
@@ -647,14 +647,14 @@ ul.sub-menu {
 
 .left-sidebar h2,
 .brands_products h2 {
-    color: #FE980F;
+    color: #ff3333;
     font-family: 'Roboto', sans-serif;
     font-size: 18px;
     font-weight: 700;
     margin: 0 auto 30px;
     text-align: center;
     text-transform: uppercase;
-    position: relative;
+    /* position: relative; */
     z-index: 3;
 }
 
@@ -704,7 +704,7 @@ h2.title:before {
 }
 
 .category-products .panel-default .panel-heading {
-    background-color: #FFFFFF;
+    background-color: #ffbaba;
     border: 0 none;
     color: #FFFFFF;
     padding: 5px 20px;
@@ -749,13 +749,13 @@ h2.title:before {
 }
 
 .brands-name {
-    border: 1px solid #F7F7F0;
+    /* border: 1px solid #F7F7F0; */
     padding-bottom: 20px;
     padding-top: 15px;
 }
 
 .brands-name .nav-stacked li a {
-    background-color: #FFFFFF;
+    background-color: #ffbaba;
     color: #696763;
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
@@ -819,18 +819,18 @@ h2.title:before {
 }
 
 h2.title {
-    color: #FE980F;
+    color: #ff3333;
     font-family: 'Roboto', sans-serif;
-    font-size: 18px;
+    font-size: 25px;
     font-weight: 700;
     margin: 0 15px;
     text-transform: uppercase;
     margin-bottom: 30px;
-    position: relative;
+    /* position: relative; */
 }
 
 .product-image-wrapper {
-    border: 1px solid #F7F7F5;
+    border: 1px solid #c0c0c0;
     overflow: hidden;
     margin-bottom: 30px;
 }
@@ -957,7 +957,7 @@ h2.title {
 }
 
 .choose ul li a {
-    color: #B3AFA8;
+    color: #000000;
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
     padding-left: 0;
@@ -2444,4 +2444,9 @@ img.image-content-product
 {
     height: 205px;
     width: 205px;
+}
+
+img.banner{
+    margin-top: 30px; 
+    margin-bottom: 50px;
 }

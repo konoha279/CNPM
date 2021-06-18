@@ -43,7 +43,7 @@
 <script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
        
 </head><!--/head-->
-<body>
+<body style="background-image: url('resources/Shop/images/bg.jpg');">
 <header id="header"><!--header-->
 		<div class="header_top"><!--header_top-->
 			<div class="container">
@@ -56,7 +56,7 @@
 				<div class="row">
 					<div class="col-md-4 clearfix">
 						<div class="logo pull-left">
-							<a href="index.htm"><img src="resources/Shop/images/logo.png" alt="" /></a>
+							<a href="index.htm"><img src="resources/Shop/images/logo2.png" alt="" /></a>
 						</div>
 						
 					</div>
@@ -64,9 +64,9 @@
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
 								<li><a href="profile/account.htm" ><i class="fa fa-user"></i> Tài khoản</a></li>
-								<li><a href="wishlist.htm"><i class="fa fa-star"></i> Danh sách yêu thích <c:if  test="${cookie.containsKey('username')}">(${myWishList.size() })</c:if> </a></li>
+								<li><a href="wishlist.htm" ${where == 'DSYT' ? "class='active'" : "" }><i class="fa fa-star"></i> Danh sách yêu thích <c:if  test="${cookie.containsKey('username')}">(${myWishList.size() })</c:if> </a></li>
 								<!-- <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li> -->
-								<li id="CartOnHeader"><a href="cart.htm"><i class="fa fa-shopping-cart"></i> Giỏ hàng (${myCartItems.size()})</a></li>
+								<li id="CartOnHeader"><a href="cart.htm" ${where == 'GH' ? "class='active'" : "" }><i class="fa fa-shopping-cart"></i> Giỏ hàng (${myCartItems.size()})</a></li>
 								<c:choose>
 									<c:when test="${cookie.containsKey('username')}">
 										<li><a href="logout.htm"><i class="fa fa-lock"></i> Đăng xuất</a></li>
@@ -96,14 +96,17 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.htm" class="active">Trang chủ</a></li>
-								<li class="dropdown"><a href="#">Danh mục sản phẩm<i class="fa fa-angle-down"></i></a>
+								<li><a href="index.htm" ${where == 'TC' ? "class='active'" : "" } >Trang chủ</a></li>
+								<li class="dropdown"><a ${where == 'DM' ? "class='active'" : "" }>Danh mục sản phẩm<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <c:forEach var="p" items="${productList}">
                                         	<li><a href="shop${p.id}.htm">${p.name}</a></li>
                                         </c:forEach>
                                     </ul>
                                 </li> 
+                                <li><a href="gioithieu.htm" ${where == 'GT' ? "class='active'" : "" } >Giới thiệu</a></li>
+                                <li><a href="chinhsach.htm" ${where == 'CS' ? "class='active'" : "" }>Chính sách</a></li>
+                                <li><a href="contact.htm" ${where == 'LH' ? "class='active'" : "" }>Liên hệ</a></li>
 							</ul>
 						</div>
 					</div>

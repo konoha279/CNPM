@@ -48,7 +48,7 @@
 			     <div id="productChart" style="width: 90%; height: 300px; padding-left:50px; margin-bottom: 10px;"></div>
 			     <div id="moneyChart" style="width: 90%; height: 300px; padding-left:50px; margin-bottom: 10px;"></div>
 			     <div id="billChart" style="width: 90%; height: 300px; padding-left:50px; margin-bottom: 10px;"></div>
-			
+			<h2>Chi Tiết</h2>
 			<div class="ui grid stackable padded">
 				<div class="column">
 					<table class="ui blue table">
@@ -194,7 +194,7 @@
 
      var options = {
        chart: {
-         title: 'Thống kê theo số sản phẩm',
+         title: 'Thống kê theo số sản phẩm bán được',
          //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
        }
      };
@@ -226,7 +226,7 @@
 
      var options = {
        chart: {
-         title: 'Thống kê theo tổng tiền',
+         title: 'Thống kê theo tổng tiền thu được',
          //subtitle: 'Sales, Expenses, and Profit: 2014-2017',
        }
      };

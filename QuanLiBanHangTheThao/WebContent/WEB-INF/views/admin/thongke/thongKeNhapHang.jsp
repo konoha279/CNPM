@@ -47,14 +47,16 @@
 					</form>
 				</div>
 			</div>
+			<div>
 			    <div id="receiptReports" style="width: 90%; height: 300px; padding-left:50px"></div>
+		    </div>
 			<h2>Chi Tiết</h2>
 			<div class="ui grid stackable padded">
 				<div class="column">
 					<table class="ui blue table">
 						<thead>
 							<tr>
-								<th style="text-align: center;">Thời gian</th>
+								<th style="text-align: center;">Ngày</th>
 								<th style="text-align: center;">Số lượng phiếu nhập</th>
 								<th style="text-align: center;">Số lượng loại hàng</th>
 								<th></th>
@@ -185,14 +187,13 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Thời gian', 'Số lượng phiếu nhập', 'Số lượng loại hàng nhập'],
+          ['Ngày', 'Số lượng phiếu nhập', 'Số lượng loại hàng nhập'],
           <c:forEach items="${receiptReports}" var="r">
 			[ '${r.date}', ${r.receipts.size()}, ${r.countProduct} ],
 			</c:forEach>
         ]);
 
         var options = {
-       		title : 'Thống kê thu nhập trong năm nay',
    			vAxis : {
    				title : 'Số lượng nhập hàng'
    			},

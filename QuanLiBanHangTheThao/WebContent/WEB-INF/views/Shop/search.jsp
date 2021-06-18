@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Giới thiệu </title>
+    <title>Kết quả tìm kiếm </title>
     <link href="resources/Shop/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/Shop/css/font-awesome.min.css" rel="stylesheet">
     <link href="resources/Shop/css/prettyPhoto.css" rel="stylesheet">
@@ -71,13 +71,52 @@
 				
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
-						<h2 class="title text-center">LỜI GIỚI THIỆU</h2>
-						<div><p style="text-align: right;">Cập nhật lần cuối: ${lastTime } </p></div>
-						<div>
-							${content }
+						<h2 class="title text-center">Kết quả tìm kiếm của: ${keySearch }</h2>
+						<c:forEach items="${listProducts}" var="lp">
+						<div class="col-sm-4">
+							<div class="product-image-wrapper">
+								<div class="single-products">
+									<div class="productinfo text-center">
+										<img class="image-content-product" src="images/${lp.image}" alt="" />
+										<c:choose>
+											<c:when test="${lp.discount != 0 }">
+												<h2><del><f:formatNumber value="${lp.price}" type="currency"/></del></h2>
+											</c:when>
+											<c:otherwise><div class="content-none"></div></c:otherwise>
+										</c:choose>
+										<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
+										<p style="max-height: 20px; overflow: hidden; -webkit-line-clamp: 1;">${lp.name}</p>
+										<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-info"></i>Chi tiết</a>
+									</div>
+									<div class="product-overlay">
+										<div class="overlay-content">
+											<c:choose>
+												<c:when test="${lp.discount != 0 }">
+													<h2><del><f:formatNumber value="${lp.price}" type="currency"/></del></h2>
+												</c:when>
+												<c:otherwise><div class="content-none"></div></c:otherwise>
+											</c:choose>
+											<h2><f:formatNumber value="${lp.price - lp.price*(lp.discount/100)}" type="currency"/></h2>
+											<p>${lp.name}</p>
+											<a href="SanPham-${lp.id}.htm" class="btn btn-default add-to-cart"><i class="fa fa-info"></i>Chi tiết</a>
+										</div>
+									</div>
+								</div>
+								<div class="choose">
+									<ul class="nav nav-pills nav-justified">
+										<li><a href="javascript:addWishList('${lp.id }')"><i class="fa fa-plus-square"></i>Thêm vào danh sách yêu thích</a></li>
+									</ul>
+								</div>
+							</div>
 						</div>
-						
+						</c:forEach>
 					</div><!--features_items-->
+					<ul class="pagination">
+						<li class="active"><a href="">1</a></li>
+						<li><a href="">2</a></li>
+						<li><a href="">3</a></li>
+						<li><a href="">&raquo;</a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
