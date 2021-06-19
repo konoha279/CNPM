@@ -43,7 +43,7 @@
 <script type="text/javascript" src="resources/ckeditor/ckeditor.js"></script>
        
 </head><!--/head-->
-<body style="background-image: url('resources/Shop/images/bg.jpg');">
+<body style="">
 <header id="header"><!--header-->
 		<div class="header_top"><!--header_top-->
 			<div class="container">
@@ -56,7 +56,7 @@
 				<div class="row">
 					<div class="col-md-4 clearfix">
 						<div class="logo pull-left">
-							<a href="index.htm"><img src="resources/Shop/images/logo2.png" alt="" /></a>
+							<a href="index.htm"><img src="resources/Shop/images/logoNhom.png" alt="" /></a>
 						</div>
 						
 					</div>

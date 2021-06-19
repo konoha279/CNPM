@@ -39,16 +39,13 @@
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>Danh mục sản phẩm</h2>
-						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
-							<c:forEach var="p" items="${productList}">
-                            	<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="shop${p.id}.htm">${p.name}</a></h4>
-								</div>
-							</div>
-                            </c:forEach>
-							
-						</div><!--/category-products-->
+						<div class="brands-name panel-group category-products">
+							<ul class="nav nav-pills nav-stacked">
+								<c:forEach items="${productList}" var="p">
+									<li><a href="shop${p.id}.htm"> <span class="pull-right"></span>${p.name }</a></li>								
+								</c:forEach>
+							</ul>
+						</div>
 					
 						<div class="brands_products"><!--brands_products-->
 							<h2>Thương hiệu</h2>

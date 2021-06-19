@@ -60,7 +60,7 @@ div.detail {
 									<table class="ui blue table">
 										<thead>
 											<tr>
-												<c:if test="${hangHoa.productlist.id != 'PK' }">
+												<c:if test="${hangHoa.haveSize == true }">
 													<th>Size</th>
 												</c:if>
 												<th>Số Lượng</th>
@@ -70,7 +70,7 @@ div.detail {
 										<tbody>										
 											<c:forEach var="u" items="${hangHoa.CT_HangHoa}">
 												<tr>
-													<c:if test="${hangHoa.productlist.id != 'PK' }">
+													<c:if test="${hangHoa.haveSize == true }">
 														<td >${u.size.name}</td>
 													</c:if>
 													<td >${u.soLuong}</td>
@@ -160,7 +160,7 @@ div.detail {
 			</div>
 			<div>
 				<div class="container">
-					<c:if test="${hangHoa.productlist.id != 'PK' }">
+					<c:if test="${hangHoa.haveSize == true }">
 						<div class="form-group">
 							<label  class="form-label">Size</label>
 							
@@ -180,7 +180,7 @@ div.detail {
 			  
 			</div>
 			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 			  <button type="button" class="btn btn-primary" onclick="addSize('${hangHoa.ID}')">Thêm</button>
 			</div>
 		  </div>

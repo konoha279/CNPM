@@ -545,9 +545,6 @@ public class ShopController {
 		finally {
 			session.close();
 		}
-		
-		
-		
 		return String.valueOf(money);
 	}
 	

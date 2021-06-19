@@ -289,7 +289,7 @@
 			success: function (data)
 			{
 				document.getElementById('TamTinh').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data);
-				document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(data + ${Ship});
+				document.getElementById('ThanhTien').innerHTML = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(parseInt(data) + ${Ship});
 				
 			},
 			error: function(data)

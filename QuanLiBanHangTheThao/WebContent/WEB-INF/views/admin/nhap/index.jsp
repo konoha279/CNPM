@@ -29,8 +29,10 @@
 						<thead>
 							<tr>
 								<th>Mã Phiếu Nhập</th>
-								<th>Ngày</th>
+								<th>Ngày nhập</th>
 								<th>Nhân Viên</th>
+								<th>Tình trạng</th>
+								<th>Ngày xác nhận</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -40,6 +42,8 @@
 									<td>${u.id}</td>
 									<td>${u.date}</td>
 									<td><Strong>(${u.staff.id})</Strong> ${u.staff.fullName}</td>
+									<td>${u.status == true ? "Đã xác nhận" : "Chưa xác nhận" }
+									<td>${u.dateConfirm}</td>
 									<td>
 										<button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${u.id}">
 												<i class="edit icon"></i>Xem chi tiết
@@ -88,7 +92,8 @@
 					</table>
 				</div>
 		      <div class="modal-footer">
-		       	<%-- <button type="button"  class="btn btn-danger" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" } id="delButton${p.id }" data-bs-toggle="modal" data-bs-target="#del${p.id}">Xóa</button> --%>
+		      	<button type="button"  class="btn btn-success" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" } ${p.status == true ? "disabled = 'disabled' style='display: none;'" : "" } onclick="confirmReceipt('${p.id}')">Xác nhận</button>
+		       	<button type="button"  class="btn btn-danger" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" } ${p.status == true ? "disabled = 'disabled' style='display: none;'" : "" } id="delButton${p.id }" data-bs-toggle="modal" data-bs-target="#del${p.id}">Xóa</button>
 		       	<button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 		      </div>
 		    </div>
@@ -217,6 +222,26 @@
      	{
      		$.ajax({
     			url: "${pageContext.servletContext.contextPath}/admin/nhap/delete.htm",
+    			data:{
+    				id: id
+    			},
+    			type: "post",
+    			success: function (data)
+    				{
+    					alert(data);
+    					window.location.replace("${pageContext.servletContext.contextPath}/admin/nhap/index.htm");
+    				},
+    				error: function(data)
+    				{
+    					alert(data);
+    				}
+    		})
+     	}
+     	
+     	function confirmReceipt(id)
+     	{
+     		$.ajax({
+    			url: "${pageContext.servletContext.contextPath}/admin/nhap/confirm.htm",
     			data:{
     				id: id
     			},

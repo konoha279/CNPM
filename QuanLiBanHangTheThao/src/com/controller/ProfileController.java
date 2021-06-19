@@ -218,7 +218,6 @@ public class ProfileController {
 		// -----------------------------------------------------------
 		
 		Transaction transaction = session.beginTransaction();
-		
 		try {
 			
 			if (checkOther)
@@ -267,7 +266,6 @@ public class ProfileController {
 		finally {
 			session.close();
 		}
-		
 		return result.getBytes("UTF-8");
 	}
 	

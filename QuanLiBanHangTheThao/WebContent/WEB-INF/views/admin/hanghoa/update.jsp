@@ -32,12 +32,21 @@
 							
 							
 							<div class="column">
-								<label>Thương hiệu</label>
-								<form:select path="brand.id" items="${Brands}"
-									itemValue="id" itemLabel="name" />
+								<div class="ui two column centered grid">
+									<div class="column">
+										<label>Thương hiệu</label>
+										<form:select path="brand.id" items="${Brands}"
+											itemValue="id" itemLabel="name" />
+									</div>
+									<div class="column">
+										<label>Sản phẩm này có size không ?</label>
+										<form:select path="haveSize">
+											<form:option value="1">Có</form:option>
+											<form:option value="0">Không</form:option>
+										</form:select>
+									</div>
+								</div>
 							</div>
-							
-							
 							
 							<div class="column">
 								<div class="ui two column centered grid">

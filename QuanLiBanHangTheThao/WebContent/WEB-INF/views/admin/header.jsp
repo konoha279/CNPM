@@ -133,7 +133,7 @@ body ::-webkit-scrollbar {
 		</a> 
 		<a href="admin/nhap/index.htm" id="pn" class="item">
 			<div>
-				<i class="icon truck icon"></i> Phiếu Nhập
+				<i class="icon truck icon"></i> Nhập hàng
 			</div>
 		</a>  
 		
@@ -204,7 +204,7 @@ body ::-webkit-scrollbar {
 		</div>
 
 		<ul class="right menu">
-			<li><a href="#" style="text-decoration: none;"> <i class="bell icon"></i>Thông báo</a></li>
+			<!-- <li><a href="#" style="text-decoration: none;"> <i class="bell icon"></i>Thông báo</a></li> -->
 			<li class = "ui dropdownMenu">
 				<a class = "dropBtn" style="color: white; white;margin-right: 30px;"><i class="user cirlce icon"></i> Mở rộng </a>
 				<div class="dropdownMenu-content">

@@ -54,8 +54,6 @@ public class PageController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		return "redirect:/admin/page/gioithieu.htm";
 	}
 	
@@ -96,8 +94,6 @@ public class PageController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		return "redirect:/admin/page/chinhsach.htm";
 	}
 }

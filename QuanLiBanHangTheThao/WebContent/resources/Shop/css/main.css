@@ -765,7 +765,7 @@ h2.title:before {
 }
 
 .brands-name .nav-stacked li a:hover {
-    background-color: #fff;
+    background-color: #ffe6e6;
     color: #696763;
 }
 
@@ -830,6 +830,7 @@ h2.title {
 }
 
 .product-image-wrapper {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border: 1px solid #c0c0c0;
     overflow: hidden;
     margin-bottom: 30px;
@@ -872,6 +873,7 @@ h2.title {
 }
 
 .productinfo {
+	background-color: #ddd;
     position: relative;
 }
 
@@ -957,6 +959,7 @@ h2.title {
 }
 
 .choose ul li a {
+	background-color: #ffd9b3;
     color: #000000;
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
@@ -969,7 +972,7 @@ h2.title {
 }
 
 .choose ul li a:hover {
-    background: none;
+    background-color: #ffead5;
     color: #FE980F;
 }
 

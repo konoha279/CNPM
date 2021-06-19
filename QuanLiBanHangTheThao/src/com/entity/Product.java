@@ -35,7 +35,8 @@ public class Product {
 	private String notes;
 	@Column(name = "TinhTrang", columnDefinition = "BOOLEAN")
 	private Boolean status;
-	
+	@Column(name = "coSize", columnDefinition = "BOOLEAN")
+	private Boolean haveSize;
 	@ManyToOne
 	@JoinColumn(name = "MaDanhMuc")
 	private ProductList productlist;
@@ -229,4 +230,14 @@ public class Product {
 	{
 		return (getPrice() - (getPrice() * (getDiscount() /100) ));
 	}
+
+	public Boolean getHaveSize() {
+		return haveSize;
+	}
+
+	public void setHaveSize(Boolean haveSize) {
+		this.haveSize = haveSize;
+	}
+	
+	
 }

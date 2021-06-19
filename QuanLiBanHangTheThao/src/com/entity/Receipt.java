@@ -30,12 +30,20 @@ public class Receipt {
 	private String id;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
-	@Column(name ="Ngay")
+	@Column(name ="NgayNhap")
 	private Date date;
+	
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
+	@Column(name ="NgayXacNhan")
+	private Date dateConfirm;
 	
 	@ManyToOne
 	@JoinColumn(name = "MaNV")
 	private Staff staff;
+	
+	@Column(name ="TinhTrang")
+	private boolean status;
 	
 	@OneToMany(mappedBy = "phieuNhap", fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
@@ -93,6 +101,26 @@ public class Receipt {
 
 	public void setCtPhieuNhaps(Collection<CTPhieuNhap> ctPhieuNhaps) {
 		this.ctPhieuNhaps = ctPhieuNhaps;
+	}
+
+
+	public Date getDateConfirm() {
+		return dateConfirm;
+	}
+
+
+	public void setDateConfirm(Date dateConfirm) {
+		this.dateConfirm = dateConfirm;
+	}
+
+
+	public boolean isStatus() {
+		return status;
+	}
+
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	
 	

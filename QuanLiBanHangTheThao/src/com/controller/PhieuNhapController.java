@@ -115,6 +115,8 @@ public class PhieuNhapController {
 		Staff staff = account.getStaff();
 		Date date = new Date();
 		Receipt receipt = new Receipt(date, staff);
+		receipt.setStatus(false);
+		receipt.setDateConfirm(null);
 		
 		//lấy danh sách từ session, nếu null thì return "";
 		List<CTPhieuNhap> ctPhieuNhaps = (List<CTPhieuNhap>) httpSession.getAttribute("ctPhieuNhaps");
@@ -128,11 +130,46 @@ public class PhieuNhapController {
 		Transaction t = session.beginTransaction();
 		try {
 			session.save(receipt);
-			for (CTPhieuNhap ctPhieuNhap : ctPhieuNhaps) {
-				Product temp = (Product) session.get(Product.class, ctPhieuNhap.getcTHangHoa().getMaHangHoa().getId());
-				boolean exist = false;
+			for (CTPhieuNhap ctPhieuNhap : ctPhieuNhaps) {				
+				CTHangHoa cTHangHoa = ctPhieuNhap.getcTHangHoa();
+				CTPhieuNhap phieuNhap = new CTPhieuNhap(receipt, cTHangHoa, ctPhieuNhap.getSoLuong());
+				session.save(phieuNhap);			
+			}
+			t.commit();
+			ctPhieuNhaps = new ArrayList<CTPhieuNhap>();
+			httpSession.setAttribute("ctPhieuNhaps", ctPhieuNhaps);
+			result = "Thêm thành công";
+		} catch (Exception e) {
+			System.out.print(e);
+			t.rollback();
+		} finally {
+			session.close();
+		}
+		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "confirm", method = RequestMethod.POST)
+	public @ResponseBody byte[] confirm(ModelMap model, HttpSession httpSession, HttpServletRequest request) throws UnsupportedEncodingException {
+		
+		String result = "Có lỗi xảy ra";
+		Session session = factory.openSession();
+		String id = request.getParameter("id");
+		Receipt receipt = (Receipt) session.get(Receipt.class, id);
+		
+		if (receipt.isStatus()) //khi cố tình mở nút xác nhận và bấm
+			return "Đừng cố gắng xâm nhập vào server trái phép.".getBytes("UTF-8");
+		
+		receipt.setStatus(true);
+		receipt.setDateConfirm(new Date());
+		Transaction transaction = session.beginTransaction();
+		try {
+			session.save(receipt);
+			for (CTPhieuNhap ctPhieuNhap : receipt.getCtPhieuNhaps())
+			{
+				Product temp = (Product) session.get(Product.class, ctPhieuNhap.getcTHangHoa().getMaHangHoa().getId()); // lấy sản phẩm từ ctPhieuNhap
+				boolean exist = false; //kiểm tra sự tồn tại có trong ctPhieuNhap không nếu không có sẽ khỏi lưu vào database
 				CTHangHoa cTHangHoa = null;
-				List<CTHangHoa> tempHangHoas = new ArrayList<CTHangHoa>(temp.getCT_HangHoa());
+				List<CTHangHoa> tempHangHoas = new ArrayList<CTHangHoa>(temp.getCT_HangHoa()); 
 				for (int i =0; i< tempHangHoas.size(); i++)
 				{
 					if (tempHangHoas.get(i).getSize().getId().equals(ctPhieuNhap.getcTHangHoa().getSize().getId()))
@@ -153,27 +190,55 @@ public class PhieuNhapController {
 					cTHangHoa.setSoLuong(ctPhieuNhap.getSoLuong());
 					session.save(cTHangHoa);
 				}
-				
-				Product product = new Product();
-				product.setId(ctPhieuNhap.getcTHangHoa().getMaHangHoa().getId());
-				Size size = new Size();
-				size.setId(ctPhieuNhap.getcTHangHoa().getSize().getId());
-				cTHangHoa = new CTHangHoa(product, size);
-				
-				CTPhieuNhap phieuNhap = new CTPhieuNhap(receipt, cTHangHoa, ctPhieuNhap.getSoLuong());
-				session.save(phieuNhap);
-			
 			}
-			t.commit();
-			ctPhieuNhaps = new ArrayList<CTPhieuNhap>();
-			httpSession.setAttribute("ctPhieuNhaps", ctPhieuNhaps);
-			result = "Thêm thành công";
+			
+			transaction.commit();
+			result ="Xác nhận thành công";
 		} catch (Exception e) {
 			System.out.print(e);
-			t.rollback();
+			transaction.rollback();
+			result = String.valueOf(e);
 		} finally {
 			session.close();
 		}
+		return result.getBytes("UTF-8");
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
+	public @ResponseBody byte[] deleteReceipt(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) throws UnsupportedEncodingException
+	{
+		String result ="ERROR";
+		Session session = factory.getCurrentSession();
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		if (account.getRole().getId().equals("1") == false)
+			return "Đừng cố gắng xâm nhập vào server trái phép.".getBytes("UTF-8");
+		
+		session = factory.openSession();
+		String id = request.getParameter("id");
+		Receipt receipt = (Receipt) session.get(Receipt.class, id);
+		
+		if (receipt.isStatus())
+			return "Đừng cố gắng xâm nhập vào server trái phép.".getBytes("UTF-8");
+		
+		List<CTPhieuNhap> phieuNhaps = new ArrayList<CTPhieuNhap>(receipt.getCtPhieuNhaps());
+		Transaction transaction = session.beginTransaction();
+		try {
+			for (CTPhieuNhap ctPhieuNhap : phieuNhaps) {
+				session.delete(ctPhieuNhap);
+			}
+			session.delete(receipt);
+			transaction.commit();
+			result = "Xóa thành công.";
+		} catch (Exception e) {
+			System.out.print(e);
+			transaction.rollback();
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+		
 		return result.getBytes("UTF-8");
 	}
 
@@ -262,39 +327,7 @@ public class PhieuNhapController {
 		return "".getBytes("UTF-8");
 	}
 	
-	@SuppressWarnings("unlikely-arg-type")
-	@RequestMapping(value = "delete", method = RequestMethod.POST)
-	public @ResponseBody byte[] deleteReceipt(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) throws UnsupportedEncodingException
-	{
-		String result ="ERROR";
-		Session session = factory.getCurrentSession();
-		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
-		if (account.getRole().getId().equals("1") == false)
-			return "Đừng cố gắng xâm nhập vào server trái phép.".getBytes("UTF-8");
-		
-		session = factory.openSession();
-		String id = request.getParameter("id");
-		Receipt receipt = (Receipt) session.get(Receipt.class, id);
-		List<CTPhieuNhap> phieuNhaps = new ArrayList<CTPhieuNhap>(receipt.getCtPhieuNhaps());
-		Transaction transaction = session.beginTransaction();
-		try {
-			for (CTPhieuNhap ctPhieuNhap : phieuNhaps) {
-				session.delete(ctPhieuNhap);
-			}
-			session.delete(receipt);
-			transaction.commit();
-			result = "Xóa thành công.";
-		} catch (Exception e) {
-			System.out.print(e);
-			transaction.rollback();
-			// TODO: handle exception
-		}
-		finally {
-			session.close();
-		}
-		
-		return result.getBytes("UTF-8");
-	}
+	
 	
 	Account checkCookie(HttpServletRequest request)
 	{

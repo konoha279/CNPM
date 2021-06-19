@@ -18,7 +18,6 @@ import com.entity.Bill;
 
 @Transactional
 public class BaseInterceptor extends HandlerInterceptorAdapter { //Dùng cho việc kiểm tra login
-
 	@Autowired
 	SessionFactory factory;
 	
@@ -76,6 +75,5 @@ public class BaseInterceptor extends HandlerInterceptorAdapter { //Dùng cho vi�
 			// TODO: handle exception
 			return null;
 		}
-		
 	}
 }

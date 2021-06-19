@@ -638,8 +638,6 @@ public class ThongKeController {
 		catch(Exception e) {
 			return new ArrayList<Bill>();
 		}
-		
-		
 		Session session = factory.getCurrentSession();
 		String hql = "From Bill b where b.date >= :from and b.date <= :to ";
 		Query query = session.createQuery(hql);
@@ -694,8 +692,6 @@ public class ThongKeController {
 		catch(Exception e) {
 			return new ArrayList<Bill>();
 		}
-		
-		
 		Session session = factory.getCurrentSession();
 		String hql = "From Bill b where b.date >= :from and b.date <= :to ";
 		Query query = session.createQuery(hql);
