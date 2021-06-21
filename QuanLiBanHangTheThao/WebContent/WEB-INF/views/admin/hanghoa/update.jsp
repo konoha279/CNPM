@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Cập nhật sản phẩm</title>
 </head>
 <body>
 	<jsp:include page="../header.jsp" />

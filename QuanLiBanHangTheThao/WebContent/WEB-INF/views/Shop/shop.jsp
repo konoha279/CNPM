@@ -110,9 +110,9 @@
 						</c:forEach>
 					</div><!--features_items-->
 					<ul class="pagination">
-						<li class="active"><a href="">1</a></li>
-						<li><a href="">2</a></li>
-						<li><a href="">3</a></li>
+						<c:forEach begin="1" end="${countPage }" var="i">
+							<li ${i == here ? "class='active'" : "" }><a href="${link }.htm?page=${i }">${i }</a></li>
+						</c:forEach>															
 						<li><a href="">&raquo;</a></li>
 					</ul>
 				</div>

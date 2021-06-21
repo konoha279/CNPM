@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,6 +34,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.entity.Account;
 import com.entity.Brand;
 import com.entity.CTHangHoa;
 import com.entity.Comment;
@@ -284,6 +286,9 @@ public class HangHoaController {
 	public @ResponseBody byte[] deleteDetail(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		String result= "";
 		Session session = factory.getCurrentSession();
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		if (account.getRole().getId().equals("1") == false)
+			return "Tôi khóa tài khoản đó! (╬▔皿▔)╯.".getBytes("UTF-8");
 		Size size = new Size(request.getParameter("size"));
 		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
 		
@@ -315,6 +320,11 @@ public class HangHoaController {
 	public @ResponseBody byte[] editDetail(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		String result= "";
 		Session session = factory.getCurrentSession();
+		
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		if (account.getRole().getId().equals("1") == false)
+			return "Tôi khóa tài khoản đó! (╬▔皿▔)╯.".getBytes("UTF-8");
+		
 		Size size = new Size(request.getParameter("size"));
 		Product product = (Product) session.get(Product.class, request.getParameter("ID"));
 		String temp = request.getParameter("count");
@@ -369,7 +379,10 @@ public class HangHoaController {
 			return "Không được để số lượng trống".getBytes("UTF-8");
 		}
 		int count = Integer.parseInt(temp) ;
-	
+		
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		if (account.getRole().getId().equals("1") == false)
+			count=0;
 		if (count < 0)
 		{
 			return "Số lượng phải lớn hơn hoặc bằng 0".getBytes("UTF-8");
@@ -432,6 +445,7 @@ public class HangHoaController {
 	@RequestMapping(value ="editSize", method = RequestMethod.POST)
 	public @ResponseBody byte[] editSize(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException
 	{
+		
 		String result ="Error";
 		String id = request.getParameter("ID");
 		String name = request.getParameter("name");
@@ -439,6 +453,11 @@ public class HangHoaController {
 		Size size = new Size(id, name, notes);
 		
 		Session session = factory.openSession();
+		
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		if (account.getRole().getId().equals("1") == false)
+			return "Tôi khóa tài khoản đó! (╬▔皿▔)╯.".getBytes("UTF-8");
+		
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(size);
@@ -463,6 +482,10 @@ public class HangHoaController {
 		String result ="Error";
 		String id = request.getParameter("ID");
 		Session session = factory.getCurrentSession();
+		
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		if (account.getRole().getId().equals("1") == false)
+			return "Tôi khóa tài khoản đó! (╬▔皿▔)╯.".getBytes("UTF-8");
 		
 		Size size = (Size) session.get(Size.class, request.getParameter("ID"));
 		if (!size.getCtHangHoa().isEmpty())
@@ -631,5 +654,31 @@ public class HangHoaController {
 		}
 		
 		return result.getBytes("UTF-8");
+	}
+	
+	Account checkCookie(HttpServletRequest request)
+	{
+		try {
+			Cookie[] cookies = request.getCookies();
+			Account account = null;
+			String username = "", passwd = "";
+			for (Cookie cookie: cookies)
+			{
+				if (cookie.getName().equalsIgnoreCase("username"))
+				{
+					username = cookie.getValue();
+				}
+				if (cookie.getName().equalsIgnoreCase("passwd"))
+				{
+					passwd = cookie.getValue();
+				}
+			}
+			if (!username.isEmpty() && !passwd.isEmpty())
+				account = new Account(username, passwd);
+			return account;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
 	}
 }

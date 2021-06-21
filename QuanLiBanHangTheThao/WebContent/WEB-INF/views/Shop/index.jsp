@@ -110,7 +110,7 @@
 				<div class="col-sm-9 padding-right">
 					<div class="features_items"><!--features_items-->
 						<h2 class="title text-center">TẤT CẢ SẢN PHẨM</h2>
-						<c:forEach items="${Products}" var="p">
+						<c:forEach items="${ProductFinal}" var="p">
 							<div class="col-sm-4">
 								<div class="product-image-wrapper">
 									<div class="single-products">
@@ -151,6 +151,15 @@
 			
 						
 					</div><!--features_items-->
+					
+					
+					
+					<ul class="pagination">
+						<c:forEach begin="1" end="${countPage }" var="i">
+							<li ${i == here ? "class='active'" : "" }><a href="index.htm?page=${i }">${i }</a></li>
+						</c:forEach>															
+						<li><a href="">&raquo;</a></li>
+					</ul>
 					
 					<div class="category-tab"><!--category-tab-->
 						<div class="col-sm-12">

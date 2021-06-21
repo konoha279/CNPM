@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import javax.websocket.server.PathParam;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -271,9 +272,71 @@ public class ShopController {
 	public String index(ModelMap model, HttpServletRequest request)
 	{
 		Setup(model);
+		Session session = factory.getCurrentSession();
+		String hql = "From Product";
+		Query query = session.createQuery(hql);
+		List<Product> list = query.list();		
+		int size = list.size();
+		for (int i=0;i<size;i++)
+		{
+			if (!list.get(i).getStatus())
+			{
+				list.remove(i);
+				size = list.size();
+				i--;
+			}
+		}
+		size = list.size();
+		List<Product> listFinal = new ArrayList<Product>();
+		for (int i=0;i<size;i++)
+		{
+			if (i > 0 && i<= 12)
+			{
+				listFinal.add(list.get(i));
+			}
+		}
+		request.setAttribute("here", "1" );
+		request.setAttribute("countPage", (size/12)+1  );
+		request.setAttribute("ProductFinal", listFinal);
 		request.setAttribute("where", "TC");
 		return "/Shop/index";
 	}
+	
+	@RequestMapping(value = "index", params = { "page" })
+	public String indexParam(ModelMap model, HttpServletRequest request, @PathParam("page") int page)
+	{
+		Setup(model);
+		request.setAttribute("here", page );
+		page--;
+		Session session = factory.getCurrentSession();
+		String hql = "From Product";
+		Query query = session.createQuery(hql);
+		List<Product> list = query.list();		
+		int size = list.size();
+		for (int i=0;i<size;i++)
+		{
+			if (!list.get(i).getStatus())
+			{
+				list.remove(i);
+				size = list.size();
+				i--;
+			}
+		}
+		size = list.size();
+		List<Product> listFinal = new ArrayList<Product>();
+		for (int i=0;i<size;i++)
+		{
+			if ( (i > (12*page)) && ( i<= (12* (page+1) )))
+			{
+				listFinal.add(list.get(i));
+			}
+		}
+		request.setAttribute("countPage", (size/12)+1 );
+		request.setAttribute("ProductFinal", listFinal);
+		request.setAttribute("where", "TC");
+		return "/Shop/index";
+	}
+
 
 	@RequestMapping("checkout")
 	public String checkout(ModelMap model)
@@ -333,8 +396,73 @@ public class ShopController {
 				i--;
 			}
 		}
+		
+		size = listProducts.size();
+		List<Product> listFinal = new ArrayList<Product>();
+		for (int i=0;i<size;i++)
+		{
+			if (i > 0 && i<= 12)
+			{
+				listFinal.add(listProducts.get(i));
+			}
+		}
+		
+		model.addAttribute("here", "1" );
+		model.addAttribute("link","shop"+id );
+		model.addAttribute("countPage", (size/12)+1 );
 		model.addAttribute("where", "DM");
-		model.addAttribute("listProducts", listProducts);
+		model.addAttribute("listProducts", listFinal);
+		return "/Shop/shop";
+	}
+	
+	@RequestMapping(value = "shop{id}", method = RequestMethod.GET, params = { "page" })
+	public String shopProductParam(ModelMap model,@PathVariable("id") String id, @PathParam("page") int page)
+	{
+		Setup(model);
+		model.addAttribute("here", page );
+		page--;
+		Session session = factory.getCurrentSession();
+		ProductList productList = (ProductList) session.get(ProductList.class, id);
+		List<Product> listProducts = new ArrayList<>(productList.getProducts());
+//		Loại bỏ sự trùng lặp sản phẩm
+		int size = listProducts.size();
+		for (int i=0; i< size ; i++)
+		{
+			for (int j=i+1; j < size; j++)
+			{
+				if (listProducts.get(i).getId().equals(listProducts.get(j).getId()))
+				{
+					listProducts.remove(j);
+					size = listProducts.size();
+					j--;
+				}
+			}
+		}
+		
+		for (int i=0;i<size;i++)
+		{
+			if (!listProducts.get(i).getStatus())
+			{
+				listProducts.remove(i);
+				size = listProducts.size();
+				i--;
+			}
+		}
+		
+		size = listProducts.size();
+		List<Product> listFinal = new ArrayList<Product>();
+		for (int i=0;i<size;i++)
+		{
+			if ( (i > (12*page)) && ( i<= (12* (page+1) )))
+			{
+				listFinal.add(listProducts.get(i));
+			}
+		}
+		
+		model.addAttribute("link","shop"+id );
+		model.addAttribute("countPage", (size/12)+1 );
+		model.addAttribute("where", "DM");
+		model.addAttribute("listProducts", listFinal);
 		return "/Shop/shop";
 	}
 	
@@ -396,8 +524,72 @@ public class ShopController {
 				i--;
 			}
 		}
+		
+		size = listProducts.size();
+		List<Product> listFinal = new ArrayList<Product>();
+		for (int i=0;i<size;i++)
+		{
+			if (i > 0 && i<= 12)
+			{
+				listFinal.add(listProducts.get(i));
+			}
+		}
+		model.addAttribute("here", "1" );
+		model.addAttribute("link","brand"+id );
+		model.addAttribute("countPage", (size/12)+1 );
 		model.addAttribute("where", "DM");
-		model.addAttribute("listProducts", listProducts);
+		model.addAttribute("listProducts", listFinal);
+		return "/Shop/shop";
+	}
+	
+	@RequestMapping(value = "brand{id}", method = RequestMethod.GET, params = { "page" })
+	public String shopBrandParam(ModelMap model,@PathVariable("id") String id, @PathParam("page") int page)
+	{
+		Setup(model);
+		model.addAttribute("here", page );
+		page--;
+		Session session = factory.getCurrentSession();
+		Brand brand = (Brand) session.get(Brand.class, id);
+		List<Product> listProducts = new ArrayList<>(brand.getProducts());
+		
+//		Loại bỏ sự trùng lặp sản phẩm
+		int size = listProducts.size();
+		for (int i=0; i< size ; i++)
+		{
+			for (int j=i+1; j < size; j++)
+			{
+				if (listProducts.get(i).getId().equals(listProducts.get(j).getId()))
+				{
+					listProducts.remove(j);
+					size = listProducts.size();
+					j--;
+				}
+			}
+		}
+		
+		for (int i=0;i<size;i++)
+		{
+			if (!listProducts.get(i).getStatus())
+			{
+				listProducts.remove(i);
+				size = listProducts.size();
+				i--;
+			}
+		}
+		
+		size = listProducts.size();
+		List<Product> listFinal = new ArrayList<Product>();
+		for (int i=0;i<size;i++)
+		{
+			if ((i > (12*page)) && ( i<= (12* (page+1) )))
+			{
+				listFinal.add(listProducts.get(i));
+			}
+		}
+		model.addAttribute("link","brand"+id );
+		model.addAttribute("countPage", (size/12)+1 );
+		model.addAttribute("where", "DM");
+		model.addAttribute("listProducts", listFinal);
 		return "/Shop/shop";
 	}
 

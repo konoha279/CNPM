@@ -32,6 +32,7 @@
 								<div class="four wide field">
 									<label>Hàng Hóa</label> 
 									<select id="productSelected">
+										<option value="">Chọn sản phẩm </option>
 										<c:forEach items="${dsSanPham}" var="l">
 											<option value="${l.id }">${l.name }</option>
 										</c:forEach>
@@ -39,11 +40,9 @@
 									</select>
 								</div>
 								<div class="four wide field">
-									<label>Size</label>
+									<label>Size sản phẩm</label>
 									<select id="changeSize" >
-										<c:forEach items="${dsSize}" var="l">
-											<option value="${l.id }">${l.name }</option>
-										</c:forEach>
+										<option value=""> </option>
 									</select>
 								</div>
 								<div class="four wide field">
@@ -100,6 +99,33 @@
 		</div>
 	</div>
 <script type="text/javascript">
+	document.getElementById("productSelected").onchange = changeListener;
+	 function changeListener()
+	 {
+	    var value = this.value
+	      
+	    <c:forEach items="${dsSanPham}" var="l">
+	    	if (value == "${l.id}")
+	    	{
+	    		var $el = $("#changeSize");
+	    		$el.empty(); // remove old options
+	    		$.each(${l.id}, function(key,value) {
+	    		  $el.append($("<option></option>")
+	    		     .attr("value", key).text(value));
+	    		});
+	    	}
+	    </c:forEach>	      
+     }
+	   	
+	   	<c:forEach items="${dsSanPham}" var="l">
+	   		var ${l.id} ={
+	   				<c:forEach items="${l.getCT_HangHoa2()}" var="ct">
+	   					"${ct.size.id}": "${ct.size.name}",
+	   				</c:forEach>
+	   		};
+	   	</c:forEach>
+
+
 	function addProduct()
 	{
 		var id = document.getElementById('productSelected').value;

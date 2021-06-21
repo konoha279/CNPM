@@ -49,12 +49,13 @@
 									<td>${size.name}</td>	
 									<td>${size.notes}</td>
 									<td>
-										<button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit${size.id}">
+										<button type="button" class="btn btn-outline-success" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" }  data-bs-toggle="modal" data-bs-target="#edit${size.id}">
 												<i class="edit icon"></i>Chỉnh sửa
 										</button>	
-										<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteSize${size.id}" >
+										<button type="button" class="btn btn-outline-danger" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" }  data-bs-toggle="modal" data-bs-target="#deleteSize${size.id}" >
 												<i class="fa fa-ban"></i> Xóa
 										</button>	
+										${empty admin ? "Phải là quản lý mới có quyền tương tác" : "" }
 										<!-- ----------------------------------------------- Chỉnh sửa ----------------------------------------------- -->
 										<div class="modal fade" id="edit${size.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 										  <div class="modal-dialog modal-dialog-centered modal-lg">

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Chi tiết ${hangHoa.name}</title>
+<title>Chi tiết sản phẩm ${hangHoa.name}</title>
 <base href="${pageContext.servletContext.contextPath}/">
 <style>
 h1.headerD {
@@ -75,15 +75,16 @@ div.detail {
 													</c:if>
 													<td >${u.soLuong}</td>
 													<td>
-														<button data-bs-toggle="modal" data-bs-target="#delete${u.size.id}"  class="btn btn-outline-danger btn-lg"><i class="fa fa-ban" aria-hidden="true"></i> Xóa </button>
-														<button data-bs-toggle="modal" data-bs-target="#edit${u.size.id}" class="btn btn-outline-secondary btn-lg"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa </button>
+														<button data-bs-toggle="modal" data-bs-target="#delete${u.size.id}" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" }  class="btn btn-outline-danger btn-lg"><i class="fa fa-ban" aria-hidden="true"></i> Xóa </button>
+														<button data-bs-toggle="modal" data-bs-target="#edit${u.size.id}" ${empty admin ? "disabled = 'disabled' style='display: none;'" : "" } class="btn btn-outline-secondary btn-lg"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Sửa </button>
+														${empty admin ? "Phải là quản lý mới có quyền tương tác" : "" }
 													</td>
 												</tr>
 												
 											</c:forEach>
 										</tbody>
 									</table>
-									<div class="detail"><h1 style="text-align: center;">Ghi chú</h1></div>
+									<div class="detail"><h1 style="text-align: center;">Mô tả</h1></div>
 									<div ></div>
 									<textarea class="form-control" rows="10" style="align-self: center; resize: none;" readonly="readonly">${hangHoa.notes}</textarea>
 	
@@ -174,7 +175,7 @@ div.detail {
 					
 					<div class="form-group">
 						<label  class="form-label">Số lượng</label>
-						<input class="form-control" type="number" id="countAdd" min="0" value="0" required="required"/>
+						<input class="form-control" ${empty admin ? "readonly" : "" } type="number" id="countAdd" min="0" value="0" required="required"/>
 					</div>
 				</div>
 			  

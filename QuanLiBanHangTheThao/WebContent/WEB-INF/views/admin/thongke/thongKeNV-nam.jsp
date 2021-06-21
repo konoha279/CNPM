@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Thống kê nhân viên</title>
+<title>Thống kê nhân viên - năm</title>
 <style type="text/css">
 .modal-lg {
         max-width: 60% !important;
