@@ -1,6 +1,9 @@
 package com.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -101,8 +104,11 @@ public class PhieuNhapController {
 
 	@RequestMapping(value = "insert", method = RequestMethod.GET)
 	public String insert(ModelMap model) {
-		List<CTPhieuNhap> ctPhieuNhaps = new ArrayList<CTPhieuNhap>();
-		model.addAttribute("CTPhieuNhap", ctPhieuNhaps);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+
+		Date now = new Date();
+		String strNow = dateFormat.format(now);
+		model.addAttribute("now", strNow);
 		return "admin/nhap/insert";
 	}
 
@@ -113,8 +119,25 @@ public class PhieuNhapController {
 		//khởi tạo phiếu nhập
 		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
 		Staff staff = account.getStaff();
-		Date date = new Date();
-		Receipt receipt = new Receipt(date, staff);
+		
+		String date = request.getParameter("date");
+		Date datePN = null;
+		if (date.isEmpty())
+		{
+			datePN = new Date();
+		}
+		else
+		{
+			try {
+				datePN = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "ERROR!.".getBytes("UTF-8");
+			}
+		}
+		
+		Receipt receipt = new Receipt(datePN, staff);
 		receipt.setStatus(false);
 		receipt.setDateConfirm(null);
 		
@@ -294,6 +317,8 @@ public class PhieuNhapController {
 		String idProduct = request.getParameter("id");
 		String idSize = request.getParameter("size");
 		int count = Integer.valueOf(request.getParameter("count"));
+		if (count < 1)
+			return "Không thể bé hơn 1".getBytes("UTF-8");
 		for (CTPhieuNhap ctPhieuNhap : ctPhieuNhaps) {
 			if (ctPhieuNhap.getcTHangHoa().getMaHangHoa().getId().equals(idProduct) && ctPhieuNhap.getcTHangHoa().getSize().getId().equals(idSize))
 			{

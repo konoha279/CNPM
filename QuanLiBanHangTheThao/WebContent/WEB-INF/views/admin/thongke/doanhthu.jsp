@@ -75,8 +75,8 @@
 										<td>${r.date}</td>
 										
 										<td><f:formatNumber type="currency" maxFractionDigits="0" currencySymbol="" value="${r.value[1]}" /> đ</td>
-										<td style="text-align: center;">${r.value[0]}</td>
 										<td style="text-align: center;">${r.bills.size()} đơn</td>
+										<td style="text-align: center;">${r.value[0]} sản phẩm</td>										
 										<td> <button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${r.id}">
 													<i class="edit icon"></i>Xem chi tiết
 											</button>	
@@ -84,6 +84,13 @@
 									</tr>
 								</c:if>
 							</c:forEach>
+							<tr style="background-color: #bfbfbf">
+								<th>TỔNG</th>
+								<th><f:formatNumber type="currency" maxFractionDigits="0" currencySymbol="" value="${allMoney}" /> đ</th>
+								<th style="text-align: center;">${allBill} đơn</th>
+								<th style="text-align: center;">${allProduct} sản phẩm</th>
+								<th></th>
+							</tr>
 						</tbody>
 					</table>
 				</div>

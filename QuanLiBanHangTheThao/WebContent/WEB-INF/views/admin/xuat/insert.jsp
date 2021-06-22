@@ -14,7 +14,7 @@
 	<jsp:include page="../header.jsp" />
 	<div class="pusher">
 		<div class="main-content">
-			<h1 class="ui header" style="text-align:center ;margin-top: 80px">NHẬP HÀNG</h1>
+			<h1 class="ui header" style="text-align:center ;margin-top: 80px">XUẤT HÀNG</h1>
 			<div class="ui grid stackable padded">
 				<div class="column">
 				 </div>
@@ -24,9 +24,8 @@
 	<div class="pusher">
 		<div class="main-content">
 			<div class="ui grid stackable padded">
-					
 				<div class="column">
-				
+				<h3>Xuất hàng: 	</h3>
 					<form class="ui form" method="post">
 						<div class="field">
 							<div class="fields">
@@ -37,7 +36,6 @@
 							</div>
 						</div>
 						<div class="field">
-							
 							<div class="fields">
 								<div class="four wide field">
 									<label>Hàng Hóa</label> 
@@ -63,6 +61,7 @@
 									<button type="button" onclick="addProduct()" class="ui green button">
 											<i class="plus icon"></i>Thêm
 										</button>
+										
 								</div>
 							</div>
 						</div>
@@ -85,23 +84,23 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${ctPhieuNhaps }" var="pn">
+							<c:forEach items="${ctPhieuXuats }" var="px">
 								<tr>
-									<td>${pn.cTHangHoa.maHangHoa.id }</td>
-									<td>${pn.cTHangHoa.maHangHoa.name }</td>
-									<td>${pn.cTHangHoa.size.name }</td>
+									<td>${px.cTHangHoa.maHangHoa.id }</td>
+									<td>${px.cTHangHoa.maHangHoa.name }</td>
+									<td>${px.cTHangHoa.size.name }</td>
 									<td>
-										<input onchange="changeCount('${pn.cTHangHoa.maHangHoa.id }','${pn.cTHangHoa.size.id }','${pn.cTHangHoa.maHangHoa.getMoney() }')" class="btn" id="count2" type="number" min="1" value="${pn.soLuong }" />
+										<input onchange="changeCount('${px.cTHangHoa.maHangHoa.id }','${px.cTHangHoa.size.id }','${px.cTHangHoa.maHangHoa.getMoney() }')" class="btn" id="count2" type="number" min="1" value="${px.soLuong }" />
 									</td>
-									<td id ="money-${pn.cTHangHoa.maHangHoa.id }-${pn.cTHangHoa.size.id }"> <f:formatNumber value="${pn.cTHangHoa.maHangHoa.getMoney() * pn.soLuong }"  type="currency" /> </td>
+									<td id ="money-${px.cTHangHoa.maHangHoa.id }-${px.cTHangHoa.size.id }"> <f:formatNumber value="${px.cTHangHoa.maHangHoa.getMoney() * px.soLuong }"  type="currency" /> </td>
 									<td>
-										<button onclick="removeItem('${pn.cTHangHoa.maHangHoa.id }','${pn.cTHangHoa.size.id }')" class="btn btn-outline-danger">Xóa</button>
+										<button onclick="removeItem('${px.cTHangHoa.maHangHoa.id }','${px.cTHangHoa.size.id }')" class="btn btn-outline-danger">Xóa</button>
 									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
-					<button onclick="submit()" class="btn btn-secondary btn-lg"> Nhập vào kho </button>
+					<button onclick="submit()" class="btn btn-secondary btn-lg"> Xuất kho </button>
 				</div>
 			</div>
 
@@ -141,7 +140,7 @@
 		var size = document.getElementById('changeSize').value;
 		var count = document.getElementById('count').value;
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath}/admin/nhap/addToCTPN.htm",
+			url: "${pageContext.servletContext.contextPath}/admin/xuat/addToCTPX.htm",
 			data: {
 				id: id,
 				size: size,
@@ -150,7 +149,12 @@
 			type: "post",
 			success: function (data)
 				{
-					window.location.replace("${pageContext.servletContext.contextPath}/admin/nhap/insert.htm");
+					if (data != "")
+						{
+							alert(data);
+							return;
+						}
+					window.location.replace("${pageContext.servletContext.contextPath}/admin/xuat/insert.htm");
 				},
 				error: function(data)
 				{
@@ -166,7 +170,7 @@
 		var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(count * money);
 		document.getElementById('money-'+id+'-'+size).innerHTML = money;
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath}/admin/nhap/changeCTPN.htm",
+			url: "${pageContext.servletContext.contextPath}/admin/xuat/changeCTPX.htm",
 			data: {
 				id: id,
 				size: size,
@@ -174,24 +178,25 @@
 			},
 			type: "post",
 			success: function (data)
-				{
-					if (data != "")
-					{
-						alert(data);
-						window.location.replace("${pageContext.servletContext.contextPath}/admin/xuat/insert.htm");
-					}
-				},
-				error: function(data)
+			{
+				if (data != "")
 				{
 					alert(data);
+					window.location.replace("${pageContext.servletContext.contextPath}/admin/xuat/insert.htm");
 				}
+				
+			},
+			error: function(data)
+			{
+				alert(data);
+			}
 		})
 	}
 	
 	function removeItem(id,size)
 	{
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath}/admin/nhap/removeCTPN.htm",
+			url: "${pageContext.servletContext.contextPath}/admin/xuat/removeCTPX.htm",
 			data: {
 				id: id,
 				size: size,
@@ -199,7 +204,7 @@
 			type: "post",
 			success: function (data)
 				{
-					window.location.replace("${pageContext.servletContext.contextPath}/admin/nhap/insert.htm");
+					window.location.replace("${pageContext.servletContext.contextPath}/admin/xuat/insert.htm");
 				},
 				error: function(data)
 				{
@@ -211,9 +216,8 @@
 	function submit()
 	{
 		var date = document.getElementById('date').value;
-
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath}/admin/nhap/insert.htm",
+			url: "${pageContext.servletContext.contextPath}/admin/xuat/insert.htm",
 			type: "post",
 			data: {
 				date: date
@@ -221,7 +225,7 @@
 			success: function (data)
 				{
 					alert(data);
-					window.location.replace("${pageContext.servletContext.contextPath}/admin/nhap/insert.htm");
+					window.location.replace("${pageContext.servletContext.contextPath}/admin/xuat/insert.htm");
 				},
 				error: function(data)
 				{

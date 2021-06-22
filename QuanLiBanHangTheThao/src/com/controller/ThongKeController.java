@@ -27,6 +27,7 @@ import com.bean.StaffReport;
 import com.bean.StaffReport.MainReport;
 import com.entity.Bill;
 import com.entity.CTBill;
+import com.entity.PhieuXuat;
 import com.entity.Receipt;
 import com.entity.Staff;
 
@@ -73,6 +74,7 @@ public class ThongKeController {
 		
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  
 		int tmp_money = 0, total_proudct =0;
+		int allMoney = 0, allProduct = 0, allBill = 0;
 		int id=0;
 		while(cFrom.compareTo(cTo) <= 0)
 		{
@@ -100,6 +102,9 @@ public class ThongKeController {
 					continue;
 				}
 			}
+			allMoney += tmp_money;
+			allProduct += total_proudct;
+			allBill += reportBills.size();
 			
 			ArrayList<Integer> integers = new ArrayList<>();
 			integers.add(total_proudct);
@@ -117,6 +122,9 @@ public class ThongKeController {
 		model.addAttribute("objectReports", objectReports);
 		model.addAttribute("tuNgay",from);
 		model.addAttribute("toiNgay",to);
+		model.addAttribute("allMoney",allMoney);
+		model.addAttribute("allProduct",allProduct);
+		model.addAttribute("allBill",allBill);
 		
 		return "admin/thongke/doanhthu";
 	}
@@ -158,6 +166,7 @@ public class ThongKeController {
 		
 		DateFormat dateFormat = new SimpleDateFormat("MM/yyyy");  
 		int tmp_money = 0, total_proudct =0;
+		int allMoney = 0, allProduct = 0, allBill = 0;
 		int id=0;
 		while(cFrom.compareTo(cTo) <= 0)
 		{
@@ -186,6 +195,9 @@ public class ThongKeController {
 					continue;
 				}
 			}
+			allMoney += tmp_money;
+			allProduct += total_proudct;
+			allBill += reportBills.size();
 			
 			ArrayList<Integer> integers = new ArrayList<>();
 			integers.add(total_proudct);
@@ -203,6 +215,9 @@ public class ThongKeController {
 		model.addAttribute("objectReports", objectReports);
 		model.addAttribute("tuNgay",from);
 		model.addAttribute("toiNgay",to);
+		model.addAttribute("allMoney",allMoney);
+		model.addAttribute("allProduct",allProduct);
+		model.addAttribute("allBill",allBill);
 		
 		return "admin/thongke/doanhthu-thang";
 	}
@@ -245,6 +260,7 @@ public class ThongKeController {
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy");  
 		int tmp_money = 0, total_proudct =0;
+		int allMoney = 0, allProduct = 0, allBill = 0;
 		int id=0;
 		while(cFrom.compareTo(cTo) <= 0)
 		{
@@ -274,6 +290,9 @@ public class ThongKeController {
 					continue;
 				}
 			}
+			allMoney += tmp_money;
+			allProduct += total_proudct;
+			allBill += reportBills.size();
 			
 			ArrayList<Integer> integers = new ArrayList<>();
 			integers.add(total_proudct);
@@ -291,6 +310,10 @@ public class ThongKeController {
 		model.addAttribute("objectReports", objectReports);
 		model.addAttribute("tuNgay",from);
 		model.addAttribute("toiNgay",to);
+		
+		model.addAttribute("allMoney",allMoney);
+		model.addAttribute("allProduct",allProduct);
+		model.addAttribute("allBill",allBill);
 		
 		return "admin/thongke/doanhthu-nam";
 	}
@@ -705,7 +728,7 @@ public class ThongKeController {
 	}
 	
 	// ------------------------------------------------------ Thống kê phiếu nhập ----------------------------------------------
-	@RequestMapping("thongKeNhapHang")
+	@RequestMapping("thongKeNhapXuat")
 	public String thongkeNH(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
 			@RequestParam( value = "toiNgay",defaultValue = "") String to)
 	{
@@ -738,6 +761,31 @@ public class ThongKeController {
 		query.setDate("to", toDate);
 		
 		List<Receipt> receipts = query.list();
+		
+		for (int i=0; i< receipts.size(); i++)
+		{
+			if (!receipts.get(i).isStatus())
+			{
+				receipts.remove(i);
+				i--;
+			}
+		}
+		
+		hql = "From PhieuXuat r where r.date >= :from and r.date <= :to ";
+		query = session.createQuery(hql);
+		query.setDate("from", fromDate);
+		query.setDate("to", toDate);
+		List<PhieuXuat> phieuXuats = query.list();
+		
+		for (int i=0; i< phieuXuats.size(); i++)
+		{
+			if (!phieuXuats.get(i).isStatus())
+			{
+				phieuXuats.remove(i);
+				i--;
+			}
+		}
+		
 		List<ReceiptReport> receiptReports = new ArrayList<ReceiptReport>();
 		
 		Calendar cFrom = Calendar.getInstance();
@@ -759,8 +807,9 @@ public class ThongKeController {
 		{
 			ReceiptReport report = new ReceiptReport();
 			report.setDate(dateFormat.format(cFrom.getTime()));
+			
 			List<Receipt> tmpReceipts = new ArrayList<Receipt>();
-			int tmp =0; //tmp1: Số lượng loại hàng nhập
+			int count =0;
 			
 			for(int i=0; i<receipts.size();i++)
 			{
@@ -769,15 +818,34 @@ public class ThongKeController {
 				if (cFrom.compareTo(cTmp) == 0)
 				{
 					tmpReceipts.add(receipts.get(i));
-					tmp += receipts.get(i).getCtPhieuNhaps().size();
+					count += receipts.get(i).getCtPhieuNhaps().size();
 					receipts.remove(i);
+					i--;
+				}
+			}
+			
+			List<PhieuXuat> tmpPhieuXuats = new ArrayList<PhieuXuat>();
+			int count2 =0;
+			for (int i=0; i< phieuXuats.size(); i++)
+			{
+				Calendar cTmp = Calendar.getInstance();
+				cTmp.setTime(phieuXuats.get(i).getDate());
+				
+				if (cFrom.compareTo(cTmp) == 0)
+				{
+					tmpPhieuXuats.add(phieuXuats.get(i));
+					count2 += phieuXuats.get(i).getCtPhieuXuats().size();
+					phieuXuats.remove(i);
 					i--;
 				}
 			}
 			
 			report.setId(id);
 			report.setReceipts(tmpReceipts);
-			report.setCountProduct(tmp);
+			report.setCountProduct(count);
+			
+			report.setCountProductXuat(count2);
+			report.setPhieuXuats(tmpPhieuXuats);
 			
 			receiptReports.add(report);
 			id++;
@@ -785,11 +853,11 @@ public class ThongKeController {
 		}
 		model.addAttribute("tuNgay",from);
 		model.addAttribute("toiNgay",to);
-		model.addAttribute("receiptReports", receiptReports);
-		return "admin/thongke/thongKeNhapHang";
+		model.addAttribute("Reports", receiptReports);
+		return "admin/thongke/thongKeNhapXuat";
 	}
 	
-	@RequestMapping("thongKeNhapHang-thang")
+	@RequestMapping("thongKeNhapXuat-thang")
 	public String thongkeNHThang(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
 			@RequestParam( value = "toiNgay",defaultValue = "") String to)
 	{
@@ -823,6 +891,30 @@ public class ThongKeController {
 		query.setDate("to", toDate);
 		
 		List<Receipt> receipts = query.list();
+		for (int i=0; i< receipts.size(); i++)
+		{
+			if (!receipts.get(i).isStatus())
+			{
+				receipts.remove(i);
+				i--;
+			}
+		}
+
+		hql = "From PhieuXuat r where r.date >= :from and r.date <= :to ";
+		query = session.createQuery(hql);
+		query.setDate("from", fromDate);
+		query.setDate("to", toDate);
+		List<PhieuXuat> phieuXuats = query.list();
+		
+		for (int i=0; i< phieuXuats.size(); i++)
+		{
+			if (!phieuXuats.get(i).isStatus())
+			{
+				phieuXuats.remove(i);
+				i--;
+			}
+		}
+
 		List<ReceiptReport> receiptReports = new ArrayList<ReceiptReport>();
 		
 		Calendar cFrom = Calendar.getInstance();
@@ -844,8 +936,9 @@ public class ThongKeController {
 		{
 			ReceiptReport report = new ReceiptReport();
 			report.setDate(dateFormat.format(cFrom.getTime()));
+			
 			List<Receipt> tmpReceipts = new ArrayList<Receipt>();
-			int tmp =0; //tmp1: Số lượng loại hàng nhập
+			int count =0; //tmp1: Số lượng loại hàng nhập
 			
 			for(int i=0; i<receipts.size();i++)
 			{
@@ -855,15 +948,34 @@ public class ThongKeController {
 				if (cFrom.compareTo(cTmp) == 0)
 				{
 					tmpReceipts.add(receipts.get(i));
-					tmp += receipts.get(i).getCtPhieuNhaps().size();
+					count += receipts.get(i).getCtPhieuNhaps().size();
 					receipts.remove(i);
+					i--;
+				}
+			}
+			
+			List<PhieuXuat> tmpPhieuXuats = new ArrayList<PhieuXuat>();
+			int count2 =0;
+			for (int i=0; i< phieuXuats.size(); i++)
+			{
+				Calendar cTmp = Calendar.getInstance();
+				cTmp.setTime(phieuXuats.get(i).getDate());
+				cTmp.set(Calendar.DATE, cFrom.get(Calendar.DATE));
+				if (cFrom.compareTo(cTmp) == 0)
+				{
+					tmpPhieuXuats.add(phieuXuats.get(i));
+					count2 += phieuXuats.get(i).getCtPhieuXuats().size();
+					phieuXuats.remove(i);
 					i--;
 				}
 			}
 			
 			report.setId(id);
 			report.setReceipts(tmpReceipts);
-			report.setCountProduct(tmp);
+			report.setCountProduct(count);
+			
+			report.setCountProductXuat(count2);
+			report.setPhieuXuats(tmpPhieuXuats);
 			
 			receiptReports.add(report);
 			id++;
@@ -871,11 +983,11 @@ public class ThongKeController {
 		}
 		model.addAttribute("tuNgay",from);
 		model.addAttribute("toiNgay",to);
-		model.addAttribute("receiptReports", receiptReports);
-		return "admin/thongke/thongKeNhapHang-thang";
+		model.addAttribute("Reports", receiptReports);
+		return "admin/thongke/thongKeNhapXuat-thang";
 	}
 	
-	@RequestMapping("thongKeNhapHang-nam")
+	@RequestMapping("thongKeNhapXuat-nam")
 	public String thongkeNHNam(ModelMap model,@RequestParam( value = "tuNgay" ,defaultValue = "") String from,
 			@RequestParam( value = "toiNgay",defaultValue = "") String to)
 	{
@@ -909,6 +1021,29 @@ public class ThongKeController {
 		query.setDate("to", toDate);
 		
 		List<Receipt> receipts = query.list();
+		for (int i=0; i< receipts.size(); i++)
+		{
+			if (!receipts.get(i).isStatus())
+			{
+				receipts.remove(i);
+				i--;
+			}
+		}
+		
+		hql = "From PhieuXuat r where r.date >= :from and r.date <= :to ";
+		query = session.createQuery(hql);
+		query.setDate("from", fromDate);
+		query.setDate("to", toDate);
+		List<PhieuXuat> phieuXuats = query.list();
+		
+		for (int i=0; i< phieuXuats.size(); i++)
+		{
+			if (!phieuXuats.get(i).isStatus())
+			{
+				phieuXuats.remove(i);
+				i--;
+			}
+		}
 		List<ReceiptReport> receiptReports = new ArrayList<ReceiptReport>();
 		
 		Calendar cFrom = Calendar.getInstance();
@@ -931,7 +1066,7 @@ public class ThongKeController {
 			ReceiptReport report = new ReceiptReport();
 			report.setDate(dateFormat.format(cFrom.getTime()));
 			List<Receipt> tmpReceipts = new ArrayList<Receipt>();
-			int tmp =0; //tmp1: Số lượng loại hàng nhập
+			int count =0; //tmp1: Số lượng loại hàng nhập
 			
 			for(int i=0; i<receipts.size();i++)
 			{
@@ -942,15 +1077,35 @@ public class ThongKeController {
 				if (cFrom.compareTo(cTmp) == 0)
 				{
 					tmpReceipts.add(receipts.get(i));
-					tmp += receipts.get(i).getCtPhieuNhaps().size();
+					count += receipts.get(i).getCtPhieuNhaps().size();
 					receipts.remove(i);
 					i--;
 				}
 			}
 			
+			List<PhieuXuat> tmpPhieuXuats = new ArrayList<PhieuXuat>();
+			int count2 =0;
+			for (int i=0; i< phieuXuats.size(); i++)
+			{
+				Calendar cTmp = Calendar.getInstance();
+				cTmp.setTime(phieuXuats.get(i).getDate());
+				cTmp.set(Calendar.DATE, cFrom.get(Calendar.DATE));
+				cTmp.set(Calendar.MONTH, cFrom.get(Calendar.MONTH));
+				if (cFrom.compareTo(cTmp) == 0)
+				{
+					tmpPhieuXuats.add(phieuXuats.get(i));
+					count2 += phieuXuats.get(i).getCtPhieuXuats().size();
+					phieuXuats.remove(i);
+					i--;
+				}
+			}
+						
 			report.setId(id);
 			report.setReceipts(tmpReceipts);
-			report.setCountProduct(tmp);
+			report.setCountProduct(count);
+			
+			report.setCountProductXuat(count2);
+			report.setPhieuXuats(tmpPhieuXuats);
 			
 			receiptReports.add(report);
 			id++;
@@ -958,7 +1113,7 @@ public class ThongKeController {
 		}
 		model.addAttribute("tuNgay",from);
 		model.addAttribute("toiNgay",to);
-		model.addAttribute("receiptReports", receiptReports);
-		return "admin/thongke/thongKeNhapHang-nam";
+		model.addAttribute("Reports", receiptReports);
+		return "admin/thongke/thongKeNhapXuat-nam";
 	}
 }

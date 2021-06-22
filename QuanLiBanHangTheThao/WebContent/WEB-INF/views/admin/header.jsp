@@ -136,7 +136,11 @@ body ::-webkit-scrollbar {
 				<i class="icon truck icon"></i> Nhập hàng
 			</div>
 		</a>  
-		
+		<a href="admin/xuat/index.htm" id="px" class="item">
+			<div>
+				<i class="icon truck icon"></i> Xuất hàng
+			</div>
+		</a>  
 		<div onmouseover="showitem('TK')" onmouseout="hideitem('TK')" id="thongke">
 			<a class="item">
 				<div>
@@ -156,7 +160,7 @@ body ::-webkit-scrollbar {
 				</a>
 				<a data-toggle="modal" data-target="#TKNH" class="item">
 					<div>
-						<i class="fa fa-plus"></i> Thống kê Nhập hàng
+						<i class="fa fa-plus"></i> Thống kê Nhập Xuất
 					</div>
 				</a>
 			</div>
@@ -275,9 +279,9 @@ body ::-webkit-scrollbar {
 	      </div>
 	      <div class="modal-body">
       		<div class="d-flex justify-content-around">
-      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapHang.htm'" class="btn btn-outline-primary">Thống kê theo ngày</button>
-      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapHang-thang.htm'" class="btn btn-outline-secondary">Thống kê theo tháng</button>
-      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapHang-nam.htm'" class="btn btn-outline-success">Thống kê theo năm</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapXuat.htm'" class="btn btn-outline-primary">Thống kê theo ngày</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapXuat-thang.htm'" class="btn btn-outline-secondary">Thống kê theo tháng</button>
+      			<button type="button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/thongKeNhapXuat-nam.htm'" class="btn btn-outline-success">Thống kê theo năm</button>
       		</div>     		
 	      </div>
 	      <div class="modal-footer">

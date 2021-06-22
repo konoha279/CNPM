@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Thống kê nhập hàng - tháng</title>
+<title>Thống kê nhập xuất - tháng</title>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.bootstrap4.min.css">
@@ -25,7 +25,7 @@
 		<div class="main-content">
 			<div class="ui grid stackable padded">
 				<div class="column">
-					<h2 style="margin-bottom:10px">Thống kê phiếu nhập theo ngày</h2>
+					<h2 style="margin-bottom:10px">Thống kê nhập xuất theo tháng</h2>
 				</div>
 			</div>
 			<div class="ui grid stackable padded">
@@ -58,17 +58,21 @@
 							<tr>
 								<th style="text-align: center;">Tháng</th>
 								<th style="text-align: center;">Số lượng phiếu nhập</th>
-								<th style="text-align: center;">Số lượng loại hàng</th>
+								<th style="text-align: center;">Số lượng loại hàng nhập</th>
+								<th style="text-align: center;">Số lượng phiếu xuất</th>
+								<th style="text-align: center;">Số lượng loại hàng xuất</th>
 								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="r" items="${receiptReports}">
-								<c:if test="${r.receipts.size() != 0 }">
+							<c:forEach var="r" items="${Reports}">
+								<c:if test="${r.receipts.size() != 0 || r.phieuXuats.size() != 0 }">
 									<tr>
 										<td style="text-align: center;">${r.date}</td>
 										<td style="text-align: center;">${r.receipts.size()} phiếu</td>
-										<td style="text-align: center;">${r.countProduct}</td>
+										<td style="text-align: center;">${r.countProductNhap}</td>
+										<td style="text-align: center;">${r.phieuXuats.size()} phiếu</td>
+										<td style="text-align: center;">${r.countProductXuat}</td>
 										<td> <button type="button" class="ui blue basic button"  data-bs-toggle="modal" data-bs-target="#detail${r.id}">
 													<i class="edit icon"></i>Xem chi tiết
 											</button>	
@@ -83,8 +87,8 @@
 		</div>
 	</div>
 	
-	<c:forEach var="r" items="${receiptReports}">	
-	<c:if test="${r.receipts.size() != 0 }">
+	<c:forEach var="r" items="${Reports}">	
+	<c:if test="${r.receipts.size() != 0 || r.phieuXuats.size() != 0 }">
 	 <!-- Modal -->
 	 <div class="modal fade" id="detail${r.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
@@ -95,7 +99,7 @@
 			</div>
 			<div class="modal-body" >
 				<table id="Table${r.id }" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;" >													
-					<thead>
+					<thead style="background-color: #ff8080;">
 						<tr>
 							<th>Mã Phiếu Nhập</th>
 							<th>Ngày</th>
@@ -111,6 +115,27 @@
 									<td>${b.date }</td>
 									<td><Strong>(${b.staff.id})</Strong> ${b.staff.fullName}</td>
 									<td>${b.ctPhieuNhaps.size()}</td>
+								</tr>
+						
+						</c:forEach>															
+					</tbody>
+					<thead style="background-color: #99ffd6;">
+						
+						<tr>
+							<th>Mã Phiếu Xuất</th>
+							<th>Ngày</th>
+							<th>Nhân Viên</th>
+							<th>Số lượng loại hàng Xuất</th>
+						</tr>													
+					</thead>
+					<tbody>
+						<c:forEach items="${r.phieuXuats }" var="b">
+							
+								<tr>
+									<td>${b.id }</td>
+									<td>${b.date }</td>
+									<td><Strong>(${b.staff.id})</Strong> ${b.staff.fullName}</td>
+									<td>${b.ctPhieuXuats.size()}</td>
 								</tr>
 						
 						</c:forEach>															
@@ -187,9 +212,9 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Tháng', 'Số lượng phiếu nhập', 'Số lượng loại hàng nhập'],
-          <c:forEach items="${receiptReports}" var="r">
-			[ '${r.date}', ${r.receipts.size()}, ${r.countProduct} ],
+          ['Tháng', 'Số lượng phiếu nhập', 'Số lượng phiếu xuất'],
+          <c:forEach items="${Reports}" var="r">
+			[ '${r.date}', ${r.receipts.size()}, ${r.phieuXuats.size()} ],
 			</c:forEach>
         ]);
 
@@ -198,7 +223,7 @@
    				title : 'Số lượng nhập hàng'
    			},
    			hAxis : {
-   				title : 'Ngày'
+   				title : 'năm'
    			},
    			seriesType : 'bars',
    			series : {
@@ -208,7 +233,40 @@
    			}
         };
 
-        var chart = new google.charts.Bar(document.getElementById("receiptReports"));
+        var chart = new google.charts.Bar(document.getElementById("Reports"));
+
+        chart.draw(data, options); 
+      }
+
+    </script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        	['Tháng', 'Số lượng loại hàng nhập', 'Số lượng loại hàng xuất'],
+          <c:forEach items="${Reports}" var="r">
+          [ '${r.date}', ${r.countProductNhap}, ${r.countProductXuat} ],
+			</c:forEach>
+        ]);
+
+        var options = {
+   			vAxis : {
+   				title : 'Số lượng nhập hàng'
+   			},
+   			hAxis : {
+   				title : 'năm'
+   			},
+   			seriesType : 'bars',
+   			series : {
+   				5 : {
+   					type : 'line'
+   				}
+   			}
+        };
+
+        var chart = new google.charts.Bar(document.getElementById("productReport"));
 
         chart.draw(data, options); 
       }
