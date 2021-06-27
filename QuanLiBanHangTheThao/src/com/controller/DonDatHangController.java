@@ -1,8 +1,10 @@
 package com.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -36,6 +38,7 @@ import com.entity.CTHangHoa;
 import com.entity.Guest;
 import com.entity.Product;
 import com.entity.Staff;
+import com.pdfcrowd.Pdfcrowd;
 
 @Transactional
 @Controller
@@ -678,6 +681,144 @@ public class DonDatHangController {
 		
 		
 		return result.getBytes("UTF-8");
+	}
+	
+	@RequestMapping(value = "print",method = RequestMethod.POST)
+	public @ResponseBody String print(HttpSession httpSession, HttpServletRequest request)
+	{
+		Session session = factory.openSession();
+		String id = request.getParameter("ID");
+		Bill bill = (Bill) session.get(Bill.class, id);
+		String fullName = "";
+		
+		if (bill.getAccount().getStaff() != null)
+		{
+			fullName = bill.getAccount().getStaff().getFullName();
+		}
+		else
+			fullName = bill.getAccount().getGuest().getFullname();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String strDate = formatter.format(new Date());
+		String strPay = formatter.format(bill.getDate());
+		try {
+            // create the API client instance
+			Pdfcrowd.HtmlToPdfClient client =
+	                new Pdfcrowd.HtmlToPdfClient("konoha279", "148c2757f61a48a8d90270cc83478994");
+
+            // run the conversion and write the result to a file
+			String content = "<!DOCTYPE html>\r\n"
+            		+ "<html>\r\n"
+            		+ "<head>\r\n"
+            		+ "	<style>\r\n"
+            		+ "table, td, th {\r\n"
+            		+ "  border: 1px solid black;\r\n"
+            		+ "}\r\n"
+            		+ "\r\n"
+            		+ "table {\r\n"
+            		+ "  font-family: Arial, Helvetica, sans-serif;\r\n"
+            		+ "  border-collapse: collapse;\r\n"
+            		+ "  width: 100%;\r\n"
+            		+ "}\r\n"
+            		+ "\r\n"
+            		+ "table, td, th {\r\n"
+            		+ "  border: 1px solid #ffcce6;\r\n"
+            		+ "  padding: 8px;\r\n"
+            		+ "}\r\n"
+            		+ "\r\n"
+            		+ "table tr:nth-child(even){background-color: #f2f2f2;}\r\n"
+            		+ "\r\n"
+            		+ "table tr:hover {background-color: #ffcce6;}\r\n"
+            		+ "\r\n"
+            		+ "table th {\r\n"
+            		+ "  padding-top: 12px;\r\n"
+            		+ "  padding-bottom: 12px;\r\n"
+            		+ "  text-align: left;\r\n"
+            		+ "  background-color: #ff1a8c;\r\n"
+            		+ "  color: white;\r\n"
+            		+ "}\r\n"
+            		+ "</style>\r\n"
+            		+ "</head>\r\n"
+            		+ "<body>\r\n"
+            		+ "	<div style=\"margin: 20px;padding: 20px; width: 1000px;\">\r\n"
+            		+ "		<p style=\"text-align: right;\">"+strDate+"</p>\r\n"
+            		+ "		<h1 style=\"text-align: center; font-size: 35px\">Hóa đơn mua hàng</h1>\r\n"
+            		+ "		<p><strong>CỬA HÀNG: PTITSPORT</strong></p>\r\n"
+            		+ "		<p>Tên khách hàng: <strong>"+fullName+"</strong></p>\r\n"
+            		+ "		<p>Địa chỉ: <strong>"+ bill.getAddress() +"</strong></p>\r\n"
+            		+ "		<P>Ngày mua: <STRONG>"+strPay+"</STRONG></P>\r\n"
+            		+ "		\r\n"
+            		+ "		<div style=\"margin-top: 20px;\">\r\n"
+            		+ "			<table style=\"width: 100%;border-collapse: collapse;\">	\r\n"
+            		+ "			<colgroup>\r\n"
+            		+ "				<col span=\"1\" style=\"width: 30%\">\r\n"
+            		+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+            		+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+            		+ "				<col span=\"1\" style=\"width: 10%\">\r\n"
+            		+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+            		+ "				<col span=\"1\" style=\"width: 15%\">\r\n"
+            		+ "			</colgroup>												\r\n"
+            		+ "				<thead>\r\n"
+            		+ "					<tr>\r\n"
+            		+ "						<th>Tên sản phẩm</th>\r\n"
+            		+ "						<th>Kích thước</th>\r\n"
+            		+ "						<th>Đơn giá</th>\r\n"
+            		+ "						<th>Số lượng</th>\r\n"
+            		+ "						<th>Khuyến mãi</th>\r\n"
+            		+ "						<th>Tổng tiền </th>\r\n"
+            		+ "					</tr>													\r\n"
+            		+ "				</thead>			\r\n"
+            		+ "				<tbody>\r\n";
+					int allMoney=0;
+					List<CTBill> ctBills = new ArrayList<>(bill.getCtBills());
+					HashSet<CTBill> hashSet = new HashSet<CTBill>(ctBills);
+					ctBills = new ArrayList<CTBill>(hashSet);
+					for (int i=0; i< ctBills.size();i++)
+					{
+						content+= "					<tr>\r\n"
+								+ "						<td>"+ ctBills.get(i).getcTHangHoa().getMaHangHoa().getName() +"</td>\r\n"
+								+ "						<td>"+ (ctBills.get(i).getcTHangHoa().getSize().getId().equals("5") == false ? ctBills.get(i).getcTHangHoa().getSize().getName() : "" ) +"</td>\r\n"
+								+ "						<td>"+ convertToMoney(ctBills.get(i).getUnitPrice()) +"</td>\r\n"
+								+ "						<td>"+ ctBills.get(i).getCount() +"</td>\r\n"
+								+ "						<td>"+ ctBills.get(i).getPromotion() +"%</td>\r\n"
+								+ "						<td>"+ convertToMoney(ctBills.get(i).intoMoney()) +"</td>\r\n"
+								+ "					</tr>\r\n"
+								+ "\r\n";
+						allMoney += ctBills.get(i).intoMoney();
+					}
+    		
+    		
+	            content	+= "				<tr style=\"background-color: #ffcce6;\">\r\n"
+	            		+ "						<td><b>Tổng tiền</b></td>\r\n"
+	            		+ "						<td></td>\r\n"
+	            		+ "						<td></td>\r\n"
+	            		+ "						<td></td>\r\n"
+	            		+ "						<td></td>\r\n"
+	            		+ "						<td><b>"+convertToMoney(allMoney)+"</b></td>\r\n"
+	            		+ "					</tr>\r\n"
+	            		+ "\r\n"
+	            		+ "\r\n"
+	            		+ "				</tbody>\r\n"
+	            		+ "			</table>\r\n"
+	            		+ "		</div>\r\n"
+	            		+ "	</div>\r\n"
+	            		+ "</body>\r\n"
+	            		+ "</html>";
+            client.convertStringToFile(content, "HoaDon.pdf");
+        }
+        catch(Pdfcrowd.Error why) {
+            // report the error
+            System.err.println("Pdfcrowd Error: " + why);
+
+            // rethrow or handle the exception
+            throw why;
+        }
+        catch(IOException why) {
+            // report the error
+            System.err.println("IO Error: " + why);
+
+            // rethrow or handle the exception
+        }
+		return "";
 	}
 	
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------

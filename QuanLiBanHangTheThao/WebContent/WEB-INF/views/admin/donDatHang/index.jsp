@@ -30,13 +30,13 @@
 					<table id="TableBill" class="table table-striped table-bordered dt-responsive nowrap">
 						<thead>
 							<tr>
-								<th>Mã Số Đơn Đặt Hàng</th>
-								<th>Ngày tạo đơn hàng</th>
+								<th>ID</th>
+								<th>Ngày tạo</th>
 								<th>Tài khoản mua</th>
 								<th>Tình Trạng</th>
-								<th>Nhân Viên tạo đơn (xác nhận)</th>
+								<th>Nhân Viên xác nhận</th>
 								<th>Địa chỉ nhận hàng</th>
-								<th>Tổng tiền mua hàng</th>		
+								<th>Tổng tiền</th>		
 								<th>Phí vận chuyện</th>
 								<th>Thành tiền</th>	
 								<th>Tương tác</th>
@@ -109,8 +109,9 @@
 					</table>
 				</div>
 		      <div class="modal-footer">
-		       	<button type="button"  class="btn btn-danger" ${b.status == true ? 'disabled=\"disabled\"' : '' } data-bs-toggle="modal" data-bs-target="#del${b.id}">Xóa đơn hàng</button>
-		        <button type="button" ${b.status == true ? 'disabled=\"disabled\"' : '' } onclick="confirm('${b.id}')" class="btn btn-primary">Xác nhận đơn hàng</button>
+		      	<button type="button"  class="btn btn-success" onclick="print('${b.id}')">In đơn hàng</button>
+		       	<button type="button"  class="btn btn-danger" ${b.status == true ? "disabled=\"disabled\" style='display: none;'" : '' } data-bs-toggle="modal" data-bs-target="#del${b.id}">Xóa đơn hàng</button>
+		        <button type="button" ${b.status == true ? "disabled=\"disabled\" style='display: none;'" : '' } onclick="confirm('${b.id}')" class="btn btn-primary">Xác nhận đơn hàng</button>
 		       	<button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
 		      </div>
 		    </div>
@@ -318,6 +319,26 @@
 					}
 				})
 		}
+	    
+	    function print(id)
+		{
+			$.ajax({
+				url: "${pageContext.servletContext.contextPath}/admin/donDatHang/print.htm",
+				data: {
+					ID: id
+				},
+				type: "post",
+				success: function (data)
+					{
+						
+					},
+					error: function(data)
+					{
+						alert(data);
+					}
+				})
+		}
+	    
 	    function confirm(id)
 		{
 			$.ajax({
