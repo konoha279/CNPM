@@ -80,7 +80,18 @@ public class ShopController {
 		return list;
 	}
 	
-	
+	@ModelAttribute("isGuest")
+	public String isAdmin(HttpServletRequest request)
+	{
+		Session session = factory.getCurrentSession();
+		if (checkCookie(request) == null)
+			return "true";
+		Account account = (Account) session.get(Account.class, checkCookie(request).getUsername());
+		if (account.getRole().getId().equals("0"))
+			return "true";
+		else 
+			return "false";
+	}
 	
 	@ModelAttribute("listBrand")
 	public List<Brand> listBrand()

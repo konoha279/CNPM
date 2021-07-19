@@ -179,7 +179,8 @@ public class AdminController {
 		    }
 		}
 		
-		model.addAttribute("Product", maxMap.getKey());
+		if (maxMap != null)	model.addAttribute("Product", maxMap.getKey());
+		else model.addAttribute("Product", "");
 		
 		//         lấy nhân viên
 		map.clear();
@@ -203,8 +204,13 @@ public class AdminController {
 				maxMap = tmpMap;
 		    }
 		}
-		Staff staff = (Staff) session.get(Staff.class, maxMap.getKey());
-		model.addAttribute("nowStaff", staff.getFullName());
+		
+		if (maxMap != null)
+		{
+			Staff staff = (Staff) session.get(Staff.class, maxMap.getKey());
+			model.addAttribute("nowStaff", staff.getFullName());
+		}
+		else model.addAttribute("nowStaff", "");
 		
 		
 		//tháng trước		
@@ -253,8 +259,8 @@ public class AdminController {
 				maxMap = tmpMap;
 		    }
 		}
-		
-		model.addAttribute("befProduct", maxMap.getKey());
+		if (maxMap != null)	model.addAttribute("befProduct", maxMap.getKey());
+		else model.addAttribute("befProduct", "");
 		
 		map.clear();
 		int befMoney=0;
@@ -280,8 +286,12 @@ public class AdminController {
 				maxMap = tmpMap;
 		    }
 		}
-		staff = (Staff) session.get(Staff.class, maxMap.getKey());
-		model.addAttribute("befStaff", staff.getFullName());
+		if (maxMap != null)
+		{
+			Staff staff = (Staff) session.get(Staff.class, maxMap.getKey());
+			model.addAttribute("befStaff", staff.getFullName());
+		}
+		else model.addAttribute("befStaff", "");
 		model.addAttribute("befMoney", befMoney);
 		return "admin/admin";
 	}

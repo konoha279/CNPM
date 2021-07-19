@@ -63,6 +63,9 @@
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
+								<c:if test="${isGuest == 'false' }">
+									<li><a href="admin/admin.htm" ><i class="fa fa-user"></i> Admin</a></li>
+								</c:if>
 								<li><a href="profile/account.htm" ><i class="fa fa-user"></i> Tài khoản</a></li>
 								<li><a href="wishlist.htm" ${where == 'DSYT' ? "class='active'" : "" }><i class="fa fa-star"></i> Danh sách yêu thích <c:if  test="${cookie.containsKey('username')}">(${myWishList.size() })</c:if> </a></li>
 								<!-- <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li> -->

@@ -684,8 +684,9 @@ public class DonDatHangController {
 	}
 	
 	@RequestMapping(value = "print",method = RequestMethod.POST)
-	public @ResponseBody String print(HttpSession httpSession, HttpServletRequest request)
+	public @ResponseBody byte[] print(HttpSession httpSession, HttpServletRequest request) throws UnsupportedEncodingException
 	{
+		String result = "";
 		Session session = factory.openSession();
 		String id = request.getParameter("ID");
 		Bill bill = (Bill) session.get(Bill.class, id);
@@ -804,21 +805,20 @@ public class DonDatHangController {
 	            		+ "</body>\r\n"
 	            		+ "</html>";
             client.convertStringToFile(content, "HoaDon.pdf");
+            result = "Xuất file thành công";
         }
         catch(Pdfcrowd.Error why) {
             // report the error
             System.err.println("Pdfcrowd Error: " + why);
-
+            result = String.valueOf(why);
             // rethrow or handle the exception
             throw why;
         }
         catch(IOException why) {
-            // report the error
             System.err.println("IO Error: " + why);
-
-            // rethrow or handle the exception
+            result = String.valueOf(why);
         }
-		return "";
+		return result.getBytes("UTF-8");
 	}
 	
 	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------

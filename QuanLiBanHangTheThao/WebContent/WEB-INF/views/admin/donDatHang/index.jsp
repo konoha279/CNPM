@@ -329,14 +329,14 @@
 				},
 				type: "post",
 				success: function (data)
-					{
-						
-					},
-					error: function(data)
-					{
-						alert(data);
-					}
-				})
+				{
+					alert(data);
+				},
+				error: function(data)
+				{
+					alert(data);
+				}
+			})
 		}
 	    
 	    function confirm(id)
