@@ -396,6 +396,10 @@ public class DonDatHangController {
 		Session session = factory.getCurrentSession();
 		String size = request.getParameter("size");
 		String id = request.getParameter("id");
+		if (id.equals(""))
+		{
+			return "".getBytes("UTF-8");
+		}
 		int Count = Integer.valueOf(request.getParameter("count"));
 		if (Count != 0)
 		{
@@ -471,6 +475,7 @@ public class DonDatHangController {
 			}
 			money += ctHangHoa.getMaHangHoa().getMoney() * cartItems.get(i).getCount();
 		}
+		httpSession.setAttribute("myCartItems", cartItems);
 		return String.valueOf(money);
 	}
 	

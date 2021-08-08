@@ -414,16 +414,16 @@
 			})
 		}
 	   
-		function editcount(size,id,money)
+		function editcount(id,size,money)
 		{
-			var count = document.getElementById('quantity'+size+id).value;
+			var count = document.getElementById('quantity'+id+size).value;
 			if (count <= '1')
 				count = '1';
-			if ((count - '0') > document.getElementById('quantity'+size+id).max)
-				count = document.getElementById('quantity'+size+id).max;
-			document.getElementById('quantity'+size+id).value = count;
+			if ((count - '0') > document.getElementById('quantity'+id+size).max)
+				count = document.getElementById('quantity'+id+size).max;
+			document.getElementById('quantity'+id+size).value = count;
 			var money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(count * money);
-			document.getElementById('money-'+size+'-'+id).innerHTML = money;
+			document.getElementById('money-'+id+'-'+size).innerHTML = money;
 			
 			$.ajax
 			({
