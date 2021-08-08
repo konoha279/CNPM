@@ -258,6 +258,10 @@ public class PhieuXuatController {
 			ctPhieuXuats = new ArrayList<CTPhieuXuat>();
 		
 		String idProduct = request.getParameter("id");
+		if (idProduct.equals(""))
+		{
+			return "".getBytes("UTF-8");
+		}
 		String idSize = request.getParameter("size");
 		
 		if (idSize.isEmpty())
@@ -332,6 +336,10 @@ public class PhieuXuatController {
 			ctPhieuXuats = new ArrayList<CTPhieuXuat>();
 		
 		String idProduct = request.getParameter("id");
+		if (idProduct.equals(""))
+		{
+			return "".getBytes("UTF-8");
+		}
 		String idSize = request.getParameter("size");
 		for (CTPhieuXuat ctPhieuXuat : ctPhieuXuats) {
 			if (ctPhieuXuat.getcTHangHoa().getMaHangHoa().getId().equals(idProduct) && ctPhieuXuat.getcTHangHoa().getSize().getId().equals(idSize))

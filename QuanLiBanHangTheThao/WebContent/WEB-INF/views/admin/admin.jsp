@@ -84,7 +84,7 @@
 						</div>
 						<div class="extra content">
 							<div class="ui two buttons">
-								<button class="ui green button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/doanhso.htm';">Thêm Thông Tin</button>
+								<button class="ui green button" onclick="location.href='${pageContext.servletContext.contextPath}/admin/thongke/doanhthu.htm';">Thêm Thông Tin</button>
 							</div>
 						</div>
 						

@@ -385,7 +385,6 @@ public class ThongKeController {
 				int tmp_money=0, total_proudct=0;
 				MainReport mainReport = new MainReport();
 				mainReport.setStaff(staff);
-				
 				for (i=0; i< bills.size(); i++)
 				{				
 					Calendar cTmp = Calendar.getInstance();

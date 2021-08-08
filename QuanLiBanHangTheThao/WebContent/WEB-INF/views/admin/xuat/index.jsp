@@ -24,7 +24,7 @@
 		<div class="main-content">
 			<div class="ui grid stackable padded">
 				<div class="column">
-				<h1 class="ui header" style="text-align:center ;margin-top: 30px">DANH SÁCH PHIẾU NHẬP</h1>
+				<h1 class="ui header" style="text-align:center ;margin-top: 30px">DANH SÁCH PHIẾU XUẤT</h1>
 					<table id="TableReceipt" class="table table-striped table-bordered dt-responsive nowrap">
 						<thead>
 							<tr>
@@ -54,7 +54,7 @@
 						</tbody>
 					</table>
 					<a href="admin/xuat/insert.htm"><button class="ui green button">
-							<i class="plus icon"></i>Thêm
+							<i class="plus icon"></i>Xuất hàng
 						</button></a> ${message}
 				</div>
 			</div>

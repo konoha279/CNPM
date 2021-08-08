@@ -44,10 +44,12 @@
 					</form>
 				</div>
 			</div>
-			   
+			   <c:if test="${empty staffs}"> <h1 style="text-align: center; margin-left: 20px;">Không có thông tin trong thời gian này</h1> </c:if> 
+			   <c:if test="${!empty staffs}">
 			     <div id="productChart" style="width: 90%; height: 300px; padding-left:50px; margin-bottom: 10px;"></div>
 			     <div id="moneyChart" style="width: 90%; height: 300px; padding-left:50px; margin-bottom: 10px;"></div>
 			     <div id="billChart" style="width: 90%; height: 300px; padding-left:50px; margin-bottom: 10px;"></div>
+			    </c:if> 
 			<h2>Chi Tiết</h2>
 			<div class="ui grid stackable padded">
 				<div class="column">
@@ -214,14 +216,15 @@
 
    function drawChart() {
      var data = google.visualization.arrayToDataTable([
-       ['Họ tên nhân viên', <c:forEach items="${staffs}" var="s"> '${s.getFullName()}', </c:forEach> ],
+       ['Họ tên nhân viên', <c:if test="${empty staffs}"> "" </c:if> <c:forEach items="${staffs}" var="s"> '${s.getFullName()}', </c:forEach> ],
        <c:forEach items="${staffReports}" var="r">
-[ '${r.date}',
-	<c:forEach items="${r.mainList}" var= "m">
-		${m.value[1]}, 			
-	</c:forEach>
-],
-</c:forEach>
+			[ '${r.date}',
+				<c:forEach items="${r.mainList}" var= "m">
+				
+					${m.value[1]}, 			
+				</c:forEach>
+			],
+		</c:forEach>
      ]);
 
      var options = {
@@ -246,7 +249,7 @@
 	
 	   function drawChart() {
 	     var data = google.visualization.arrayToDataTable([
-	       ['Họ tên nhân viên', <c:forEach items="${staffs}" var="s"> '${s.getFullName()}', </c:forEach> ],
+	       ['Họ tên nhân viên', <c:if test="${empty staffs}"> "" </c:if> <c:forEach items="${staffs}" var="s"> '${s.getFullName()}', </c:forEach> ],
 	       <c:forEach items="${staffReports}" var="r">
 	[ '${r.date}',
 		<c:forEach items="${r.mainList}" var= "m">

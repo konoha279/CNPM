@@ -195,7 +195,6 @@
 							<ul class="nav nav-tabs">
 								<li><a href="#details" data-toggle="tab">MÔ TẢ</a></li>
 								<li><a href="#companyprofile" data-toggle="tab">Sản phẩm cùng thương hiệu</a></li>
-								<li><a href="#tag" data-toggle="tab">Tag</a></li>
 								<li class="active"><a href="#reviews" data-toggle="tab">Bình luận (${detailProduct.getCountComment()})</a></li>
 							</ul>
 						</div>
@@ -215,7 +214,7 @@
 												<div class="product-image-wrapper">
 													<div class="single-products">
 														<div class="productinfo text-center">
-															<img src="images/${p.image}" alt="" />
+															<img style="width: 176px;height: 176px;" src="images/${p.image}" alt="" />
 															<h2><f:formatNumber value="${p.price}" type="currency"/></h2>
 															<p style="max-height: 20px; overflow: hidden; -webkit-line-clamp: 1;">${p.name}</p>
 															<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>

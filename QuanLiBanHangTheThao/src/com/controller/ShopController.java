@@ -410,12 +410,9 @@ public class ShopController {
 		
 		size = listProducts.size();
 		List<Product> listFinal = new ArrayList<Product>();
-		for (int i=0;i<size;i++)
+		for (int i=0;i<size && i <12;i++)
 		{
-			if (i > 0 && i<= 12)
-			{
-				listFinal.add(listProducts.get(i));
-			}
+			listFinal.add(listProducts.get(i));
 		}
 		
 		model.addAttribute("here", "1" );
@@ -464,7 +461,7 @@ public class ShopController {
 		List<Product> listFinal = new ArrayList<Product>();
 		for (int i=0;i<size;i++)
 		{
-			if ( (i > (12*page)) && ( i<= (12* (page+1) )))
+			if ( (i >= (12*page)) && ( i< (12* (page+1) )))
 			{
 				listFinal.add(listProducts.get(i));
 			}
@@ -538,12 +535,9 @@ public class ShopController {
 		
 		size = listProducts.size();
 		List<Product> listFinal = new ArrayList<Product>();
-		for (int i=0;i<size;i++)
+		for (int i=0;i<size && i<= 12;i++)
 		{
-			if (i > 0 && i<= 12)
-			{
-				listFinal.add(listProducts.get(i));
-			}
+			listFinal.add(listProducts.get(i));
 		}
 		model.addAttribute("here", "1" );
 		model.addAttribute("link","brand"+id );
@@ -592,7 +586,7 @@ public class ShopController {
 		List<Product> listFinal = new ArrayList<Product>();
 		for (int i=0;i<size;i++)
 		{
-			if ((i > (12*page)) && ( i<= (12* (page+1) )))
+			if ((i >= (12*page)) && ( i< (12* (page+1) )))
 			{
 				listFinal.add(listProducts.get(i));
 			}

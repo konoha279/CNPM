@@ -287,6 +287,10 @@ public class PhieuNhapController {
 			ctPhieuNhaps = new ArrayList<CTPhieuNhap>();
 		
 		String idProduct = request.getParameter("id");
+		if (idProduct.equals(""))
+		{
+			return "".getBytes("UTF-8");
+		}
 		String idSize = request.getParameter("size");
 		int count = Integer.valueOf(request.getParameter("count"));
 		for (CTPhieuNhap ctPhieuNhap : ctPhieuNhaps) {
@@ -339,6 +343,10 @@ public class PhieuNhapController {
 			ctPhieuNhaps = new ArrayList<CTPhieuNhap>();
 		
 		String idProduct = request.getParameter("id");
+		if (idProduct.equals(""))
+		{
+			return "".getBytes("UTF-8");
+		}
 		String idSize = request.getParameter("size");
 		for (CTPhieuNhap ctPhieuNhap : ctPhieuNhaps) {
 			if (ctPhieuNhap.getcTHangHoa().getMaHangHoa().getId().equals(idProduct) && ctPhieuNhap.getcTHangHoa().getSize().getId().equals(idSize))
