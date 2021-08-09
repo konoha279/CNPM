@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -168,10 +169,14 @@ public class NhanVienController {
 	}
 	
 	@RequestMapping(value="update/{maNV}",method=RequestMethod.GET)
-	public String update(ModelMap model,@PathVariable("maNV") String id)
+	public String update(ModelMap model,@PathVariable("maNV") String id, HttpServletRequest request)
 	{
 		Session session = factory.getCurrentSession();
 		Staff staff = (Staff) session.get(Staff.class, id);
+		if (staff.getAccountStaff().getUsername().trim().equals(checkCookie(request).getUsername()))
+			model.addAttribute("check", 0);
+		else
+			model.addAttribute("check", 1);
 		model.addAttribute("id", id);
 		model.addAttribute("staff", staff);
 		model.addAttribute("role", staff.getAccountStaff().getRole().getId());
@@ -239,6 +244,34 @@ public class NhanVienController {
 		}	
 		return "redirect:/admin/nhanvien/index.htm?page=1";
 	}	
+	
+	public Account checkCookie(HttpServletRequest request)
+	{
+		try {
+			Cookie[] cookies = request.getCookies();
+			Account account = null;
+			String username = "", passwd = "";
+			for (Cookie cookie: cookies)
+			{
+				if (cookie.getName().equalsIgnoreCase("username"))
+				{
+					username = cookie.getValue();
+				}
+				if (cookie.getName().equalsIgnoreCase("passwd"))
+				{
+					passwd = cookie.getValue();
+				}
+			}
+			if (!username.isEmpty() && !passwd.isEmpty())
+				account = new Account(username, passwd);
+			return account;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		
+	}
+	
 	
 	public String encrypt(String input)
     {

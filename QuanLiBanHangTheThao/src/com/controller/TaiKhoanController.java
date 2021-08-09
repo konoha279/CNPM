@@ -41,7 +41,8 @@ import com.entity.Staff;
 public class TaiKhoanController {
 	@Autowired
 	SessionFactory factory;
-	
+	@Autowired
+	Mailer mailer;
 	@RequestMapping("index")
 	public String index(ModelMap model, @ModelAttribute("Account") Account account) {
 		Session session = factory.getCurrentSession();	
@@ -298,6 +299,34 @@ public class TaiKhoanController {
 			session.close();
 		}
 		return "redirect:/admin/taikhoan/index.htm";
+	}
+	
+	@RequestMapping(value= "changeEmail", method = RequestMethod.POST)
+	public @ResponseBody byte[] changeEmail(HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException
+	{
+		String username = request.getParameter("username");
+		String email = request.getParameter("email");
+
+		Session session = factory.getCurrentSession();
+		Account account = (Account) session.get(Account.class, username);
+		account.setEmail(email);
+		
+		session = factory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		try {
+			session.update(account);
+			transaction.commit();
+		} catch (Exception e) {
+			System.out.print(e);
+			transaction.rollback();
+		}
+		finally {
+			session.close();
+		}
+		mailer.send("n18dcat092@student.ptithcm.edu.vn", email, "Đổi email tài khoản", "Tài khoản của bạn đã được thay đổi email.");
+
+		return "Thay đổi thành công.".getBytes("UTF-8");
 	}
 	
 	String encrypt(String input)

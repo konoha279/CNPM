@@ -44,9 +44,9 @@
 									<form:errors path="cmnd" />
 								</div>
 							</div>
-							<div class="field">
+							<div class="field" ${check == 0 ? "style='display: none;'" : "" } >
 								<label>Chức vụ</label>
-								<form:select path="accountStaff.role.id">
+								<form:select path="accountStaff.role.id" >
 									<c:choose>
 										<c:when test="${role == '1' }">
 											<form:option selected= 'selected' value="1">Quản lí</form:option>
