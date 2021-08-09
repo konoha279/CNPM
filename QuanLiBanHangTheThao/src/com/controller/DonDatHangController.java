@@ -70,6 +70,14 @@ public class DonDatHangController {
 		hql = "From Product";
 		query = session.createQuery(hql);
 		List<Product> list2 = query.list();
+		for (int i=0; i<list2.size(); i++)
+		{
+			if (!list2.get(i).getStatus())
+			{
+				list2.remove(i);
+				i--;
+			}
+		}
 		model.addAttribute("listProduct", list2);
 		
 		return "admin/donDatHang/index";
