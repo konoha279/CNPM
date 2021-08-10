@@ -274,7 +274,7 @@ public class PhieuXuatController {
 				Query query = session.createQuery(hql);
 				CTHangHoa ctHangHoa = (CTHangHoa) query.list().get(0);
 				
-				if (ctHangHoa.getSoLuong() < count)
+				if (ctHangHoa.getSoLuong() <= count)
 				{
 					return "Số lượng xuất đã là số lượng tối đa trong kho".getBytes("UTF-8");
 				}

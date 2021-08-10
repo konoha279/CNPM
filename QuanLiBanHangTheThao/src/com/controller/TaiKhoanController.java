@@ -308,6 +308,14 @@ public class TaiKhoanController {
 		String email = request.getParameter("email");
 
 		Session session = factory.getCurrentSession();
+		
+		String hql = "From Account where email= '"+email+"'";
+		Query query = session.createQuery(hql);
+		if (!query.list().isEmpty())
+		{
+			return "Email này đã được đăng ký.".getBytes("UTF-8");
+		}
+		
 		Account account = (Account) session.get(Account.class, username);
 		account.setEmail(email);
 		
